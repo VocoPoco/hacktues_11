@@ -1,6 +1,7 @@
 import re
 from bs4 import BeautifulSoup
-from constants import BASE_URL, HEADERS  # HEADERS may not be used now with playwright
+from constants import BASE_URL
+import json
 
 
 def concatenate_skills(skills):
@@ -139,27 +140,6 @@ def extract_earnings_and_feedback(meta_p_tags):
     return earnings, feedback
 
 
-def extract_additional_details(avatar_div):
-    """
-    Extracts additional details from the avatar div, such as earnings all-time and profile URL.
-
-    Args:
-        avatar_div (Tag): The BeautifulSoup Tag object representing the 'avatar' div.
-
-    Returns:
-        dict: A dictionary with 'earningsalltime' and 'profileurl'.
-    """
-    earningsalltime_elem = avatar_div.find("span", class_="earningsalltime")
-    earningsalltime = (
-        earningsalltime_elem.get_text(strip=True) if earningsalltime_elem else ""
-    )
-
-    profileurl_elem = avatar_div.find("a", class_="profileurl")
-    profileurl = profileurl_elem.get("href", "").strip() if profileurl_elem else ""
-
-    return {"earningsalltime": earningsalltime, "profileurl": profileurl}
-
-
 def extract_service_title(service_listing_div):
     """
     Extracts the service title from the 'serviceListing__details' div.
@@ -179,15 +159,41 @@ def extract_service_title(service_listing_div):
 def extract_service_rates(service_listing_div):
     """
     Extracts the service rates from the 'serviceListing__rates' p tag.
+    This includes extracting the rate per hour and the starting rate from a string.
 
     Args:
         service_listing_div (Tag): The BeautifulSoup Tag object representing the 'serviceListing__rates' p tag.
 
     Returns:
-        str: The service rates, or an empty string if not found.
+        dict: A dictionary containing 'rate_per_hour' and 'starting_rate', or empty strings if not found.
     """
     service_rates_tag = service_listing_div.find("p", class_="serviceListing__rates")
-    return service_rates_tag.get_text(strip=True) if service_rates_tag else ""
+    if not service_rates_tag:
+        return {"rate_per_hour": "", "starting_rate": ""}
+
+    # Extract the rate text
+    rate_text = service_rates_tag.get_text(strip=True)
+
+    # Initialize default values
+    rate_per_hour = ""
+    starting_rate = ""
+
+    # Try to extract rate_per_hour and starting_rate from the rate_text
+    rate_parts = rate_text.split(" · ")
+
+    # Check if we have a rate per hour (like "$22/hr")
+    if len(rate_parts) > 0:
+        rate_per_hour_match = re.search(r"\$(\d+)(?:/hr)?", rate_parts[0])
+        if rate_per_hour_match:
+            rate_per_hour = f"{rate_per_hour_match.group(1)}$"
+
+    # Check if we have a starting rate (like "Starting at $25")
+    if len(rate_parts) > 1:
+        starting_rate_match = re.search(r"Starting at \$(\d+)", rate_parts[1])
+        if starting_rate_match:
+            starting_rate = f"{starting_rate_match.group(1)}$"
+
+    return {"rate_per_hour": rate_per_hour, "starting_rate": starting_rate}
 
 
 def extract_service_description(service_listing_div):
@@ -273,9 +279,6 @@ def parse_freelancer_li(li):
     # Extract earnings and feedback
     earnings, feedback = extract_earnings_and_feedback(meta_p_tags)
 
-    # Extract additional details (earningsalltime and profileurl)
-    additional_details = extract_additional_details(avatar_div)
-
     # Extract service listing details
     service_listing_div = li.find("div", class_="serviceListing__details")
     service_title = extract_service_title(service_listing_div)
@@ -291,8 +294,6 @@ def parse_freelancer_li(li):
         "city": city,
         "state": state,
         "country": country,
-        "earningsalltime": additional_details["earningsalltime"],
-        "profileurl": additional_details["profileurl"],
         "earnings": earnings,
         "feedback": feedback,
         "service_title": service_title,
@@ -302,7 +303,7 @@ def parse_freelancer_li(li):
     }
 
 
-def extract_freelancers(skills):
+def extract_freelancers(skills, page):
     """
     Given a list of skills, builds the URL, fetches the page using Playwright,
     and extracts freelancer details from the rendered HTML.
@@ -315,7 +316,7 @@ def extract_freelancers(skills):
     """
     # Build the URL by concatenating the skills
     skill_path = concatenate_skills(skills)
-    url = f"{BASE_URL}/{skill_path}"
+    url = f"{BASE_URL}/{skill_path}/pg/{page}"
 
     # Fetch the rendered HTML of the page using Playwright
     page_html = fetch_page_html(url)
@@ -338,11 +339,19 @@ def extract_freelancers(skills):
 
 
 def main():
-    # Example list of skills
     skills = ["Logo Design"]
-    freelancers = extract_freelancers(skills)
-    for freelancer in freelancers:
-        print(freelancer)
+    all_freelancers = []  # List to store all freelancers' data
+
+    # Loop through the pages you want to scrape
+    for page in range(1, 3):
+        freelancers = extract_freelancers(skills, page)
+
+        # Append the freelancers' data for the current page to the all_freelancers list
+        all_freelancers.extend(freelancers)
+
+    # Store all freelancers' data in a JSON file
+    with open("freelancers.json", "w") as json_file:
+        json.dump(all_freelancers, json_file, indent=4)
 
 
 if __name__ == "__main__":
