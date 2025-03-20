@@ -1,0 +1,17 @@
+Flask
+Flask-SQLAlchemy
+Flask-Migrate
+Flask-JWT-Extended
+Flask-SocketIO
+Flask-Caching
+psycopg2-binary
+werkzeug
+flask-cors
+flask-oauthlib
+email-validator
+flask-limiter
+email_validator
+MarkupSafe
+alembic
+SQLAlchemy
+apscheduler
