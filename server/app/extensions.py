@@ -6,9 +6,9 @@ from flask_migrate import Migrate
 from flask_socketio import SocketIO
 from flask_sqlalchemy import SQLAlchemy
 
-limiter = Limiter(key_func=get_remote_address)
 db = SQLAlchemy()
 migrate = Migrate()
 jwt = JWTManager()
+limiter = Limiter(key_func=get_remote_address)
 socketio = SocketIO(cors_allowed_origins="*")
 cache = Cache()
