@@ -1,0 +1,248 @@
+.auth-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #f9f9f9, #eaeaea);
+    font-family: "Poppins", sans-serif;
+    padding: 20px;
+  }
+  
+  .auth-container {
+    width: 100%;
+    max-width: 450px;
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    padding: 40px 30px;
+    text-align: center;
+    transition:
+      transform 0.3s ease,
+      box-shadow 0.3s ease;
+  }
+  
+  .auth-container:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+  }
+  
+  .auth-header {
+    font-family: "Cinzel", serif;
+    font-size: 36px;
+    color: #333;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  
+  .auth-subtitle {
+    font-size: 16px;
+    color: #555;
+    margin-bottom: 30px;
+  }
+  
+  .auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .auth-input {
+    padding: 12px 15px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    outline: none;
+    transition:
+      border-color 0.3s ease,
+      box-shadow 0.3s ease;
+  }
+  
+  .auth-input:focus {
+    border-color: #333;
+    box-shadow: 0 0 5px rgba(51, 51, 51, 0.5);
+  }
+  
+  .auth-button {
+    width: 100%;
+    padding: 14px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #fff;
+    background: linear-gradient(135deg, #000, #555);
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition:
+      background 0.3s ease,
+      transform 0.2s ease;
+  }
+  
+  .auth-button:hover {
+    background: linear-gradient(135deg, #333, #777);
+    transform: scale(1.05);
+  }
+  
+  .auth-footer {
+    font-size: 14px;
+    color: #777;
+    margin-top: 20px;
+    cursor: pointer;
+  }
+  .redirection-link {
+    text-decoration: underline;
+    color: #007bff; /* Blue color for the link */
+    cursor: pointer; /* Pointer cursor only for the link */
+    transition: color 0.3s ease; /* Smooth hover effect */
+  }
+  
+  .redirection-link:hover {
+    color: #0056b3; /* Slightly darker blue on hover */
+    text-decoration: none;
+  }
+  
+  .auth-footer p {
+    cursor: default; /* Default cursor for the rest of the text */
+  }
+  
+  .auth-footer a {
+    color: #333;
+    font-weight: bold;
+    /* text-decoration: none; */
+    text-decoration: underline;
+    transition: color 0.3s ease;
+  }
+  
+  .auth-footer a:hover {
+    color: #555;
+    cursor: pointer; /* Pointer cursor*/
+  }
+  
+  /* Add subtle fade-in animation */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: scale(0.9);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+  
+  .auth-container {
+    animation: fadeIn 0.5s ease-in-out;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .auth-header {
+      font-size: 28px;
+    }
+  
+    .auth-input {
+      font-size: 14px;
+    }
+  
+    .auth-button {
+      font-size: 14px;
+      padding: 12px 16px;
+    }
+  }
+  
+  /* Password Field Container */
+  .password-field {
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  /* Input Field */
+  .auth-input {
+    flex: 1;
+    background-color: #f9f9f9; /* Keep the previous color scheme */
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 10px 15px;
+    font-size: 16px;
+    outline: none;
+    transition: border-color 0.3s ease;
+  }
+  
+  .auth-input:focus {
+    border-color: #000; /* Highlight border on focus */
+  }
+  
+  /* Password Field Container */
+  .password-field {
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  /* Password Input */
+  .auth-input {
+    flex: 1;
+    padding-right: 80px; /* Space for the toggle button inside the field */
+  }
+  
+  /* Password Toggle Button */
+  .password-toggle {
+    position: absolute;
+    right: 15px;
+    background: none;
+    border: none;
+    font-weight: bold;
+    font-size: 14px;
+    color: #555;
+    cursor: pointer;
+    transition:
+      color 0.3s ease,
+      transform 0.2s ease;
+  }
+  
+  .password-toggle:hover {
+    color: #333;
+    transform: scale(1.05);
+  }
+  
+  .reset-password-link {
+    background: none;
+    border: none;
+    text-decoration: underline;
+    color: #333333; /* Primary blue */
+    font-size: 0.9rem;
+    cursor: pointer;
+    margin-top: 10px;
+    padding: 5px;
+    transition: color 0.3s ease; /* Smooth hover effect */
+  }
+  
+  .reset-password-link:hover {
+    color: #333333; /* Darker blue on hover */
+    text-decoration: none; /* Optional: Remove underline on hover */
+  }
+  
+  .spinner {
+    border: 2px solid #f3f3f3; /* Light grey */
+    border-top: 2px solid #3498db; /* Blue */
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+    animation: spin 1s linear infinite;
+    display: inline-block;
+    vertical-align: middle;
+  }
+  
+  /* Keyframes for the spinner animation */
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+  

@@ -1,4 +1,26 @@
-:root {
+@import "tailwindcss";
+button:hover{
+  cursor:pointer;
+  transform: scale(1.1);
+}
+/* Hide the scrollbar but allow scrolling */
+html, body {
+  overflow-y: scroll; /* Forces the page to be scrollable even if the scrollbar is hidden */
+  -ms-overflow-style: none; /* Hide scrollbar in IE and Edge */
+  scrollbar-width: none; /* Hide scrollbar in Firefox */
+}
+
+body {
+  overflow: auto; /* Allow scrolling but hide the scrollbar */
+  transition: transform 0.3s ease;
+}
+
+/* Optional: This hides the scrollbar specifically for the body element */
+body::-webkit-scrollbar {
+  display: none; /* Hide scrollbar in Webkit-based browsers like Chrome, Safari */
+}
+
+/* :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
@@ -65,4 +87,4 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
-}
+} */
