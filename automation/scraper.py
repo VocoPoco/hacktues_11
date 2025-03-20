@@ -66,27 +66,103 @@ def get_unordered_list(soup):
     return soup.find("ul", class_="module_list cozy")
 
 
+def extract_avatar_img_url(avatar_div):
+    """
+    Extracts the avatar image URL from the 'avatar' div.
+
+    Args:
+        avatar_div (Tag): The BeautifulSoup Tag object representing the 'avatar' div.
+
+    Returns:
+        str: The URL of the freelancer's avatar image, or an empty string if not found.
+    """
+    avatar_img_tag = avatar_div.find("div", class_="avatar").find("a").find("img")
+    return avatar_img_tag.get("src", "").strip() if avatar_img_tag else ""
+
+
+def extract_screen_name(avatar_info_div):
+    """
+    Extracts the freelancer's screen name from the 'avatarinfo' div.
+
+    Args:
+        avatar_info_div (Tag): The BeautifulSoup Tag object representing the 'avatarinfo' div.
+
+    Returns:
+        str: The screen name of the freelancer, or an empty string if not found.
+    """
+    screen_name_tag = (
+        avatar_info_div.find("h3", class_="freelancerAvatar__screenName").find("a")
+        if avatar_info_div
+        else None
+    )
+    return screen_name_tag.get_text(strip=True) if screen_name_tag else ""
+
+
+def extract_location(meta_p_tags):
+    """
+    Extracts city, state, and country from the first p tag with the class 'freelancerAvatar__meta'.
+
+    Args:
+        meta_p_tags (list): A list of <p> elements with the class 'freelancerAvatar__meta'.
+
+    Returns:
+        tuple: A tuple containing city, state, and country, or empty strings if not found.
+    """
+    city, state, country = "", "", ""
+    if len(meta_p_tags) > 0:
+        city_state_country_span = meta_p_tags[0].find("span", title=True)
+        if city_state_country_span:
+            location = city_state_country_span.get("title", "").strip()
+            city, state, country = (
+                location.split(", ") if len(location.split(", ")) == 3 else ("", "", "")
+            )
+    return city, state, country
+
+
+def extract_earnings_and_feedback(meta_p_tags):
+    """
+    Extracts earnings and feedback from the second p tag with the class 'freelancerAvatar__meta'.
+
+    Args:
+        meta_p_tags (list): A list of <p> elements with the class 'freelancerAvatar__meta'.
+
+    Returns:
+        tuple: A tuple containing earnings and feedback, or empty strings if not found.
+    """
+    earnings, feedback = "", ""
+    if len(meta_p_tags) > 1:
+        earnings_elem = meta_p_tags[1].find("span", class_="earnings__amount")
+        earnings = earnings_elem.get_text(strip=True) if earnings_elem else ""
+
+        feedback_elem = meta_p_tags[1].find("span", class_="freelancerAvatar__feedback")
+        feedback = feedback_elem.get_text(strip=True) if feedback_elem else ""
+    return earnings, feedback
+
+
+def extract_additional_details(avatar_div):
+    """
+    Extracts additional details from the avatar div, such as earnings all-time and profile URL.
+
+    Args:
+        avatar_div (Tag): The BeautifulSoup Tag object representing the 'avatar' div.
+
+    Returns:
+        dict: A dictionary with 'earningsalltime' and 'profileurl'.
+    """
+    earningsalltime_elem = avatar_div.find("span", class_="earningsalltime")
+    earningsalltime = (
+        earningsalltime_elem.get_text(strip=True) if earningsalltime_elem else ""
+    )
+
+    profileurl_elem = avatar_div.find("a", class_="profileurl")
+    profileurl = profileurl_elem.get("href", "").strip() if profileurl_elem else ""
+
+    return {"earningsalltime": earningsalltime, "profileurl": profileurl}
+
+
 def parse_freelancer_li(li):
     """
     Parses a freelancer <li> element to extract freelancer details.
-
-    The function traverses the following structure:
-
-      li
-       └── div.record.record--avatarCheck.findGuruRecord
-            └── div.record__details
-                 └── div.record__header
-                      └── div.record__header__identity
-       └── div.module_avatar.freelancerAvatar
-
-    It then extracts:
-      - city
-      - province
-      - country
-      - earningsalltime
-      - profileurl
-      - screename
-      - earnings
 
     Args:
         li (Tag): A BeautifulSoup Tag object representing an <li> element.
@@ -94,67 +170,39 @@ def parse_freelancer_li(li):
     Returns:
         dict: A dictionary with the extracted freelancer details, or None if parsing fails.
     """
-    record_div = li.find("div", class_="record record--avatarCheck findGuruRecord")
-    if not record_div:
-        print("record_div not found")
-        return None
-
-    details_div = record_div.find("div", class_="record__details")
-    if not details_div:
-        return None
-
-    header_div = details_div.find("div", class_="record__header")
-    if not header_div:
-        return None
-
-    identity_div = header_div.find("div", class_="record__header__identity")
-    if not identity_div:
-        return None
-
+    # Find the div with class 'module_avatar freelancerAvatar'
     avatar_div = li.find("div", class_="module_avatar freelancerAvatar")
     if not avatar_div:
+        print("avatar_div not found")
         return None
 
-    avatar_img_tag = avatar_div.find("div", class_="avatar").find("a").find("img")
-    avatar_img_url = avatar_img_tag.get("src", "").strip() if avatar_img_tag else ""
+    # Extract avatar image URL
+    avatar_img_url = extract_avatar_img_url(avatar_div)
 
+    # Extract freelancer's screen name
     avatar_info_div = avatar_div.find("div", class_="avatarinfo")
-    screen_name_tag = (
-        avatar_info_div.find("h3", class_="freelancerAvatar__screenName").find("a")
-        if avatar_info_div
-        else None
-    )
+    screen_name = extract_screen_name(avatar_info_div)
 
-    screen_name = screen_name_tag.get_text(strip=True) if screen_name_tag else ""
+    # Extract city, state, and country
+    meta_p_tags = avatar_info_div.find_all("p", class_="freelancerAvatar__meta")
+    city, state, country = extract_location(meta_p_tags)
 
-    # city = avatar_div.get("data-city", "").strip()
-    # province = avatar_div.get("data-province", "").strip()
-    # country = avatar_div.get("data-country", "").strip()
+    # Extract earnings and feedback
+    earnings, feedback = extract_earnings_and_feedback(meta_p_tags)
 
-    # earningsalltime_elem = avatar_div.find("span", class_="earningsalltime")
-    # earningsalltime = (
-    #     earningsalltime_elem.get_text(strip=True) if earningsalltime_elem else ""
-    # )
-
-    # profileurl_elem = avatar_div.find("a", class_="profileurl")
-    # profileurl = profileurl_elem.get("href", "").strip() if profileurl_elem else ""
-
-    # screename_elem = avatar_div.find("span", class_="screename")
-    # screename = screename_elem.get_text(strip=True) if screename_elem else ""
-
-    # earnings_elem = avatar_div.find("span", class_="earnings")
-    # earnings = earnings_elem.get_text(strip=True) if earnings_elem else ""
+    # Extract additional details (earningsalltime and profileurl)
+    additional_details = extract_additional_details(avatar_div)
 
     return {
         "avatar_img_url": avatar_img_url,
         "screen_name": screen_name,
-        # "city": city,
-        # "province": province,
-        # "country": country,
-        # "earningsalltime": earningsalltime,
-        # "profileurl": profileurl,
-        # "screename": screename,
-        # "earnings": earnings,
+        "city": city,
+        "state": state,
+        "country": country,
+        "earningsalltime": additional_details["earningsalltime"],
+        "profileurl": additional_details["profileurl"],
+        "earnings": earnings,
+        "feedback": feedback,
     }
 
 
@@ -195,7 +243,7 @@ def extract_freelancers(skills):
 
 def main():
     # Example list of skills
-    skills = ["Web Development"]
+    skills = ["Logo Design"]
     freelancers = extract_freelancers(skills)
     for freelancer in freelancers:
         print(freelancer)
