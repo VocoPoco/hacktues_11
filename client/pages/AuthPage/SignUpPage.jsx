@@ -1,16 +1,15 @@
-/* eslint-disable react/no-unescaped-entities */
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-// import api from "../services/api";
-// import LoadingPage from "./LoadingPage";
 import { toast } from "react-toastify";
-import "./Auth.css";
+import { useAuth } from "../../contexts/AuthContext";
+import axios from "axios";
 
 const SignUpPage = () => {
   const navigate = useNavigate();
+  const { mutateUser } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
-    name: "",
+    username: "",
     email: "",
     password: "",
     confirmPassword: "",
@@ -23,136 +22,130 @@ const SignUpPage = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const togglePasswordVisibility = () => setShowPassword((prev) => !prev);
-  const toggleConfirmPasswordVisibility = () =>
-    setShowConfirmPassword((prev) => !prev);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // Basic client-side check
     if (formData.password !== formData.confirmPassword) {
-      toast.error("🔑 Password mismatch! Ensure both fields match exactly.", {
-        autoClose: 6000,
-      });
+      toast.error("Passwords do not match!");
       return;
     }
 
     setIsLoading(true);
     try {
-      await api.post("/auth/signup", {
-        name: formData.name,
-        email: formData.email,
-        password: formData.password,
-      });
-
-      // ✅ Store email in localStorage for OTP verification
-      localStorage.setItem("email", formData.email);
-
-      toast.success(
-        "🎉 Signup complete! Check your inbox for a verification email.",
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_URL}/auth/register`,
         {
-          autoClose: 6000,
-        },
+          username: formData.username,
+          email: formData.email,
+          password: formData.password,
+        }
       );
-      toast.info("⚠️ If you don’t see the email, check your spam folder.⚠️", {
-        autoClose: 7000,
-      });
 
-      navigate("/verify-otp");
+      const { access_token } = response.data;
+      localStorage.setItem("authToken", access_token);
+      await mutateUser();
+      navigate("/profile");
+      toast.success("Registration successful!");
     } catch (error) {
-      console.error("Signup failed:", error);
-
-      if (error.response?.status === 400) {
-        toast.error(
-          error.response?.data?.error ||
-            "Bad request. Please check your inputs.",
-          { autoClose: 7000 },
-        );
-      } else {
-        toast.error(
-          error.response?.data?.error ||
-            "❌ Signup failed! Please review your details and try again.",
-          { autoClose: 7000 },
-        );
-      }
+      toast.error(error.response?.data?.message || "Registration failed");
     } finally {
       setIsLoading(false);
     }
   };
 
-  return isLoading ? (
-    <LoadingPage />
-  ) : (
-    <div className="auth-page">
-      <div className="auth-container">
-        <h1 className="auth-header">Create an Account</h1>
-        <p className="auth-subtitle">Join us for seamless shopping.</p>
-        <form className="auth-form" onSubmit={handleSubmit}>
-          <input
-            type="text"
-            name="name"
-            placeholder="Full Name"
-            className="auth-input"
-            value={formData.name}
-            onChange={handleInputChange}
-            required
-          />
-          <input
-            type="email"
-            name="email"
-            placeholder="Email Address"
-            className="auth-input"
-            value={formData.email}
-            onChange={handleInputChange}
-            required
-          />
-          <div className="password-field">
+  return (
+    <div className="min-h-screen flex justify-center items-center bg-[#fffbf9] font-poppins p-5">
+      <div className="w-full max-w-[450px] bg-white rounded-2xl shadow-lg p-8 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
+        <h1 className="text-3xl font-cinzel text-[#232323] mb-4 uppercase tracking-wide">
+          Create Account
+        </h1>
+        <p className="text-[#616062] text-sm mb-8">Join us for seamless shopping.</p>
+
+        <form className="space-y-6" onSubmit={handleSubmit}>
+          <div className="space-y-4">
             <input
-              type={showPassword ? "text" : "password"}
-              name="password"
-              placeholder="Password"
-              className="auth-input"
-              value={formData.password}
+              type="text"
+              name="username"
+              placeholder="Username"
+              className="w-full px-4 py-3 border border-[#616062]/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#8c281f] focus:border-transparent placeholder-[#616062]/50"
+              value={formData.username}
               onChange={handleInputChange}
               required
             />
-            <button
-              type="button"
-              className="password-toggle"
-              onClick={togglePasswordVisibility}
-            >
-              {showPassword ? "Hide" : "Show"}
-            </button>
-          </div>
-          <div className="password-field">
+
             <input
-              type={showConfirmPassword ? "text" : "password"}
-              name="confirmPassword"
-              placeholder="Confirm Password"
-              className="auth-input"
-              value={formData.confirmPassword}
+              type="email"
+              name="email"
+              placeholder="Email Address"
+              className="w-full px-4 py-3 border border-[#616062]/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#8c281f] focus:border-transparent placeholder-[#616062]/50"
+              value={formData.email}
               onChange={handleInputChange}
               required
             />
-            <button
-              type="button"
-              className="password-toggle"
-              onClick={toggleConfirmPasswordVisibility}
-            >
-              {showConfirmPassword ? "Hide" : "Show"}
-            </button>
+
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                name="password"
+                placeholder="Password"
+                className="w-full px-4 py-3 border border-[#616062]/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#8c281f] focus:border-transparent placeholder-[#616062]/50 pr-12"
+                value={formData.password}
+                onChange={handleInputChange}
+                required
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-3 text-[#616062] hover:text-[#8c281f] font-medium text-sm transition-colors"
+              >
+                {showPassword ? "Hide" : "Show"}
+              </button>
+            </div>
+
+            <div className="relative">
+              <input
+                type={showConfirmPassword ? "text" : "password"}
+                name="confirmPassword"
+                placeholder="Confirm Password"
+                className="w-full px-4 py-3 border border-[#616062]/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#8c281f] focus:border-transparent placeholder-[#616062]/50 pr-12"
+                value={formData.confirmPassword}
+                onChange={handleInputChange}
+                required
+              />
+              <button
+                type="button"
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                className="absolute right-3 top-3 text-[#616062] hover:text-[#8c281f] font-medium text-sm transition-colors"
+              >
+                {showConfirmPassword ? "Hide" : "Show"}
+              </button>
+            </div>
           </div>
-          <button type="submit" className="auth-button" disabled={isLoading}>
-            {isLoading ? "Signing Up..." : "Sign Up"}
+
+          <button
+            type="submit"
+            disabled={isLoading}
+            className="w-full py-4 bg-[#8c281f] text-white font-semibold rounded-xl hover:bg-[#732018] transition-all duration-300"
+          >
+            {isLoading ? (
+              <div className="inline-flex items-center">
+                <div className="w-4 h-4 border-2 border-t-transparent border-white rounded-full animate-spin mr-2"></div>
+                Registering...
+              </div>
+            ) : (
+              "Sign Up"
+            )}
           </button>
         </form>
-        <div className="auth-footer">
+
+        <div className="mt-6 text-sm text-[#616062]">
           <p>
             Already have an account?{" "}
-            <a onClick={() => navigate("/login")} className="redirection-link">
+            <button
+              onClick={() => navigate("/login")}
+              className="text-[#232323] font-semibold underline hover:text-[#8c281f] transition-colors"
+            >
               Log In
-            </a>
+            </button>
           </p>
         </div>
       </div>

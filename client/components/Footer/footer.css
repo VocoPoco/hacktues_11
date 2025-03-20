@@ -1,4 +1,6 @@
 /* Footer Styling */
+@import "tailwindcss";
+
 .footer {
     background: linear-gradient(45deg, #1e1e2e, #292942);
     color: #e0e0e0;
