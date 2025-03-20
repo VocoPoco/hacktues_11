@@ -160,6 +160,89 @@ def extract_additional_details(avatar_div):
     return {"earningsalltime": earningsalltime, "profileurl": profileurl}
 
 
+def extract_service_title(service_listing_div):
+    """
+    Extracts the service title from the 'serviceListing__details' div.
+
+    Args:
+        service_listing_div (Tag): The BeautifulSoup Tag object representing the 'serviceListing__details' div.
+
+    Returns:
+        str: The service title, or an empty string if not found.
+    """
+    service_title_tag = service_listing_div.find(
+        "h2", class_="serviceListing__title serviceListing__title--dark"
+    )
+    return service_title_tag.get_text(strip=True) if service_title_tag else ""
+
+
+def extract_service_rates(service_listing_div):
+    """
+    Extracts the service rates from the 'serviceListing__rates' p tag.
+
+    Args:
+        service_listing_div (Tag): The BeautifulSoup Tag object representing the 'serviceListing__rates' p tag.
+
+    Returns:
+        str: The service rates, or an empty string if not found.
+    """
+    service_rates_tag = service_listing_div.find("p", class_="serviceListing__rates")
+    return service_rates_tag.get_text(strip=True) if service_rates_tag else ""
+
+
+def extract_service_description(service_listing_div):
+    """
+    Extracts the service description from the 'serviceListing__desc' p tag.
+
+    Args:
+        service_listing_div (Tag): The BeautifulSoup Tag object representing the 'serviceListing__desc' p tag.
+
+    Returns:
+        str: The service description, or an empty string if not found.
+    """
+    service_desc_tag = service_listing_div.find("p", class_="serviceListing__desc")
+    return service_desc_tag.get_text(strip=True) if service_desc_tag else ""
+
+
+def extract_skills_from_service_listing(service_listing_div):
+    """
+    Extracts all the skills from the 'skillsList__skill greyBackground' spans inside the 'serviceListing__skills' div.
+    Includes the first skill and all subsequent skills from the 'a' tags in each span.
+
+    Args:
+        service_listing_div (Tag): The BeautifulSoup Tag object representing the 'skillsList serviceListing__skills' div.
+
+    Returns:
+        list: A list of skill names (strings).
+    """
+    skills_list = []
+
+    # Find all span elements with the class 'skillsList__skill greyBackground'
+    skills_span_tags = service_listing_div.find_all(
+        "span", class_="skillsList__skill greyBackground"
+    )
+
+    # Extract the first skill (if available)
+    if skills_span_tags:
+        first_skill_span = skills_span_tags[0]
+        skill_links = first_skill_span.find_all("a")
+        skills_list.extend([link.get_text(strip=True) for link in skill_links])
+
+    # Extract all skills from the remaining span elements (if any)
+    for skill_span in skills_span_tags[1:]:  # Start from the second skill
+        skill_links = skill_span.find_all("a")
+        skills_list.extend([link.get_text(strip=True) for link in skill_links])
+
+    all_a_tags = service_listing_div.find_all("a")
+    for a_tag in all_a_tags:
+        skills_list.append(a_tag.get_text(strip=True))
+
+    # Remove duplicates by converting to a set and then back to a list
+    skills_list = list(set(skills_list))
+
+    return skills_list
+
+
 def parse_freelancer_li(li):
     """
     Parses a freelancer <li> element to extract freelancer details.
@@ -193,6 +276,15 @@ def parse_freelancer_li(li):
     # Extract additional details (earningsalltime and profileurl)
     additional_details = extract_additional_details(avatar_div)
 
+    # Extract service listing details
+    service_listing_div = li.find("div", class_="serviceListing__details")
+    service_title = extract_service_title(service_listing_div)
+    service_rates = extract_service_rates(service_listing_div)
+    service_desc = extract_service_description(service_listing_div)
+
+    # Extract skills from the second skill span in the skills list
+    skills_list = extract_skills_from_service_listing(service_listing_div)
+
     return {
         "avatar_img_url": avatar_img_url,
         "screen_name": screen_name,
@@ -203,6 +295,10 @@ def parse_freelancer_li(li):
         "profileurl": additional_details["profileurl"],
         "earnings": earnings,
         "feedback": feedback,
+        "service_title": service_title,
+        "service_rates": service_rates,
+        "service_desc": service_desc,
+        "skills": skills_list,
     }
 
 
