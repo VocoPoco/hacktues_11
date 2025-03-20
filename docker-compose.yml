@@ -1,0 +1,56 @@
+version: "3.8"
+
+services:
+  mysql-db:
+    image: mysql:8.2
+    hostname: mysql
+    volumes:
+      - db-data:/var/lib/mysql
+    ports:
+      - 3306:3306
+    expose:
+      - 3306
+    restart: always
+    environment:
+      MYSQL_DATABASE: freelance-finder-assistant-db
+      MYSQL_ROOT_PASSWORD: root
+    networks:
+      - localnet
+
+  server:
+    depends_on:
+      - mysql-db
+    container_name: server
+    restart: always
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    environment:
+      - DB_HOST=mysql-db:3306
+      - DB_USER=root
+      - DB_PASSWORD=root
+      - DB_DATABASE=freelance-finder-assistant-db
+    ports:
+      - "5000:5000" 
+    networks:
+      - localnet
+
+  client:
+    depends_on:
+      - server
+    container_name: client
+    restart: always
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    ports:
+      - "80:5000"
+    networks:
+      - localnet
+
+volumes:
+  db-data:
+
+networks:
+  localnet:
+    driver: bridge
