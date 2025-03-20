@@ -59,7 +59,7 @@ const App = () => {
         draggable
         transition={Slide}
         style={{
-          top: "120px",
+          top: "60px",
           zIndex: 9999,
         }}
         toastStyle={{
@@ -75,7 +75,7 @@ const App = () => {
       {isValidRoute}  {/* This will ensure the page scrolls to top */}
       <motion.div
         key={location.pathname}
-        initial={{ opacity: 0, y: 20 }}
+        initial={{ opacity: 0, y: 0 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, ease: "easeInOut" }}
       >
@@ -86,9 +86,9 @@ const App = () => {
               path={path}
               element={
                 <main>
-                  <Navbar />
+                  {/* <Navbar /> */}
                   <Component />
-                  <Footer />
+                  {/* <Footer /> */}
                 </main>
               }
             />

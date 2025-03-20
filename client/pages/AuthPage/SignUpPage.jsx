@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useAuth } from "../../contexts/AuthContext";
 import axios from "axios";
+import GoBackButton from "../../components/GoBackButton/goBackButton";
 
 const SignUpPage = () => {
   const navigate = useNavigate();
@@ -53,7 +54,8 @@ const SignUpPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex justify-center items-center bg-[#fffbf9] font-poppins p-5">
+    <div className="min-h-screen flex justify-center items-center bg-[#fffbf9] font-poppins p-5 relative">
+      <GoBackButton />
       <div className="w-full max-w-[450px] bg-white rounded-2xl shadow-lg p-8 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
         <h1 className="text-3xl font-cinzel text-[#232323] mb-4 uppercase tracking-wide">
           Create Account

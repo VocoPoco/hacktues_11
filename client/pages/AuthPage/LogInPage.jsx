@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
 import { useAuth } from "../../contexts/AuthContext";
+import GoBackButton from "../../components/GoBackButton/goBackButton";
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -26,14 +26,14 @@ const LoginPage = () => {
       await login(formData);
     } catch (error) {
       console.error("Login failed:", error);
-      toast.error(error.response?.data?.message || "Login failed. Please try again.");
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen flex justify-center items-center bg-[#fffbf9] font-poppins p-5">
+    <div className="min-h-screen flex justify-center items-center bg-[#fffbf9] font-poppins p-5 relative">
+      <GoBackButton />
       <div className="w-full max-w-[450px] bg-white rounded-2xl shadow-lg p-8 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
         <h1 className="text-3xl font-cinzel text-[#232323] mb-4 uppercase tracking-wide">LOG IN</h1>
         <p className="text-[#616062] text-sm mb-8">Welcome back! Please log in.</p>
