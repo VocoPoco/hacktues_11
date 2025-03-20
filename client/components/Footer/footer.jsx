@@ -7,7 +7,7 @@ const Footer = () => {
   return (
     <footer className="bg-[#232323] text-white py-8">
       <div className="container mx-auto px-6 text-center text-sm text-[#616062]">
-        © {new Date().getFullYear()} ProjectFlow. All rights reserved.
+        © {new Date().getFullYear()} FREELENS. All rights reserved.
       </div>
     </footer>
   );
