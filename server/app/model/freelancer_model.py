@@ -1,8 +1,9 @@
 from app.extensions import db
 from sqlalchemy.dialects.postgresql import JSON, ARRAY
 
+
 class Freelancer(db.Model):
-    __tablename__ = 'freelancers'
+    __tablename__ = "freelancers"
 
     id = db.Column(db.Integer, primary_key=True)
     avatar_img_url = db.Column(db.String(500), nullable=True)
@@ -18,9 +19,9 @@ class Freelancer(db.Model):
     skills = db.Column(ARRAY(db.String(50)))
     total_score = db.Column(db.Numeric(10, 1))
     profile_url = db.Column(db.String(500))
-    subtask_id = db.Column(db.Integer, db.ForeignKey('subtask.id'), nullable=False)
+    subtask_id = db.Column(db.Integer, db.ForeignKey("subtasks.id"), nullable=False)
 
-    subtask = db.relationship('Subtask', backref='freelancer')
+    subtask = db.relationship("Subtask", backref="freelancers")
 
     def __repr__(self):
-        return f'<Freelancer {self.screen_name}>'
+        return f"<Freelancer {self.screen_name}>"

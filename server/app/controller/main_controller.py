@@ -14,7 +14,7 @@ main_service = MainService(FreelancerRepository(), ProjectRepository(), SubtaskR
 
 @main_bp.route('/create-project', methods=['POST'])
 def create_project():
-    project, budget, time_period, description = extract_project_data(request.get_json())
+    project, budget, time_period, description = extract_request_data(request.get_json())
 
     dataset = [
         {
@@ -27,6 +27,8 @@ def create_project():
     # somewhere here the big task is stored in the database
 
     result = main_service.send_prompt(dataset)
+
+    print(result)
 
     for entry in result:
 
@@ -78,7 +80,7 @@ def list_projects_by_user(user_id):
 
 
 
-def extract_project_data(request_data):
+def extract_request_data(request_data):
     project = request_data.get('project', '').strip()
     description = request_data.get('description', '').strip()
 
