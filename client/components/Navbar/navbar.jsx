@@ -26,12 +26,13 @@ const Navbar = ({ scrollProgress }) => {
     boxShadow: isVisible ? "0 4px 20px rgba(0,0,0,0.1)" : "none",
     transition: "all 0.3s ease-in-out",
     borderBottom: isVisible ? "1px solid rgba(35, 35, 35, 0.15)" : "none",
+    width: "100%", // Ensures full width
   };
 
   return (
-    <nav className={`fixed w-full z-50 transition-all duration-300 ${isVisible ? "opacity-100" : "opacity-0 pointer-events-none"}`} style={navbarStyle}>
-      <div className="container mx-auto px-6 py-4">
-        <div className="flex justify-between items-center">
+    <nav className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${isVisible ? "opacity-100" : "opacity-0 pointer-events-none"}`} style={navbarStyle}>
+      <div className="w-full max-w-[100%] px-6 py-4 bg-white">
+        <div className="flex justify-between items-center w-full">
           
           {/* Logo */}
           <span

@@ -11,7 +11,7 @@ const ProjectsList = () => {
 
   return (
     <div className="pt-16 min-h-screen bg-[#fffbf9]">
-      <Navbar />
+      {/* <Navbar /> */}
       
       <div className="container mx-auto p-6">
         <h1 className="text-3xl font-bold mb-8 text-[#232323]">My Projects</h1>

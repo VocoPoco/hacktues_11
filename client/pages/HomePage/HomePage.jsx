@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Navbar from "../../components/Navbar/navbar.jsx";
 import Footer from "../../components/Footer/footer";
 
 const HomePage = () => {
   const [scrollProgress, setScrollProgress] = useState(0);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => {
       const scrollY = window.scrollY || document.documentElement.scrollTop;
-      setScrollProgress(Math.min(scrollY / 300, 1));
+      setScrollProgress(Math.min(scrollY / 300, 1)); // Normalize to 0 - 1 range
     };
 
     window.addEventListener("scroll", handleScroll);
@@ -28,7 +30,7 @@ const HomePage = () => {
           style={{
             opacity: 1 - scrollProgress,
             filter: `blur(${scrollProgress * 8}px)`,
-            transition: 'all 0.3s ease-out'
+            transition: "all 0.3s ease-out",
           }}
         >
           <source src="/BackgroundVideo.mp4" type="video/mp4" />
@@ -36,7 +38,10 @@ const HomePage = () => {
         <div className="absolute inset-0 bg-black/30"></div>
       </div>
 
-      <Navbar scrollProgress={scrollProgress} />
+      {/* Navbar with dynamic opacity */}
+      <div style={{ opacity: scrollProgress, transition: "opacity 0.3s ease-in-out" }}>
+        <Navbar />
+      </div>
 
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center justify-center z-10 pt-20">
@@ -49,7 +54,10 @@ const HomePage = () => {
             automate task management, and connect you with top-tier freelancers in seconds.
           </p>
           <div className="flex flex-col md:flex-row gap-4 justify-center">
-            <button className="bg-[#8c281f] text-white px-8 py-4 rounded-lg text-lg hover:opacity-90 transition">
+            <button 
+              onClick={() => navigate("/create-project")}
+              className="bg-[#8c281f] text-white px-8 py-4 rounded-lg text-lg hover:opacity-90 transition"
+            >
               Try It Free
             </button>
             <button className="border-2 border-white text-white px-8 py-4 rounded-lg text-lg hover:bg-white/10 transition">
@@ -140,7 +148,10 @@ const HomePage = () => {
             <p className="text-xl mb-8 max-w-xl mx-auto text-white/90">
               Transform how you collaborate, execute, and succeed. Try it today—zero hassle, limitless potential.
             </p>
-            <button className="bg-white text-[#8c281f] px-8 py-4 rounded-lg text-lg font-bold hover:opacity-90 transition">
+            <button 
+              onClick={() => navigate("/create-project")} 
+              className="bg-white text-[#8c281f] px-8 py-4 rounded-lg text-lg font-bold hover:opacity-90 transition"
+            >
               Start Free Trial
             </button>
           </div>

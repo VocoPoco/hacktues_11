@@ -9,27 +9,20 @@ const CreateProject = () => {
         <h1 className="text-3xl font-bold mb-8 text-[#232323]">Create your project</h1>
         
         <form className="space-y-6">
-          <div>
-            <label className="block text-[#616062] mb-2">How many topics do you prefer?</label>
-            <input
-              type="number"
-              className="w-full p-3 border border-[#616062]/30 rounded-lg focus:ring-2 focus:ring-[#8c281f]"
-            />
-          </div>
 
           <div>
-            <label className="block text-[#616062] mb-2">Email</label>
+            <label className="block font-bold text-[#616062] mb-2">Project Name</label>
             <input
               type="email"
-              defaultValue="Jan@framer.com"
+              placeholder="Awesome project name"
               className="w-full p-3 border border-[#616062]/30 rounded-lg focus:ring-2 focus:ring-[#8c281f]"
             />
           </div>
 
           <div>
-            <label className="block text-[#616062] mb-2">Your message...</label>
+            <label className="block font-bold text-[#616062] mb-2">Description</label>
             <textarea
-              rows="4"
+              rows="7" placeholder="Describe your idea"
               className="w-full p-3 border border-[#616062]/30 rounded-lg focus:ring-2 focus:ring-[#8c281f]"
             />
           </div>
