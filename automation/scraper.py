@@ -2,6 +2,7 @@ import re
 from bs4 import BeautifulSoup
 from constants import BASE_URL
 import json
+from utils.file_manager import save_json
 
 
 def concatenate_skills(skills):
@@ -303,7 +304,7 @@ def parse_freelancer_li(li):
     }
 
 
-def extract_freelancers(skills, page):
+def extract_freelancer_data(skills, page):
     """
     Given a list of skills, builds the URL, fetches the page using Playwright,
     and extracts freelancer details from the rendered HTML.
@@ -338,21 +339,12 @@ def extract_freelancers(skills, page):
     return freelancers
 
 
-def main():
-    skills = ["Logo Design"]
-    all_freelancers = []  # List to store all freelancers' data
+def extract_freelancers(skills):
+    all_freelancers = []
 
-    # Loop through the pages you want to scrape
     for page in range(1, 3):
-        freelancers = extract_freelancers(skills, page)
+        freelancers = extract_freelancer_data(skills, page)
 
-        # Append the freelancers' data for the current page to the all_freelancers list
         all_freelancers.extend(freelancers)
 
-    # Store all freelancers' data in a JSON file
-    with open("freelancers.json", "w") as json_file:
-        json.dump(all_freelancers, json_file, indent=4)
-
-
-if __name__ == "__main__":
-    main()
+    save_json(all_freelancers)
