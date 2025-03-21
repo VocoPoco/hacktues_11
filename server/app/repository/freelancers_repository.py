@@ -1,34 +1,49 @@
-from models.freelancer_model import Freelancer
+from app.model.freelanser_model import Freelancer
+from app.extensions import db
+from sqlalchemy import exists, and_, ARRAY, String, cast
 
 class FreelancerRepository:
-    def __init__(self, db_session):
-        self.db_session = db_session
 
-    def create(self, user_id, **kwargs):
-        new_freelancer = Freelancer(user_id=user_id, **kwargs)
-        self.db_session.add(new_freelancer)
-        self.db_session.commit()
-        return new_freelancer
+    def find_by_id(self, freelancer_id):
+        return Freelancer.query.get(freelancer_id)
 
-    def get_by_user_id(self, user_id):
-        return self.db_session.query(Freelancer).filter_by(user_id=user_id).first()
+    def find_all_by_subtask_id(self, subtask_id):
+        return Freelancer.query.filter_by(subtask_id=subtask_id).all()
+
+    def create_freelancer(self, user_id, **kwargs):
+        return Freelancer(user_id=user_id, **kwargs)
+
+    def save(self, freelancer):
+        db.session.add(freelancer)
+        db.session.commit()
+        return freelancer
 
     def update(self, freelancer, **kwargs):
         for key, value in kwargs.items():
             setattr(freelancer, key, value)
-        self.db_session.commit()
+        db.session.commit()
         return freelancer
 
     def delete(self, freelancer):
-        self.db_session.delete(freelancer)
-        self.db_session.commit()
+        db.session.delete(freelancer)
+        db.session.commit()
 
-    def search_by_skills(self, skills):
-        return self.db_session.query(Freelancer).filter(
-            Freelancer.skills.any(db.cast(skills, ARRAY(db.String)))
+    def freelancer_exists(self, user_id, email):
+        return db.session.query(
+            exists().where(
+                and_(
+                    Freelancer.user_id == user_id,
+                    Freelancer.email == email
+                )
+            )
+        ).scalar()
+
+    def search_all_by_skills(self, skills):
+        return Freelancer.query.filter(
+            Freelancer.skills.any(cast(skills, ARRAY(String)))
         ).all()
 
-    def get_top_rated(self, limit=10):
-        return self.db_session.query(Freelancer).order_by(
+    def get_all_top_rated(self, limit=10):
+        return Freelancer.query.order_by(
             Freelancer.total_score.desc()
         ).limit(limit).all()

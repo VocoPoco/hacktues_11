@@ -1,33 +1,44 @@
-from models.project_model import Project
+from app.model.project_model import Project
+from app.extensions import db
+from sqlalchemy import exists, and_
 
 class ProjectRepository:
-    def __init__(self, db_session):
-        self.db_session = db_session
+    def find_by_id(self, project_id):
+        return Project.query.get(project_id)
 
-    def create(self, name, description, budget, period, user_id):
-        new_project = Project(
+    def find_all_by_user_id(self, user_id):
+        return Project.query.filter_by(user_id=user_id).all()
+
+    def create_project(self, name, description, budget, period, user_id):
+        return Project(
             name=name,
             description=description,
             budget=budget,
             period=period,
             user_id=user_id
         )
-        self.db_session.add(new_project)
-        self.db_session.commit()
-        return new_project
 
-    def get_by_id(self, project_id):
-        return self.db_session.query(Project).get(project_id)
-
-    def get_all_by_user(self, user_id):
-        return self.db_session.query(Project).filter_by(user_id=user_id).all()
+    def save(self, project):
+        db.session.add(project)
+        db.session.commit()
+        return project
 
     def update(self, project, **kwargs):
         for key, value in kwargs.items():
             setattr(project, key, value)
-        self.db_session.commit()
+        db.session.commit()
         return project
 
     def delete(self, project):
-        self.db_session.delete(project)
-        self.db_session.commit()
+        db.session.delete(project)
+        db.session.commit()
+
+    def project_exists(self, user_id, name):
+        return db.session.query(
+            exists().where(
+                and_(
+                    Project.user_id == user_id,
+                    Project.name == name
+                )
+            )
+        ).scalar()
