@@ -1,6 +1,6 @@
 from app.config import Config
 from app.controller import register_blueprints
-from app.extensions import db, migrate, jwt, socketio, limiter
+from app.extensions import db, migrate, jwt, socketio, limiter, cors, cache
 from flask import Flask
 
 
@@ -9,6 +9,17 @@ def create_app(config_class=Config):
     app.json.sort_keys = False
     app.config.from_object(config_class)
 
+    cors.init_app(app, resources={
+        r"/auth/*": {
+            "origins": app.config['CORS_ORIGINS'],
+            "methods": app.config['CORS_METHODS'],
+            "allow_headers": app.config['CORS_ALLOW_HEADERS'],
+            "supports_credentials": app.config['CORS_SUPPORTS_CREDENTIALS']
+        },
+    },
+    )
+
+    cache.init_app(app)
     db.init_app(app)
     migrate.init_app(app, db)
     limiter.init_app(app)

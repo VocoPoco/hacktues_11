@@ -2,16 +2,19 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
 import GoBackButton from "../../components/GoBackButton/goBackButton";
+import {toast} from "react-toastify";
+import axios from "axios";
+import {saveTokens} from "../../utils/TokenUtils.js";
 
 const LoginPage = () => {
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { mutateUser } = useAuth();
+  const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
   const [showPassword, setShowPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -20,14 +23,27 @@ const LoginPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     setIsLoading(true);
-    
+
     try {
-      await login(formData);
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_URL}/auth/login`,
+          {
+            email: formData.email,
+            password: formData.password,
+          }
+      );
+
+      const { access_token, refresh_token } = response.data
+      saveTokens(access_token, refresh_token);
+      await mutateUser();
+      navigate("/");
+      toast.success("🎉 Welcome back! You're now logged in");
     } catch (error) {
-      console.error("Login failed:", error);
+      toast.error(error.response?.data?.message || "Login failed");
     } finally {
-      setIsLoading(false);
+        setIsLoading(false);
     }
   };
 
