@@ -44,12 +44,15 @@ const SignUpPage = () => {
         }
       );
 
-      const { access_token, refresh_token } = response.data;
+      if(response.status == 201) {
 
-      saveTokens(access_token, refresh_token);
+        const {access_token, refresh_token} = response.data;
 
-      localStorage.setItem("username", formData.username)
-      localStorage.setItem("email", formData.email)
+        saveTokens(access_token, refresh_token);
+
+        localStorage.setItem("username", formData.username);
+        localStorage.setItem("email", formData.email);
+      }
 
       setUser({
         username: formData.username,
