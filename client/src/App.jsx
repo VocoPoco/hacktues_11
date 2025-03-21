@@ -1,6 +1,5 @@
-// App.jsx
 import React, { useState, useEffect } from "react";
-import { Routes, Route, useLocation, Navigate, matchPath } from "react-router-dom";
+import { Routes, Route, useLocation, Navigate } from "react-router-dom";
 import { ToastContainer, Slide } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useAuth } from "../contexts/AuthContext";
@@ -75,7 +74,6 @@ const App = () => {
       <div key={location.pathname}>
         <Routes location={location}>
           {routes.map(({ path, component: Component }) => {
-            // Do not wrap HomePage, LogInPage, and SignUpPage with Navbar and Footer.
             if (path === "/" || path === "/login" || path === "/signup") {
               return <Route key={path} path={path} element={<Component />} />;
             }
@@ -84,11 +82,13 @@ const App = () => {
                 key={path}
                 path={path}
                 element={
-                  <main>
+                  <>
                     <Navbar isTransparent={path === "/"} />
-                    <Component />
+                    <div style={{ paddingTop: "80px" }}>
+                      <Component />
+                    </div>
                     <Footer />
-                  </main>
+                  </>
                 }
               />
             );
@@ -97,14 +97,16 @@ const App = () => {
             path="/admin/*"
             element={
               <AdminRoute>
-                <main>
+                <>
                   <Navbar />
-                  <Routes>
-                    <Route path="dashboard" element={<div>Admin Dashboard</div>} />
-                    <Route path="create-a-product" element={<div>Create a Product</div>} />
-                  </Routes>
+                  <div style={{ paddingTop: "80px" }}>
+                    <Routes>
+                      <Route path="dashboard" element={<div>Admin Dashboard</div>} />
+                      <Route path="create-a-product" element={<div>Create a Product</div>} />
+                    </Routes>
+                  </div>
                   <Footer />
-                </main>
+                </>
               </AdminRoute>
             }
           />

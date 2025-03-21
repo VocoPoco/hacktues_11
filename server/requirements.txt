@@ -15,4 +15,6 @@ MarkupSafe
 alembic
 SQLAlchemy
 apscheduler
+bs4
+playwright
 flask-cors
