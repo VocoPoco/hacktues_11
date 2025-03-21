@@ -36,7 +36,7 @@ export const AuthProvider = ({ children }) => {
   const login = useCallback(
     async (credentials) => {
       try {
-        const response = await axios.post(
+        const response = await axios.post(  
           `${import.meta.env.VITE_API_URL}/auth/login`,
           credentials
         );

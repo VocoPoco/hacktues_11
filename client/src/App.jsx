@@ -1,17 +1,22 @@
-import React, { useEffect, useState } from "react";
+// App.jsx
+import React, { useState, useEffect } from "react";
 import { Routes, Route, useLocation, Navigate, matchPath } from "react-router-dom";
-import { motion } from "framer-motion";
-import Navbar from "../components/Navbar/navbar";
-import Footer from "../components/Footer/footer";
 import { ToastContainer, Slide } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-// import ScrollToTop from "../components/ScrollToTop";  // Import ScrollToTop
+import { useAuth } from "../contexts/AuthContext";
 
+import Navbar from "../components/Navbar/navbar";
+import Footer from "../components/Footer/footer";
+
+// Page imports
 import HomePage from "../pages/HomePage/HomePage.jsx";
-import ServicePage from "../pages/ServicePage/servicePage.jsx";
+import FreelancersPage from "../pages/FreelancersPage/freelancersPage.jsx";
 import NotFoundPage from "../pages/NotFoundPage/notFoundPage.jsx";
 import LogInPage from "../pages/AuthPage/LogInPage";
 import SignUpPage from "../pages/AuthPage/SignUpPage";
+import CreateProject from "../pages/CreateProject/createProject.jsx";
+import ProjectsList from "../pages/ProjectsList/projectsList.jsx";
+import ProjectDetail from "../pages/ProjectDetail/projectDetail.jsx";
 
 const AdminRoute = ({ children }) => {
   const { user, loading } = useAuth();
@@ -38,14 +43,13 @@ const App = () => {
 
   const routes = [
     { path: "/", component: HomePage },
-    { path: "/product/:productId", component: ServicePage },
+    { path: "/freelancers", component: FreelancersPage },
     { path: "/login", component: LogInPage },
     { path: "/signup", component: SignUpPage },
+    { path: "/create-project", component: CreateProject },
+    { path: "/projects", component: ProjectsList },
+    { path: "/project/:id", component: ProjectDetail },
   ];
-
-  const isValidRoute = routes.some((route) =>
-    matchPath({ path: route.path, end: true }, location.pathname)
-  );
 
   return (
     <>
@@ -58,57 +62,55 @@ const App = () => {
         pauseOnHover
         draggable
         transition={Slide}
-        style={{
-          top: "60px",
-          zIndex: 9999,
-        }}
+        style={{ top: "80px", zIndex: 9999 }}
         toastStyle={{
           background: "#f9f9f9",
           color: "#333",
           border: "1px solid #ddd",
           borderRadius: "4px",
-          fontFamily: "Arial, sans-serif",
-          fontWeight: "500",
           boxShadow: "0px 2px 8px rgba(0, 0, 0, 0.1)",
         }}
       />
-      {isValidRoute}  {/* This will ensure the page scrolls to top */}
-      <motion.div
-        key={location.pathname}
-        initial={{ opacity: 0, y: 0 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, ease: "easeInOut" }}
-      >
-        <Routes location={location} key={location.pathname}>
-          {routes.map(({ path, component: Component }, index) => (
-            <Route
-              key={path || index}
-              path={path}
-              element={
-                <main>
-                  {/* <Navbar /> */}
-                  <Component />
-                  {/* <Footer /> */}
-                </main>
-              }
-            />
-          ))}
+
+      <div key={location.pathname}>
+        <Routes location={location}>
+          {routes.map(({ path, component: Component }) => {
+            // Do not wrap HomePage, LogInPage, and SignUpPage with Navbar and Footer.
+            if (path === "/" || path === "/login" || path === "/signup") {
+              return <Route key={path} path={path} element={<Component />} />;
+            }
+            return (
+              <Route
+                key={path}
+                path={path}
+                element={
+                  <main>
+                    <Navbar isTransparent={path === "/"} />
+                    <Component />
+                    <Footer />
+                  </main>
+                }
+              />
+            );
+          })}
           <Route
             path="/admin/*"
             element={
               <AdminRoute>
-                <Navbar />
-                <Routes>
-                  <Route path="dashboard" element={<div>Admin Dashboard</div>} />
-                  <Route path="create-a-product" element={<div>Create a Product</div>} />
-                </Routes>
-                <Footer />
+                <main>
+                  <Navbar />
+                  <Routes>
+                    <Route path="dashboard" element={<div>Admin Dashboard</div>} />
+                    <Route path="create-a-product" element={<div>Create a Product</div>} />
+                  </Routes>
+                  <Footer />
+                </main>
               </AdminRoute>
             }
           />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
-      </motion.div>
+      </div>
     </>
   );
 };
