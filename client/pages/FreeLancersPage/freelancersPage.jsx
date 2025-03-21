@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 
 const freelancers = [
   {
@@ -13,26 +13,78 @@ const freelancers = [
     service_rates: { rate_per_hour: '24$', starting_rate: '500$' },
     service_desc: 'YES IT Labs LLC dba Top Guru Assistants is full-stack IT services and solutions providing company, headquartered in California, USA...',
     skills: ['Adobe Photoshop', 'AI to WordPress', 'E Commerce', 'Programming & Development'],
-    total_score: 79201.0
+    total_score: 79201.0,
+    profile_url: 'https://www.guru.com/freelancers/top-guru-assistants' // Example profile link
   },
-  // Add more entries as needed
+  {
+    avatar_img_url: 'https://res.cloudinary.com/gurucom/image/upload/w_96,h_96,f_auto,dpr_2/pimg/2/178/2178498/Scarlet%20Star_636363191916843130_guruImgLarge_49d91f6d-2e51-46dc-ba34-cec17ab65eeb.jpg',
+    screen_name: 'Top Guru Assistants',
+    city: 'Laguna Beach',
+    state: 'California',
+    country: 'United States',
+    earnings: '263,995',
+    feedback: '100%',
+    service_title: 'Figma to WordPress',
+    service_rates: { rate_per_hour: '24$', starting_rate: '500$' },
+    service_desc: 'YES IT Labs LLC dba Top Guru Assistants is full-stack IT services and solutions providing company, headquartered in California, USA...',
+    skills: ['Adobe Photoshop', 'AI to WordPress', 'E Commerce', 'Programming & Development'],
+    total_score: 79201.0,
+    profile_url: 'https://www.guru.com/freelancers/top-guru-assistants' // Example profile link
+  },  {
+    avatar_img_url: 'https://res.cloudinary.com/gurucom/image/upload/w_96,h_96,f_auto,dpr_2/pimg/2/178/2178498/Scarlet%20Star_636363191916843130_guruImgLarge_49d91f6d-2e51-46dc-ba34-cec17ab65eeb.jpg',
+    screen_name: 'Top Guru Assistants',
+    city: 'Laguna Beach',
+    state: 'California',
+    country: 'United States',
+    earnings: '263,995',
+    feedback: '100%',
+    service_title: 'Figma to WordPress',
+    service_rates: { rate_per_hour: '24$', starting_rate: '500$' },
+    service_desc: 'YES IT Labs LLC dba Top Guru Assistants is full-stack IT services and solutions providing company, headquartered in California, USA...',
+    skills: ['Adobe Photoshop', 'AI to WordPress', 'E Commerce', 'Programming & Development'],
+    total_score: 79201.0,
+    profile_url: 'https://www.guru.com/freelancers/top-guru-assistants' // Example profile link
+  },  {
+    avatar_img_url: 'https://res.cloudinary.com/gurucom/image/upload/w_96,h_96,f_auto,dpr_2/pimg/2/178/2178498/Scarlet%20Star_636363191916843130_guruImgLarge_49d91f6d-2e51-46dc-ba34-cec17ab65eeb.jpg',
+    screen_name: 'Top Guru Assistants',
+    city: 'Laguna Beach',
+    state: 'California',
+    country: 'United States',
+    earnings: '263,995',
+    feedback: '100%',
+    service_title: 'Figma to WordPress',
+    service_rates: { rate_per_hour: '24$', starting_rate: '500$' },
+    service_desc: 'YES IT Labs LLC dba Top Guru Assistants is full-stack IT services and solutions providing company, headquartered in California, USA...',
+    skills: ['Adobe Photoshop', 'AI to WordPress', 'E Commerce', 'Programming & Development'],
+    total_score: 79201.0,
+    profile_url: 'https://www.guru.com/freelancers/top-guru-assistants' // Example profile link
+  },
+  // Add more freelancer objects as needed
 ];
 
 const Freelancers = () => {
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    // Using static array for now
+    setData(freelancers);
+  }, []);
+
   return (
     <div className="min-h-screen p-8 bg-gray-50">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
-        {freelancers.map((freelancer, index) => (
+        {data.map((freelancer, index) => (
           <div
             key={index}
-            className="group relative bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden"
+            className="group relative bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden cursor-pointer"
+            onClick={() => window.open(freelancer.profile_url, "_blank")}
           >
             {/* Main Content */}
             <div className="p-6 space-y-4">
               <div className="flex items-center gap-4">
                 <img
                   src={freelancer.avatar_img_url}
-                  alt="avatar"
+                  alt={`${freelancer.screen_name} avatar`}
                   className="w-16 h-16 rounded-full object-cover"
                 />
                 <div>
@@ -45,7 +97,7 @@ const Freelancers = () => {
 
               <div className="flex justify-between text-sm">
                 <div>
-                  <p className="text-gray-500">Last years earnings</p>
+                  <p className="text-gray-500">Last Year's Earnings</p>
                   <p className="font-semibold">${freelancer.earnings}</p>
                 </div>
                 <div>
@@ -95,7 +147,13 @@ const Freelancers = () => {
                     {freelancer.total_score.toLocaleString()}
                   </span>
                 </div>
-                <button className="w-full mt-4 px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors">
+                <button
+                  className="w-full mt-4 px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors"
+                  onClick={(e) => {
+                    e.stopPropagation(); // Prevent card click event
+                    window.open(freelancer.profile_url, "_blank");
+                  }}
+                >
                   View Profile
                 </button>
               </div>

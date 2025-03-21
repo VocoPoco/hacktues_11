@@ -7,7 +7,7 @@ const CreateProject = () => {
       <div className="container mx-auto p-6 max-w-2xl">
         <h1 className="text-3xl font-bold mb-8 text-[#232323]">Bring Your Project to Life</h1>
         <p className="text-[#616062] mb-6">
-          Provide the key details about your project, and let us help you find the perfect talent to bring your vision into reality.
+          Provide the key details about your project, and let us help you find the perfect talent to bring your vision in   to reality.
         </p>
 
         <form className="space-y-6">
