@@ -1,7 +1,8 @@
 import re
 from bs4 import BeautifulSoup
-from .constants import BASE_URL
-from .utils.file_manager import save_json
+from constants import BASE_URL
+import json
+from utils.file_manager import save_json
 
 
 def concatenate_skills(skills):
@@ -347,4 +348,3 @@ def extract_freelancers(skills):
         all_freelancers.extend(freelancers)
 
     save_json(all_freelancers)
-
