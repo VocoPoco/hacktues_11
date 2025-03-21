@@ -18,7 +18,7 @@ main_service = MainService(
 
 @main_bp.route("/create-project", methods=["POST"])
 def create_project():
-    project, budget, time_period, description = extract_project_data(request.get_json())
+    project, budget, time_period, description = extract_request_data(request.get_json())
 
     dataset = [
         {
@@ -71,7 +71,20 @@ def get_project_data(project_id):
         return jsonify({"error": f"An error occurred: {str(e)}"}), 500
 
 
-def extract_project_data(request_data):
+# list all projects
+@main_bp.route("/user/<int:user_id>/projects", methods=["GET"])
+def list_projects_by_user(user_id):
+    """
+    Endpoint to list all projects associated with a given user_id.
+    """
+    try:
+        projects = main_service.list_projects_by_user(user_id)
+        return jsonify({"projects": projects}), 200
+    except Exception as e:
+        return jsonify({"error": f"Could not fetch projects: {str(e)}"}), 500
+
+
+def extract_request_data(request_data):
     project = request_data.get("project", "").strip()
     description = request_data.get("description", "").strip()
 

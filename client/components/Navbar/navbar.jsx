@@ -6,7 +6,7 @@ import AuthNavButton from "../AuthNavButton/authNavButton.jsx";
 const Navbar = ({ scrollProgress }) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { user, logOut } = useAuth();  // logOut comes from AuthContext
+  const { isAuthenticated, logOut } = useAuth();  // logOut comes from AuthContext
   const [isVisible, setIsVisible] = useState(false); // start invisible
   const [menuOpen, setMenuOpen] = useState(null);    // for dropdown menus
 
@@ -59,7 +59,7 @@ const Navbar = ({ scrollProgress }) => {
         {/* Right Side: Navigation & Auth */}
         <div className="flex items-center gap-6">
           {/* Only show these if user is logged in */}
-          {user && (
+          {isAuthenticated && (
             <>
               <a href="/create-project" className="hover:text-[#8c281f] transition">
                 Create Project
@@ -108,7 +108,7 @@ const Navbar = ({ scrollProgress }) => {
           )}
 
           {/* If user is logged in, show logout; otherwise show login/signup */}
-          {user ? (
+          {isAuthenticated ? (
             <button
               onClick={logOut}
               className="hover:text-[#8c281f] transition"
