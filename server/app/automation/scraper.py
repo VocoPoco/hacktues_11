@@ -1,8 +1,8 @@
 import re
 from bs4 import BeautifulSoup
-from constants import BASE_URL
+from .constants import BASE_URL
 import json
-from utils.file_manager import save_json
+from .utils.file_manager import save_json
 
 
 def concatenate_skills(skills):
