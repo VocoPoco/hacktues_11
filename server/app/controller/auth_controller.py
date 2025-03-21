@@ -7,8 +7,6 @@ from app.repository.token_repository import TokenRepository
 from app.repository.user_repository import UserRepository
 from app.service.auth_service import AuthService
 
-
-
 auth_bp = Blueprint('auth', __name__, url_prefix='/auth')
 auth_service = AuthService(UserRepository(), TokenRepository())
 
@@ -123,7 +121,7 @@ def change_password():
     if not auth_service.verify_password(user, current_password):
         return jsonify({'message': 'Current password is incorrect'}), 401
 
-    auth_service.update_password(user, new_password)
+    auth_service.change_password(user, new_password)
 
     access_token, refresh_token = auth_service.generate_tokens(user)
     return jsonify({

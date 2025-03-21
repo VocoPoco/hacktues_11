@@ -70,7 +70,7 @@ class AuthService:
     def verify_password(user, current_password):
         return check_password_hash(user.password_hash, current_password)
 
-    def update_password(self, user, new_password):
+    def change_password(self, user, new_password):
         user.password_hash = generate_password_hash(new_password)
         self.user_repository.save(user)
 
@@ -90,3 +90,6 @@ class AuthService:
     def is_refresh_token_active(self, jti):
         return self.token_repository.is_refresh_token_active(jti)
 
+    def change_username(self, user, new_username):
+        user.username = new_username
+        self.user_repository.save(user)
