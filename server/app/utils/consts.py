@@ -536,16 +536,15 @@ CATEGORIES = {
     }
 }
 
-MESSAGE_CONTENT = """
-You are provided with a list of freelancer categories: &freelancer_categories&F.
-Analyze the following task and break it down into clear, actionable subtasks.
-For each subtask, assign the most relevant category from the provided list.
-
-Please format your response as follows:
-- Subtask Description: A brief description of the subtask.
-- Assigned Category: The category chosen.
-- Explanation: (Optional) A short explanation of why this category fits.
-
-Task: &task&
+LLAMA_PROMPT = """
+You are provided with a list of freelancer categories: [categories]. Analyze the following task: "[task] -> [description]" and break it down into clear, actionable subtasks. For each subtask, assign the most relevant category from the provided list. Please format your response as follows:
+Subtask Description: A brief description of the subtask.
+Assigned Category: The category/categories chosen as an array.
+Explanation: (Optional) A short explanation of why this category fits.
+Budget Percentage: What part of the budget it can take up
+Approximate Time For Task: And an approximate time the task will take, having in mind that the time period for the whole project is [time_period]
+ID: A unique identifier for the subtask
+Dependencies: ID of other tasks this one depends on
 """
+
 
