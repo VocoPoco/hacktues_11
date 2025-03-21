@@ -23,7 +23,7 @@ const Navbar = ({ scrollProgress }) => {
             style={{ color: `rgba(35, 35, 35, ${scrollProgress})` }}
             onClick={() => navigate("/")}
           >
-            ProjectFlow
+            FREELENS
           </span>
           <div className="flex items-center gap-6">
             <a 
