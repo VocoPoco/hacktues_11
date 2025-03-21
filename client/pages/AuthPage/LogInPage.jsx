@@ -33,8 +33,8 @@ const LoginPage = () => {
           password: formData.password,
         }
       );
-      if (response.code == 201) {
-        const { access_token, refresh_token, username } = response.data;
+      if (response.status == 200) {
+        const {access_token, refresh_token, username} = response.data;
 
         saveTokens(access_token, refresh_token);
 

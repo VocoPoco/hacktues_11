@@ -1,4 +1,4 @@
-from app.model.freelanser_model import Freelancer
+from app.model.freelancer_model import Freelancer
 from app.extensions import db
 from sqlalchemy import exists, and_, ARRAY, String, cast
 

@@ -4,11 +4,11 @@ import { toast } from "react-toastify";
 import { useAuth } from "../../contexts/AuthContext";
 import axios from "axios";
 import GoBackButton from "../../components/GoBackButton/goBackButton";
-import {saveTokens} from "../../utils/TokenUtils.js";
+import { saveTokens } from "../../utils/TokenUtils.js";
 
 const SignUpPage = () => {
   const navigate = useNavigate();
-  const { setUser } = useAuth()
+  const { setUser } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     username: "",
@@ -44,12 +44,14 @@ const SignUpPage = () => {
         }
       );
 
-      const { access_token, refresh_token } = response.data;
+      if (response.status == 201) {
+        const { access_token, refresh_token } = response.data;
 
-      saveTokens(access_token, refresh_token);
+        saveTokens(access_token, refresh_token);
 
-      localStorage.setItem("username", formData.username)
-      localStorage.setItem("email", formData.email)
+        localStorage.setItem("username", formData.username);
+        localStorage.setItem("email", formData.email);
+      }
 
       setUser({
         username: formData.username,
