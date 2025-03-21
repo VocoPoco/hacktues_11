@@ -1,0 +1,88 @@
+.projects-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 60px 40px; /* Increased vertical padding */
+  max-width: 1200px; /* Added max-width for better large-screen layout */
+  margin: 0 auto; /* Center the container */
+  /*margin-top: 20px;  Center the container */
+}
+
+.project-list {
+  display: flex;
+  gap: 30px; /* Increased gap between cards */
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 30px; /* Increased top margin */
+}
+
+.project-card {
+  background: white;
+  padding: 30px; /* Increased padding */
+  border-radius: 16px; /* Larger border radius */
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1); /* Stronger shadow */
+  width: 320px; /* Wider cards */
+  text-align: left;
+  transition: transform 0.2s; /* Add hover effect */
+  margin-top: 30px;
+}
+
+.project-card:hover {
+  transform: translateY(-5px); /* Subtle hover lift */
+}
+
+.project-date {
+  color: gray;
+  font-size: 16px; /* Larger date text */
+  margin-bottom: 8px;
+}
+
+.project-title {
+  font-size: 30px; /* Larger title */
+  font-weight: bold;
+  margin-bottom: 30px;
+}
+
+.subtopics {
+  list-style: none;
+  padding: 0;
+  margin: 20px 0; /* More spacing around list */
+  margin-bottom: 30px;
+}
+
+.subtopic-item {
+  display: flex;
+  align-items: center;
+  gap: 8px; /* Increased gap between check and text */
+  justify-content: flex-start; /* Align text to left */
+  font-size: 16px; /* Larger text */
+  margin: 12px 0; /* More spacing between items */
+  padding: 8px 15px; /* Padding for list items */
+  background: #f8f8f8; /* Subtle background for items */
+  border-radius: 8px;
+  text-align: center;
+}
+
+.project-button, .more-button {
+  background: #f8f8f8;
+  padding: 10px 10px; /* Larger buttons */
+  border: none;
+  border-radius: 10px; /* Rounded buttons */
+  cursor: pointer;
+  font-size: 13px; /* Larger button text */
+  transition: background 0.2s;
+  font-weight: bold;
+  text-align:center;
+}
+
+.more-button {
+  margin-top: 40px; /* More spacing above "More" button */
+  padding: 15px 20px; /* Even larger "More" button */
+  font-size: 20px;
+}
+
+.project-button:hover, .more-button:hover {
+  background: #f8f8f8;
+}
+
