@@ -14,8 +14,8 @@ import NotFoundPage from "../pages/NotFoundPage/notFoundPage.jsx";
 import LogInPage from "../pages/AuthPage/LogInPage";
 import SignUpPage from "../pages/AuthPage/SignUpPage";
 import CreateProject from "../pages/CreateProject/createProject.jsx";
-import ProjectsList from "../pages/ProjectsList/projectsList.jsx";
 import ProjectDetail from "../pages/ProjectDetail/projectDetail.jsx";
+import AllProjects from "../pages/AllProjectsPage/allProjects.jsx"
 
 const AdminRoute = ({ children }) => {
   const { user, loading } = useAuth();
@@ -46,7 +46,7 @@ const App = () => {
     { path: "/login", component: LogInPage },
     { path: "/signup", component: SignUpPage },
     { path: "/create-project", component: CreateProject },
-    { path: "/projects", component: ProjectsList },
+    { path: "/projects", component: AllProjects },
     { path: "/project/:id", component: ProjectDetail },
   ];
 
