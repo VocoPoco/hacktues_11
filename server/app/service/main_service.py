@@ -4,6 +4,7 @@ from app.model.dto.subtask_dto import SubtaskDTO
 from app.utils.consts import CATEGORIES, LLAMA_PROMPT
 import requests
 from flask import jsonify
+import ollama
 
 class MainService:
     def __init__(self, freelancer_repository, project_repository, subtask_repository):
@@ -14,8 +15,31 @@ class MainService:
     def send_prompt(self, dataset):
         prompt = self.__construct_prompt(dataset)
 
-        api_url = "http://127.0.0.1:11434/api/chat?model=llama3.2:latest"
-        response = requests.post(api_url, json={"prompt": prompt})
+        payload = {
+            "model": "llama3.2:1b",
+            "stream": false,
+            "options": {
+                "temperature": 0.2
+            },
+            "messages": [
+                {
+                    "role": "user",
+                    "content": prompt
+                }
+            ]
+        }
+
+        response = ollama.chat(
+            model="llama3.2:1b",
+            messages=payload["messages"],
+            stream=False,
+            options={"temperature": 0.2}
+        )
+
+        print(response)
+
+        # api_url = "http://127.0.0.1:11434/api/chat"
+        # response = requests.post(api_url, json={"prompt": prompt})
 
         if response.status_code == 200:
             return jsonify(response.json())
@@ -27,7 +51,7 @@ class MainService:
 
     @staticmethod
     def __construct_prompt(self, dataset):
-        formatted_categories = self.__format_hierarchy(CATEGORIES)
+        #formatted_categories = self.__format_hierarchy(CATEGORIES)
 
         formatted_prompts = []
 
@@ -37,7 +61,7 @@ class MainService:
         formatted_prompt = LLAMA_PROMPT.replace("[project]",
                                                 dataset["project"]).replace("[description]",
                                                                                 dataset["description"]).replace("[categories]",
-                                                                                                                formatted_categories).replace("[time_period]",
+                                                                                                                CATEGORIES).replace("[time_period]",
                                                                                                                                               dataset["time_period"])
         formatted_prompts.append(formatted_prompt)
 

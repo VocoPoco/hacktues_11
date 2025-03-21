@@ -44,8 +44,9 @@ const SignUpPage = () => {
         }
       );
 
-      if (response.status == 201) {
-        const { access_token, refresh_token } = response.data;
+      if(response.status == 201) {
+
+        const {access_token, refresh_token} = response.data;
 
         saveTokens(access_token, refresh_token);
 

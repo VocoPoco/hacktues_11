@@ -30,6 +30,10 @@ def create_app(config_class=Config):
     from app.model.revoked_refresh_token_model import RevokedRefreshToken
     from app.model.revoked_access_token_model import RevokedAccessToken
     from app.model.active_token_model import ActiveRefreshToken
+    from app.model.project_model import Project
+    from app.model.freelancer_model import Freelancer
+    from app.model.subtask_model import Subtask
+
 
     from app.controller import register_blueprints
     register_blueprints(app)
