@@ -1,4 +1,4 @@
-zfrom app.model.subtask_model import Subtask
+from app.model.subtask_model import Subtask
 from app.extensions import db
 from sqlalchemy import exists, and_
 
