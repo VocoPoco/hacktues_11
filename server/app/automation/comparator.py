@@ -1,5 +1,5 @@
 import json
-from utils.file_manager import extract_json
+from .utils.file_manager import extract_json
 
 
 def compare_freelancers(freelancers, job_description):
