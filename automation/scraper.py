@@ -1,7 +1,6 @@
 import re
 from bs4 import BeautifulSoup
 from constants import BASE_URL
-import json
 from utils.file_manager import save_json
 
 
@@ -22,7 +21,6 @@ def concatenate_skills(skills):
     """
 
     def format_skill(skill):
-        # Remove leading/trailing whitespace, make lowercase, replace spaces with dashes
         formatted = skill.strip().lower()
         formatted = re.sub(r"\s+", "-", formatted)
         return formatted
@@ -172,23 +170,18 @@ def extract_service_rates(service_listing_div):
     if not service_rates_tag:
         return {"rate_per_hour": "", "starting_rate": ""}
 
-    # Extract the rate text
     rate_text = service_rates_tag.get_text(strip=True)
 
-    # Initialize default values
     rate_per_hour = ""
     starting_rate = ""
 
-    # Try to extract rate_per_hour and starting_rate from the rate_text
     rate_parts = rate_text.split(" · ")
 
-    # Check if we have a rate per hour (like "$22/hr")
     if len(rate_parts) > 0:
         rate_per_hour_match = re.search(r"\$(\d+)(?:/hr)?", rate_parts[0])
         if rate_per_hour_match:
             rate_per_hour = f"{rate_per_hour_match.group(1)}$"
 
-    # Check if we have a starting rate (like "Starting at $25")
     if len(rate_parts) > 1:
         starting_rate_match = re.search(r"Starting at \$(\d+)", rate_parts[1])
         if starting_rate_match:
@@ -224,19 +217,16 @@ def extract_skills_from_service_listing(service_listing_div):
     """
     skills_list = []
 
-    # Find all span elements with the class 'skillsList__skill greyBackground'
     skills_span_tags = service_listing_div.find_all(
         "span", class_="skillsList__skill greyBackground"
     )
 
-    # Extract the first skill (if available)
     if skills_span_tags:
         first_skill_span = skills_span_tags[0]
         skill_links = first_skill_span.find_all("a")
         skills_list.extend([link.get_text(strip=True) for link in skill_links])
 
-    # Extract all skills from the remaining span elements (if any)
-    for skill_span in skills_span_tags[1:]:  # Start from the second skill
+    for skill_span in skills_span_tags[1:]:  
         skill_links = skill_span.find_all("a")
         skills_list.extend([link.get_text(strip=True) for link in skill_links])
 
@@ -244,7 +234,6 @@ def extract_skills_from_service_listing(service_listing_div):
     for a_tag in all_a_tags:
         skills_list.append(a_tag.get_text(strip=True))
 
-    # Remove duplicates by converting to a set and then back to a list
     skills_list = list(set(skills_list))
 
     return skills_list
@@ -260,33 +249,26 @@ def parse_freelancer_li(li):
     Returns:
         dict: A dictionary with the extracted freelancer details, or None if parsing fails.
     """
-    # Find the div with class 'module_avatar freelancerAvatar'
     avatar_div = li.find("div", class_="module_avatar freelancerAvatar")
     if not avatar_div:
         print("avatar_div not found")
         return None
 
-    # Extract avatar image URL
     avatar_img_url = extract_avatar_img_url(avatar_div)
 
-    # Extract freelancer's screen name
     avatar_info_div = avatar_div.find("div", class_="avatarinfo")
     screen_name = extract_screen_name(avatar_info_div)
 
-    # Extract city, state, and country
     meta_p_tags = avatar_info_div.find_all("p", class_="freelancerAvatar__meta")
     city, state, country = extract_location(meta_p_tags)
 
-    # Extract earnings and feedback
     earnings, feedback = extract_earnings_and_feedback(meta_p_tags)
 
-    # Extract service listing details
     service_listing_div = li.find("div", class_="serviceListing__details")
     service_title = extract_service_title(service_listing_div)
     service_rates = extract_service_rates(service_listing_div)
     service_desc = extract_service_description(service_listing_div)
 
-    # Extract skills from the second skill span in the skills list
     skills_list = extract_skills_from_service_listing(service_listing_div)
 
     return {
@@ -315,15 +297,12 @@ def extract_freelancer_data(skills, page):
     Returns:
         list: A list of dictionaries, each representing a freelancer's details.
     """
-    # Build the URL by concatenating the skills
     skill_path = concatenate_skills(skills)
     url = f"{BASE_URL}/{skill_path}/pg/{page}"
 
-    # Fetch the rendered HTML of the page using Playwright
     page_html = fetch_page_html(url)
     soup = BeautifulSoup(page_html, "html.parser")
 
-    # Get the unordered list that contains the freelancer records
     ul = get_unordered_list(soup)
     if not ul:
         raise ValueError("Unordered list with class 'module_list cozy' not found")
