@@ -60,7 +60,7 @@ def login():
 
     access_token, refresh_token = auth_service.generate_tokens(user)
     session['user_id'] = user.id
-    return jsonify({'access_token': access_token, 'refresh_token': refresh_token}), 200
+    return jsonify({'access_token': access_token, 'refresh_token': refresh_token, "username": user.username}), 200
 
 
 @auth_bp.route('/logout', methods=['POST'])

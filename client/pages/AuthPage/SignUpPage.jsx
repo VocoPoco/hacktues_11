@@ -8,7 +8,7 @@ import {saveTokens} from "../../utils/TokenUtils.js";
 
 const SignUpPage = () => {
   const navigate = useNavigate();
-  const { mutateUser } = useAuth();
+  const { setUser } = useAuth()
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     username: "",
@@ -45,8 +45,17 @@ const SignUpPage = () => {
       );
 
       const { access_token, refresh_token } = response.data;
+
       saveTokens(access_token, refresh_token);
-      await mutateUser();
+
+      localStorage.setItem("username", formData.username)
+      localStorage.setItem("email", formData.email)
+
+      setUser({
+        username: formData.username,
+        email: formData.email,
+      });
+
       navigate("/");
       toast.success("Registration successful!");
     } catch (error) {
@@ -63,7 +72,6 @@ const SignUpPage = () => {
         <h1 className="text-3xl font-cinzel text-[#232323] mb-4 uppercase tracking-wide">
           Create Account
         </h1>
-        <p className="text-[#616062] text-sm mb-8">Join us for seamless shopping.</p>
 
         <form className="space-y-6" onSubmit={handleSubmit}>
           <div className="space-y-4">
