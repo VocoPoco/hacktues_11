@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import { useAuth } from "../../contexts/AuthContext";
 import axios from "axios";
 import GoBackButton from "../../components/GoBackButton/goBackButton";
+import {saveTokens} from "../../utils/TokenUtils.js";
 
 const SignUpPage = () => {
   const navigate = useNavigate();
@@ -25,12 +26,14 @@ const SignUpPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (formData.password !== formData.confirmPassword) {
       toast.error("Passwords do not match!");
       return;
     }
 
     setIsLoading(true);
+
     try {
       const response = await axios.post(
         `${import.meta.env.VITE_API_URL}/auth/register`,
@@ -41,10 +44,10 @@ const SignUpPage = () => {
         }
       );
 
-      const { access_token } = response.data;
-      localStorage.setItem("authToken", access_token);
+      const { access_token, refresh_token } = response.data;
+      saveTokens(access_token, refresh_token);
       await mutateUser();
-      navigate("/profile");
+      navigate("/");
       toast.success("Registration successful!");
     } catch (error) {
       toast.error(error.response?.data?.message || "Registration failed");
