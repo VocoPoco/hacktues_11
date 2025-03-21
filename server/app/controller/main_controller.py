@@ -1,21 +1,24 @@
 import requests
 
 from flask import Blueprint, request, jsonify
+
+from app.repository.freelancers_repository import FreelancerRepository
+from app.repository.project_repository import ProjectRepository
+from app.repository.subtask_repository import SubtaskRepository
 from app.service.main_service import MainService
-from app.utils.consts import CATEGORIES
 from app.automation.scraper import extract_freelancers
 from app.automation.comparator import compare
-main_bp = Blueprint('categories', __name__, url_prefix='/api')
+main_bp = Blueprint('main', __name__, url_prefix='/api')
 
-main_service = MainService()
+main_service = MainService(FreelancerRepository(), ProjectRepository(), SubtaskRepository())
 
 @main_bp.route('/create-project', methods=['POST'])
 def create_project():
-    task, budget, time_period, description = extract_project_data(request.get_json())
+    project, budget, time_period, description = extract_project_data(request.get_json())
 
     dataset = [
         {
-            "task": task,
+            "project": project,
             "description": description,
             "budget": budget,
             "time_period": time_period
@@ -52,10 +55,18 @@ def create_project():
 
         # store the freelancers in the database that needs to be conneceted to the particular task
 
-# request that fetches the freelancers from the db and sends a request with the freelancers to visualize the result in the frontend
+@main_bp.route('/get-project-data/<int:project_id>', methods=['GET'])
+def get_project_data(project_id):
+    try:
+        project_data = main_service.get_subtasks_and_freelancers_by_project(project_id)
+
+        return jsonify(project_data), 200
+    except Exception as e:
+        return jsonify({"error": f"An error occurred: {str(e)}"}), 500
+
 
 def extract_project_data(request_data):
-    task = request_data.get('task', '').strip()
+    project = request_data.get('project', '').strip()
     description = request_data.get('description', '').strip()
 
     if 'budget' not in request_data:
@@ -66,10 +77,10 @@ def extract_project_data(request_data):
         time_period = 'undefined'
     time_period = request_data.get('time_period', '').strip()
 
-    if not task:
-        raise ValueError("Task is required and cannot be empty.")
+    if not project:
+        raise ValueError("Project is required and cannot be empty.")
 
     if not description:
         raise ValueError("Description is required and cannot be empty.")
 
-    return task, budget, time_period, description
+    return project, budget, time_period, description
