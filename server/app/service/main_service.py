@@ -101,6 +101,19 @@ class MainService:
         # Create and return ProjectDataDTO
         return ProjectDataDTO(project_id=project_id, subtasks=subtask_dtos).to_dict()
 
+    def list_projects_by_user(self, user_id):
+        """
+        Retrieves all projects from the repository by a given user_id.
+        """
+        try:
+            projects = self.project_repository.find_all_by_user_id(user_id)
+            return projects
+        except Exception as e:
+            # Optionally, add logging or more specific error handling here
+            raise Exception(f"Error fetching projects for user {user_id}: {str(e)}")
+
+
+
     @staticmethod
     def __format_hierarchy(self, categories):
      lines = []

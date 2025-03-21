@@ -47,3 +47,9 @@ class FreelancerRepository:
         return Freelancer.query.order_by(
             Freelancer.total_score.desc()
         ).limit(limit).all()
+
+    def find_by_subtask_id(self, subtask_id):
+        """
+        Return all freelancers associated with the given subtask_id.
+        """
+        return Freelancer.query.filter_by(subtask_id=subtask_id).all()

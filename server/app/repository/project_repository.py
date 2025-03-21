@@ -3,6 +3,10 @@ from app.extensions import db
 from sqlalchemy import exists, and_
 
 class ProjectRepository:
+    def __init__(self):
+        # Initialize your DB connection if needed
+        pass
+
     def find_by_id(self, project_id):
         return Project.query.get(project_id)
 
