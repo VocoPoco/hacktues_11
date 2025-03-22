@@ -14,10 +14,10 @@ def create_app(config_class=Config):
             "origins": app.config['CORS_ORIGINS'],
             "methods": app.config['CORS_METHODS'],
             "allow_headers": app.config['CORS_ALLOW_HEADERS'],
-            "supports_credentials": app.config['CORS_SUPPORTS_CREDENTIALS']
+            "supports_credentials": app.config['CORS_SUPPORTS_CREDENTIALS'],
+            "expose_headers": ["Content-Type", "Authorization"]  
         },
-    },
-    )
+    })
 
     cache.init_app(app)
     db.init_app(app)

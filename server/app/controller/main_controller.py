@@ -20,8 +20,27 @@ main_service = MainService(
 
 @main_bp.route("/create-project", methods=["POST"])
 def create_project():
-    project, budget, time_period, description, username = extract_request_data(request.get_json())
-    created = main_service.create_project(project, description, budget, time_period, username)
+    if request.method == "OPTIONS":
+        response = jsonify({"message": "CORS preflight passed"})
+        response.headers["Access-Control-Allow-Origin"] = "http://localhost:5173"
+        response.headers["Access-Control-Allow-Methods"] = "POST, OPTIONS"
+        response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
+        response.headers["Access-Control-Allow-Credentials"] = "true"
+        return response, 200
+
+    data = request.get_json() or {}
+    project_name = data.get("project")
+    description = data.get("description")
+    budget = data.get("budget")
+    time_period = data.get("time_period")
+    username = data.get("username")
+
+    if not all([project_name, description, budget, time_period, username]):
+        return jsonify({"error": "Missing required field"}), 400
+
+    created = main_service.create_project(
+        project_name, description, budget, time_period, username
+    )
     return jsonify(created), 201
 
 @main_bp.route("/get-project-data/<int:project_id>", methods=["GET"])
