@@ -5,6 +5,8 @@ from app.utils.consts import CATEGORIES, LLAMA_PROMPT
 import requests
 from flask import jsonify
 import ollama
+import json
+
 
 class MainService:
     def __init__(self, freelancer_repository, project_repository, subtask_repository):
@@ -13,62 +15,41 @@ class MainService:
         self.SubtaskRepository = subtask_repository
 
     def send_prompt(self, dataset):
-        prompt = self.__construct_prompt(dataset)
+        data = dataset[0]
+        project = data.get("project", "")
+        description = data.get("description", "")
+        budget = data.get("budget", "undefined")
+        time_period = data.get("time_period", "undefined")
 
-        payload = {
-            "model": "llama3.2:1b",
-            "stream": false,
-            "options": {
-                "temperature": 0.2
-            },
-            "messages": [
-                {
-                    "role": "user",
-                    "content": prompt
-                }
-            ]
-        }
+        prompt = f"""Freelancer Categories: {json.dumps(CATEGORIES)}.
+    Project: "{project} -> {description}".
+    Overall Timeline: {time_period}.
+    Use only the information provided below. Analyze the project and decompose it into clear, actionable subtasks. For each subtask, assign the most relevant category or categories from the provided hierarchical list. Each assignment must include at least one main category, and from that main category, choose an appropriate subcategory and top skill. The assigned categories should be provided as an array containing the hierarchical skills in the format [Main Category, Sub Category, Top Skill]. Output only a structured JSON array exactly following this format: [ {{ "title": "Title", "description": "Description", "categories": ["Main Category", "Sub Category", "Top Skill"], "budget_percentage": "Estimated percentage of the total budget", "approximate_time": "Estimated time for completion of the subtask", "ID": "Unique identifier for the subtask", "Dependencies": ["ID(s) of dependent subtasks"] }} ]. Constraints: - Use exclusively the provided data; do not infer or generate any additional information. - Do not include any text or commentary outside of the JSON array. - Ensure clarity and brevity in all fields. - All subtask times must sum up to the overall project timeline {time_period}."""
+
+        payload = {"messages": [{"role": "user", "content": prompt}]}
 
         response = ollama.chat(
             model="llama3.2:1b",
             messages=payload["messages"],
             stream=False,
-            options={"temperature": 0.2}
+            options={"temperature": 0.2},
         )
 
-        print(response)
-
-        # api_url = "http://127.0.0.1:11434/api/chat"
-        # response = requests.post(api_url, json={"prompt": prompt})
+        print("Prompt sent:", prompt)
+        print("Response received:", response)
 
         if response.status_code == 200:
             return jsonify(response.json())
         else:
-            return jsonify({
-                "error": "Failed to fetch response from API",
-                "details": response.text
-            }), 500
-
-    def __construct_prompt(self, dataset):
-        #formatted_categories = self.__format_hierarchy(CATEGORIES)
-
-        formatted_prompts = []
-
-        if not isinstance(dataset, list):
-            raise ValueError("Dataset must be a list of dictionaries.")
-
-        for item in dataset:
-            if not all(key in item for key in ['project', 'description', 'time_period']):
-                raise KeyError("Each dataset item must contain 'project', 'description', and 'time_period' keys.")
-
-        formatted_prompt = LLAMA_PROMPT.replace("[project]", item["project"]) \
-            .replace("[description]", item["description"]) \
-            .replace("[categories]", CATEGORIES) \
-            .replace("[time_period]", item["time_period"])
-        formatted_prompts.append(formatted_prompt)
-
-        return formatted_prompts
-
+            return (
+                jsonify(
+                    {
+                        "error": "Failed to fetch response from API",
+                        "details": response.text,
+                    }
+                ),
+                500,
+            )
 
     def get_subtasks_and_freelancers_by_project(self, project_id):
 
@@ -87,7 +68,7 @@ class MainService:
                 FreelancerDTO(
                     freelancer_id=freelancer.id,
                     freelancer_name=freelancer.name,
-                    freelancer_skills=freelancer.skills
+                    freelancer_skills=freelancer.skills,
                 )
                 for freelancer in freelancers
             ]
@@ -97,7 +78,7 @@ class MainService:
                     subtask_id=subtask.id,
                     subtask_title=subtask.title,
                     subtask_description=subtask.description,
-                    freelancers=freelancer_dtos
+                    freelancers=freelancer_dtos,
                 )
             )
 
@@ -115,20 +96,18 @@ class MainService:
             # Optionally, add logging or more specific error handling here
             raise Exception(f"Error fetching projects for user {user_id}: {str(e)}")
 
+    # @staticmethod
+    # def __format_hierarchy(self, categories):
+    #     lines = []
+    #     for main_cat, sub_cats in categories.items():
+    #         lines.append(f"- {main_cat}")
+    #         for sub_cat, final_cats in sub_cats.items():
+    #             lines.append(f" - {sub_cat}")
+    #             for final_cat in final_cats:
+    #                 lines.append(f" - {final_cat}")
+    #         return "\n".join(lines)
 
-
-    @staticmethod
-    def __format_hierarchy(self, categories):
-     lines = []
-     for main_cat, sub_cats in categories.items():
-        lines.append(f"- {main_cat}")
-        for sub_cat, final_cats in sub_cats.items():
-            lines.append(f" - {sub_cat}")
-            for final_cat in final_cats:
-                lines.append(f" - {final_cat}")
-        return "\n".join(lines)
-
-     # here needs to create a function that must get as a parameter the specific project id and by the project id to return all the subtasks and freelancers connected to the subtask that are connected to the project from the database using the repositories
-     # for subtasks in project
-        # for freelancers in subtask
-            # return freelancers
+    # here needs to create a function that must get as a parameter the specific project id and by the project id to return all the subtasks and freelancers connected to the subtask that are connected to the project from the database using the repositories
+    # for subtasks in project
+    # for freelancers in subtask
+    # return freelancers
