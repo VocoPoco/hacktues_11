@@ -20,8 +20,10 @@ class Config:
         "http://localhost:5173",
         "http://localhost:5174"
     ]
-    CORS_METHODS = ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
-    CORS_ALLOW_HEADERS = ["Content-Type", "Authorization", "x-access-token", "Cache-Control"]
+    CORS_METHODS = ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"]
+    CORS_ALLOW_HEADERS = ["Content-Type", "Authorization", "x-access-token", "Cache-Control", "X-Requested-With"]
     CORS_SUPPORTS_CREDENTIALS = True
     CACHE_TYPE = 'SimpleCache'
     CACHE_DEFAULT_TIMEOUT = 300
+    JWT_CSRF_CHECK_FORM = True
+    JWT_CSRF_IN_COOKIES = True

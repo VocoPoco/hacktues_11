@@ -1,5 +1,3 @@
-// src/App.js
-
 import React from "react";
 import { Routes, Route, useLocation, BrowserRouter } from "react-router-dom";
 import { ToastContainer, Slide } from "react-toastify";
@@ -49,18 +47,44 @@ const App = () => {
         }}
       />
       <Navbar isTransparent={isHomePage} />
-      <Routes>
-        <Route path="/" element={isAuthenticated ? <MainPage /> : <HomePage />} />
-        <Route path="/login" element={isAuthenticated ? <MainPage /> : <LogInPage />} />
-        <Route path="/projects" element={<AllProjects />} />
-        <Route path="/signup" element={isAuthenticated ? <MainPage /> : <SignUpPage />} />
-        <Route path="/main-page" element={isAuthenticated ? <MainPage /> : <LogInPage />} />
-        <Route path="/freelancers" element={isAuthenticated ? <FreelancersPage /> : <LogInPage />} />
-        <Route path="/all-projects" element={isAuthenticated ? < AllProjects/> : <LogInPage />} />
-        <Route path="/create-project" element={isAuthenticated ? <CreateProject /> : <LogInPage />} />
-        <Route path="/subtasks" element={<Subtasks />}/>
-        <Route path="*" element={<NotFoundPage />} />
-      </Routes>
+
+      {/* This wrapper pushes content below the navbar unless on the homepage */}
+      <main className={`${isHomePage ? "" : "mt-16"}`}>
+        <Routes>
+          <Route
+            path="/"
+            element={isAuthenticated ? <MainPage /> : <HomePage />}
+          />
+          <Route
+            path="/login"
+            element={isAuthenticated ? <MainPage /> : <LogInPage />}
+          />
+          <Route
+            path="/signup"
+            element={isAuthenticated ? <MainPage /> : <SignUpPage />}
+          />
+          <Route
+            path="/main-page"
+            element={isAuthenticated ? <MainPage /> : <LogInPage />}
+          />
+          <Route
+            path="/freelancers"
+            element={isAuthenticated ? <FreelancersPage /> : <LogInPage />}
+          />
+          <Route
+            path="/all-projects"
+            element={isAuthenticated ? <AllProjects /> : <LogInPage />}
+          />
+          <Route
+            path="/create-project"
+            element={isAuthenticated ? <CreateProject /> : <LogInPage />}
+          />
+          <Route path="/projects/:projectId" element={<ProjectDetail />} />
+          <Route path="/subtasks" element={<Subtasks />} />
+          <Route path="*" element={<NotFoundPage />} />
+        </Routes>
+      </main>
+
       <Footer />
     </>
   );

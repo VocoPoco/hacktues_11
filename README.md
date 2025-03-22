@@ -24,12 +24,14 @@ FREELENS is a smart platform designed to **break down complex tasks**, **automat
 If applicable, provide installation instructions here. Example:
 ```bash
 # Clone the repository
-git clone https://github.com/yourrepo/project-name.git
+git clone https://github.com/VocoPoco/hacktues_11.git
 
-# Install dependencies
-cd project-name
+# Install frontend dependencies and start 
+cd client
 npm install
-
-# Start the application
 npm start
+
+# Go to server part and start the backend (.env file is needed and docker desktop)
+cd ../server
+docker-compose up
 ```
