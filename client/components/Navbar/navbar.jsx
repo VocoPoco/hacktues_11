@@ -1,125 +1,126 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
-import AuthNavButton from "../AuthNavButton/authNavButton.jsx";
 
-const Navbar = ({ scrollProgress }) => {
-  const navigate = useNavigate();
+const Navbar = () => {
+  const { isAuthenticated, logOut, isAuthLoading } = useAuth();
   const location = useLocation();
-  const { isAuthenticated, logOut } = useAuth();  // logOut comes from AuthContext
-  const [isVisible, setIsVisible] = useState(false); // start invisible
-  const [menuOpen, setMenuOpen] = useState(null);    // for dropdown menus
+  const navigate = useNavigate();
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  
+  // Determine if the user is inside a project
+  const isInProject = location.pathname.startsWith("/project/");
 
   useEffect(() => {
     const handleScroll = () => {
-      // If on home page and near the top, hide the navbar
-      if (location.pathname === "/" && window.scrollY < 20) {
-        setIsVisible(false);
-      } else {
-        setIsVisible(true);
-      }
+      setIsScrolled(window.scrollY > 20);
     };
-
-    // Check scroll position on mount (in case user isn't at top)
-    handleScroll();
-
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [location]);
+  }, []);
 
-  const navbarStyle = {
-    background: isVisible ? `rgba(255, 251, 249, ${Math.max(scrollProgress, 0.1)})` : "transparent",
-    backdropFilter: isVisible ? `blur(${Math.min(scrollProgress * 10, 10)}px)` : "none",
-    boxShadow: isVisible ? "0 4px 20px rgba(0,0,0,0.1)" : "none",
-    borderBottom: isVisible ? "1px solid rgba(35, 35, 35, 0.15)" : "none",
-    transition: "all 0.3s ease-in-out",
-    width: "100%",
-  };
+  const isHome = location.pathname === "/";
+
+  const navbarClasses = `
+    fixed top-0 left-0 w-full z-50 transition-all duration-300
+    ${isHome && !isScrolled ? "bg-transparent" : "bg-white shadow-md border-b border-gray-200"}
+  `;
+
+  if (isAuthLoading) return null;
 
   return (
-    <nav
-      style={navbarStyle}
-      className={`
-        fixed top-0 left-0 w-full z-50
-        transition-all duration-300
-        ${isVisible ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}
-      `}
-    >
-      <div className="w-full max-w-[100%] px-6 py-4 bg-white flex items-center justify-between">
-        
-        {/* Logo */}
-        <span
-          onClick={() => navigate("/")}
-          className="text-xl font-bold cursor-pointer hover:text-[#8c281f] transition-colors"
-          style={{ color: `rgba(35, 35, 35, ${Math.max(scrollProgress, 0.7)})` }}
-        >
+    <nav className={navbarClasses}>
+      <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+        <Link to="/" className="text-xl font-bold text-gray-800">
           FREELENS
-        </span>
+        </Link>
 
-        {/* Right Side: Navigation & Auth */}
-        <div className="flex items-center gap-6">
-          {/* Only show these if user is logged in */}
+        {/* Desktop Nav */}
+        <div className="hidden md:flex items-center space-x-6">
           {isAuthenticated && (
             <>
-              <a href="/create-project" className="hover:text-[#8c281f] transition">
-                Create Project
-              </a>
-              <a href="/edit-project" className="hover:text-[#8c281f] transition">
-                Edit Project
-              </a>
-
-              {/* Topic Dropdown */}
+              <Link to="/create-project" className="hover:text-[#8c281f] transition">Create Project</Link>
+              <Link to="/edit-project" className="hover:text-[#8c281f] transition">Edit Project</Link>
+              {isInProject && (
+                <Link to="/freelancers" className="hover:text-[#8c281f] transition">Freelancers</Link>
+              )}
               <div className="relative">
                 <button
-                  onClick={() => setMenuOpen(menuOpen === "topic" ? null : "topic")}
                   className="hover:text-[#8c281f] transition"
+                  onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                 >
-                  Topic ▾
+                  More ▾
                 </button>
-                {menuOpen === "topic" && (
-                  <div className="absolute left-0 mt-2 bg-white shadow-md rounded-lg p-2 w-40">
-                    <a href="/freelancers" className="block px-4 py-2 hover:bg-gray-100">
-                      Freelancers
-                    </a>
-                  </div>
-                )}
-              </div>
-
-              {/* Project Dropdown */}
-              <div className="relative">
-                <button
-                  onClick={() => setMenuOpen(menuOpen === "project" ? null : "project")}
-                  className="hover:text-[#8c281f] transition"
-                >
-                  Project ▾
-                </button>
-                {menuOpen === "project" && (
-                  <div className="absolute left-0 mt-2 bg-white shadow-md rounded-lg p-2 w-40">
-                    <a href="/project/view-project" className="block px-4 py-2 hover:bg-gray-100">
-                      View Project
-                    </a>
-                    <a href="/project/all" className="block px-4 py-2 hover:bg-gray-100">
-                      All Projects
-                    </a>
+                {isDropdownOpen && (
+                  <div
+                    className="absolute bg-white shadow-lg rounded-md mt-2 w-48 p-2 z-50 transition-opacity duration-200 opacity-100"
+                    onMouseEnter={() => setIsDropdownOpen(true)}
+                    onMouseLeave={() => setIsDropdownOpen(false)}
+                  >
+                    <Link to="/project/all" className="block px-4 py-2 hover:bg-gray-100">All Projects</Link>
                   </div>
                 )}
               </div>
             </>
           )}
 
-          {/* If user is logged in, show logout; otherwise show login/signup */}
-          {isAuthenticated ? (
-            <button
-              onClick={logOut}
-              className="hover:text-[#8c281f] transition"
+          {!isAuthenticated ? (
+            <>
+              <button onClick={() => navigate("/login")} className="text-gray-700 hover:text-[#8c281f] transition">Login</button>
+              <button
+                onClick={() => navigate("/signup")}
+                className="bg-[#8c281f] text-white px-4 py-2 rounded-lg hover:bg-[#732018] transition"
+              >
+                Sign Up
+              </button>
+            </>
+          ) : (
+            <button 
+              onClick={logOut} 
+              className="text-gray-700 hover:text-[#8c281f] transition"
             >
               Logout
             </button>
-          ) : (
-            <AuthNavButton scrollProgress={scrollProgress} />
           )}
         </div>
+
+        {/* Mobile Menu Button */}
+        <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="md:hidden">
+          ☰
+        </button>
       </div>
+
+      {/* Mobile Dropdown */}
+      {isMobileMenuOpen && (
+        <div className="md:hidden bg-white shadow-md border-t border-gray-200 px-4 py-3 space-y-2">
+          {isAuthenticated && (
+            <>
+              <Link to="/create-project" onClick={() => setIsMobileMenuOpen(false)} className="block">Create Project</Link>
+              <Link to="/edit-project" onClick={() => setIsMobileMenuOpen(false)} className="block">Edit Project</Link>
+              {isInProject && (
+                <Link to="/freelancers" onClick={() => setIsMobileMenuOpen(false)} className="block">Freelancers</Link>
+              )}
+              <Link to="/project/all" onClick={() => setIsMobileMenuOpen(false)} className="block">All Projects</Link>
+            </>
+          )}
+
+          {!isAuthenticated ? (
+            <>
+              <button onClick={() => { setIsMobileMenuOpen(false); navigate("/login"); }} className="block w-full text-left">Login</button>
+              <button
+                onClick={() => { setIsMobileMenuOpen(false); navigate("/signup"); }}
+                className="block w-full text-left bg-[#8c281f] text-white px-4 py-2 rounded-lg mt-2"
+              >
+                Sign Up
+              </button>
+            </>
+          ) : (
+            <button onClick={() => { setIsMobileMenuOpen(false); logOut(); }} className="block w-full text-left">Logout</button>
+          )}
+        </div>
+      )}
     </nav>
   );
 };

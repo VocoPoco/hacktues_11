@@ -158,7 +158,6 @@ const HomePage = () => {
         </section>
       </div>
       
-      <Footer />
     </main>
   );
 };

@@ -4,16 +4,13 @@ import { toast } from "react-toastify";
 import { useAuth } from "../../contexts/AuthContext";
 import axios from "axios";
 import GoBackButton from "../../components/GoBackButton/goBackButton";
-import { saveTokens } from "../../utils/TokenUtils.js";
+import { saveTokens } from "../../utils/TokenUtils";
 
 const LoginPage = () => {
   const navigate = useNavigate();
   const { setUser, setIsAuthenticated } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-  });
+  const [formData, setFormData] = useState({ email: "", password: "" });
   const [showPassword, setShowPassword] = useState(false);
 
   const handleInputChange = (e) => {
@@ -24,7 +21,6 @@ const LoginPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-
     try {
       const response = await axios.post(
         `${import.meta.env.VITE_API_URL}/auth/login`,
@@ -33,23 +29,16 @@ const LoginPage = () => {
           password: formData.password,
         }
       );
-      if (response.status == 200) {
-        const {access_token, refresh_token, username} = response.data;
-
+      if (response.status === 200) {
+        const { access_token, refresh_token, username } = response.data;
         saveTokens(access_token, refresh_token);
-
-        localStorage.setItem("username", username);
-        localStorage.setItem("email", formData.email);
+        const userData = { username, email: formData.email };
+        setUser(userData);
+        setIsAuthenticated(true);
+        localStorage.setItem("user", JSON.stringify(userData));
+        navigate("/");
+        toast.success("🎉 Welcome back! You're now logged in");
       }
-
-      setUser({
-        username: formData.username,
-        email: formData.email,
-      });
-
-      setIsAuthenticated(true)
-      navigate("/");
-      toast.success("🎉 Welcome back! You're now logged in");
     } catch (error) {
       toast.error(error.response?.data?.message || "Login failed");
     } finally {
@@ -61,13 +50,8 @@ const LoginPage = () => {
     <div className="min-h-screen flex justify-center items-center bg-[#fffbf9] font-poppins p-5 relative">
       <GoBackButton />
       <div className="w-full max-w-[450px] bg-white rounded-2xl shadow-lg p-8 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
-        <h1 className="text-3xl font-cinzel text-[#232323] mb-4 uppercase tracking-wide">
-          LOG IN
-        </h1>
-        <p className="text-[#616062] text-sm mb-8">
-          Welcome back! Please log in.
-        </p>
-
+        <h1 className="text-3xl font-cinzel text-[#232323] mb-4 uppercase tracking-wide">LOG IN</h1>
+        <p className="text-[#616062] text-sm mb-8">Welcome back! Please log in.</p>
         <form className="space-y-6" onSubmit={handleSubmit}>
           <div className="space-y-4">
             <input
@@ -79,7 +63,6 @@ const LoginPage = () => {
               onChange={handleInputChange}
               required
             />
-
             <div className="relative">
               <input
                 type={showPassword ? "text" : "password"}
@@ -99,7 +82,6 @@ const LoginPage = () => {
               </button>
             </div>
           </div>
-
           <button
             type="submit"
             disabled={isLoading}
