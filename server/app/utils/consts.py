@@ -25,7 +25,7 @@ CATEGORIES = {
             "Figma": {},
             "SMS": {},
             "Squarespace": {},
-            "Thumbnail Design": {}
+            "Thumbnail Design": {},
         },
         "Programming & Software": {
             "Programming": {},
@@ -52,13 +52,13 @@ CATEGORIES = {
             "Objective-C": {},
             "XHTML": {},
             "GIS": {},
-            "Perl": {}
+            "Perl": {},
         },
         "Apps & Mobile": {
             "App & Mobile Programming": {},
             "Responsive Web Design": {},
             "Game Development": {},
-            "Mobile App Marketing": {}
+            "Mobile App Marketing": {},
         },
         "Database Design & Administration": {
             "MySQL": {},
@@ -81,7 +81,7 @@ CATEGORIES = {
             "FoxPro": {},
             "Transact-SQL": {},
             "DB2": {},
-            "Graph Database": {}
+            "Graph Database": {},
         },
         "Networking, Hardware & System Admin": {
             "Networking": {},
@@ -95,7 +95,7 @@ CATEGORIES = {
             "Cisco": {},
             "Routers": {},
             "Computer Hardware": {},
-            "SMS": {}
+            "SMS": {},
         },
         "Math / Algorithms / Analytics": {
             "Data Analysis": {},
@@ -120,7 +120,7 @@ CATEGORIES = {
             "D3.js": {},
             "Fortran": {},
             "Oracle BI": {},
-            "IBM Cognos": {}
+            "IBM Cognos": {},
         },
         "Web / Digital Marketing": {
             "Social Media Marketing": {},
@@ -147,7 +147,7 @@ CATEGORIES = {
             "SMS Marketing": {},
             "eBay Store Management": {},
             "Amazon Advertising": {},
-            "Filter Design": {}
+            "Filter Design": {},
         },
         "Management / Leadership / Training": {
             "IT Project Management": {},
@@ -171,7 +171,7 @@ CATEGORIES = {
             "Waterfall Model": {},
             "Software Configuration Management": {},
             "Vendor Management": {},
-            "Identity and Access Management": {}
+            "Identity and Access Management": {},
         },
         "Industry Specific Expertise": {
             "Risk Management": {},
@@ -198,7 +198,7 @@ CATEGORIES = {
             "Telecommunications Management": {},
             "Agriculture": {},
             "Safety Engineering": {},
-            "Sports": {}
+            "Sports": {},
         },
         "Human Resources (HR)": {
             "Business Training": {},
@@ -225,7 +225,7 @@ CATEGORIES = {
             "360 Feedback": {},
             "Benefits Design": {},
             "Life Insurance": {},
-            "Oracle PeopleSoft": {}
+            "Oracle PeopleSoft": {},
         },
         "ERP / CRM / SCM": {
             "Zoho": {},
@@ -243,7 +243,7 @@ CATEGORIES = {
             "Oracle Siebel CRM": {},
             "Oracle SCM": {},
             "Infusionsoft": {},
-            "Baan": {}
+            "Baan": {},
         },
         "Fund Raising / Raising Capital": {
             "Fundraising": {},
@@ -254,7 +254,7 @@ CATEGORIES = {
             "Venture Capital": {},
             "Private Equity": {},
             "Raising Loan Capital": {},
-            "Crowdfunding": {}
+            "Crowdfunding": {},
         },
         "SAP Software": {
             "SAP": {},
@@ -276,7 +276,7 @@ CATEGORIES = {
             "SAP BPC": {},
             "SAP SCM": {},
             "SAP Retail": {},
-            "SAP APO": {}
+            "SAP APO": {},
         },
         "Blockchain, NFT, Cryptocurrency, Tokens": {
             "Cryptocurrency": {},
@@ -299,8 +299,8 @@ CATEGORIES = {
             "Distributed Ledger Technology": {},
             "Harmony ONE": {},
             "Monero XMR": {},
-            "Hyperledger": {}
-        }
+            "Hyperledger": {},
+        },
     },
     "Education & Training": {
         "General / Other": {
@@ -328,7 +328,7 @@ CATEGORIES = {
             "Multicultural Education": {},
             "Peer Education": {},
             "Educational Institutions": {},
-            "Educational Philosophy": {}
+            "Educational Philosophy": {},
         },
         "Science & Math": {
             "Mathematics Tutoring": {},
@@ -346,7 +346,7 @@ CATEGORIES = {
             "Epidemiology": {},
             "Geology": {},
             "Astronomy": {},
-            "Toxicology": {}
+            "Toxicology": {},
         },
         "College / High School / Elementary": {
             "High School Teaching": {},
@@ -366,7 +366,7 @@ CATEGORIES = {
             "Evaluation Design": {},
             "Common Core": {},
             "Gifted Education": {},
-            "Autism Services": {}
+            "Autism Services": {},
         },
         "Information Technology & Learning Management Systems": {
             "Information Technology": {},
@@ -391,7 +391,7 @@ CATEGORIES = {
             "Articulate Studio 360": {},
             "LearnDash": {},
             "Lectora": {},
-            "Chamilo": {}
+            "Chamilo": {},
         },
         "Languages": {
             "English Teaching": {},
@@ -418,7 +418,7 @@ CATEGORIES = {
             "Korean Tutor": {},
             "Polish Tutor": {},
             "Serbian Tutor": {},
-            "Vietnamese Teacher": {}
+            "Vietnamese Teacher": {},
         },
         "Health, Fitness & Wellness": {
             "Mental Health": {},
@@ -441,7 +441,7 @@ CATEGORIES = {
             "Yoga Instruction": {},
             "Pharmacy Education": {},
             "Dental Education": {},
-            "Therapy": {}
+            "Therapy": {},
         },
         "Business & Finance": {
             "College Education Planning": {},
@@ -460,7 +460,7 @@ CATEGORIES = {
             "Compliance Training": {},
             "Salesforce Training": {},
             "Legal Education": {},
-            "SAP Training": {}
+            "SAP Training": {},
         },
         "Personal Growth & Family": {
             "Mental Health": {},
@@ -479,7 +479,7 @@ CATEGORIES = {
             "Horoscope": {},
             "Guided Meditation": {},
             "Pranic Healing": {},
-            "Chinese Astrology": {}
+            "Chinese Astrology": {},
         },
         "Materials & Media": {
             "Educational Technology": {},
@@ -492,13 +492,13 @@ CATEGORIES = {
             "Educational Video": {},
             "Training Videos": {},
             "Open Educational Resources": {},
-            "Educational Toys": {}
+            "Educational Toys": {},
         },
         "Social & Behavioral Science": {
             "Social Studies": {},
             "Sociology": {},
             "Social Science": {},
-            "Social Anthropology": {}
+            "Social Anthropology": {},
         },
         "Design & Art": {
             "Design Education": {},
@@ -509,31 +509,32 @@ CATEGORIES = {
             "Museum Education": {},
             "Early Childhood Music Education": {},
             "Dance Education": {},
-            "Acting Coaching": {}
+            "Acting Coaching": {},
         },
         "Sales & Marketing": {
             "Sales Training": {},
             "Marketing Coaching": {},
             "Customer Service Training": {},
             "Media Training": {},
-            "Automotive Sales Training": {}
+            "Automotive Sales Training": {},
         },
         "Religious": {
             "Religious Education": {},
             "Quran Translation Teacher": {},
-            "Jewish Education": {}
+            "Jewish Education": {},
         },
         "Agriculture & Farming": {
             "Agriculture": {},
             "Agronomy": {},
             "Agroforestry": {},
-            "Agroecology": {}
+            "Agroecology": {},
         },
         "Architecture & Engineering": {
             "Engineering Education": {},
-            "Architectural Education": {}
-        }
-    }
+            "Architectural Education": {},
+        },
+    },
 }
 
-LLAMA_PROMPT = "Freelancer Categories: [categories]. Project: '[project] -> [description]'. Overall Timeline: [time]. Use only the information provided below. Analyze the project and decompose it into clear, actionable subtasks. For each subtask, assign the most relevant category or categories from the given list. Output only a structured JSON array exactly following this format: [ { 'title': 'Title', 'description': 'Description', 'categories': 'Chosen category(s) from [categories]', 'budget_percentage': 'Estimated percentage of the total budget', 'approximate_time': 'Estimated time for completion of the subtask', 'id': 'Unique identifier for the subtask', 'dependencies': ['ID(s) of dependent subtasks'] } ]. Constraints: - Use exclusively the provided data; do not infer or generate any additional information. - Do not include any text or commentary outside of the JSON array. - Ensure clarity and brevity in all fields. - All subtask times must sum up to the overall project timeline [time]."
+
+OLAMMA_PROMPT = "Freelancer Categories: [categories]. Project: '[project] -> [description]'. Overall Timeline: [time]. Use only the information provided below. Analyze the project and decompose it into clear, actionable subtasks. For each subtask, assign the most relevant category or categories from the provided hierarchical list. Each assignment must include at least one main category, and from that main category, choose an appropriate subcategory and top skill. The assigned categories should be provided as an array containing the hierarchical skills in the format [Main Category, Sub Category, Top Skill]. Output only a structured JSON array exactly following this format: [ { 'title': 'Title', 'description': 'Description', 'categories': ['Main Category', 'Sub Category', 'Top Skill'], 'budget_percentage': 'Estimated percentage of the total budget', 'approximate_time': 'Estimated time for completion of the subtask', 'ID': 'Unique identifier for the subtask', 'Dependencies': ['ID(s) of dependent subtasks'] } ]. Constraints: - Use exclusively the provided data; do not infer or generate any additional information. - Do not include any text or commentary outside of the JSON array. - Ensure clarity and brevity in all fields. - All subtask times must sum up to the overall project timeline [time]."
