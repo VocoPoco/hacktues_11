@@ -2,6 +2,7 @@ from app.model.dto.freelancer_dto import FreelancerDTO
 from app.model.dto.project_data_dto import ProjectDataDTO
 from app.model.dto.subtask_dto import SubtaskDTO
 from app.utils.consts import CATEGORIES
+import re
 from app.model.user_model import User
 import requests
 from flask import jsonify
@@ -27,8 +28,18 @@ class MainService:
         return {"project_id": proj.id, "subtasks": subtasks}
 
     def _generate_and_store_subtasks(self, project_id, dataset):
-        response = self.send_prompt(dataset)
-        raw = json.dumps(response.text)
+        resp = self.send_prompt(dataset)
+        raw = getattr(resp, 'message', {}).get('content', '').strip()
+
+        print("⚙️ Ollama raw response:", repr(raw))
+
+        if not raw:
+            raise ValueError("Ollama returned an empty response — no JSON to parse")
+
+        try:
+            entries = self.extract_json_blocks(raw)
+        except json.JSONDecodeError as e:
+            raise ValueError(f"Invalid JSON from Ollama: {e.msg} — raw={raw}")
 
         try:
             subtasks = json.loads(str(raw))
@@ -36,7 +47,7 @@ class MainService:
             return jsonify({"error": "Invalid JSON from Ollama", "raw": str(raw)}), 500
         stored = []
 
-        for entry in subtasks:
+        for entry in entries:
             sub = self.SubtaskRepository.build_subtask(
                 project_id=project_id,
                 title=entry["title"],
@@ -117,6 +128,21 @@ class MainService:
         )
 
         return response
+
+
+
+    def extract_json_blocks(self, text):
+        json_pattern = r"\[\s*{.*?}\s*\]"  # Matches JSON arrays
+        matches = re.findall(json_pattern, text, re.DOTALL)
+        if not matches:
+            raise ValueError(f"No valid JSON found in response: {text}")
+
+        try:
+            # Convert each matched JSON block into Python lists, then merge them
+            extracted_json = sum((json.loads(match) for match in matches), [])
+            return extracted_json
+        except json.JSONDecodeError as e:
+            raise ValueError(f"Error parsing extracted JSON: {e.msg} — raw={text}")
 
     # @staticmethod
     # def __format_hierarchy(self, categories):
