@@ -25,38 +25,62 @@ def create_project():
             "project": project,
             "description": description,
             "budget": budget,
-            "time_period": time_period,
+            "time_period": time_period
         }
     ]
 
     # somewhere here the project is stored in the database
 
-    # result = main_service.send_prompt(dataset)
+    print("Dataset:", dataset)
 
-    # for entry in result:
+    result = main_service.send_prompt(dataset)
 
-    #     # somewhere here the subtasks are stored in the database
+    print("Result:", result)
 
-    #     subtasks = entry.get('subtasks', [])
+    content = result.get("message", {}).get("content", [])
 
-    #     for subtask in subtasks:
-    #         subtask_budget = None if budget == 'undefined' else budget * subtask.get('budget_percentage', 0)
+    subtasks = []
 
-    #         subtask_time_period = subtask.get('time_period') if time_period != 'undefined' else None
+    for subtask in content:
+        transformed_subtask = {
+            "Subtask Title": subtask.get("Subtask Description", ""),  # Rename field
+            "Assigned Category": subtask.get("Assigned Category", ""),
+            "Description": subtask.get("Explanation", ""),  # New field
+            "Budget Percentage": subtask.get("Budget Percentage", ""),
+            "Approximate Time For Task": subtask.get("Approximate Time For Task", ""),
+            "ID": subtask.get("ID", ""),
+            "Dependencies": subtask.get("Dependencies", [])
+        }
+        subtasks.append(transformed_subtask)
 
-    #         skills = subtask.get('skills', [])
-    #         freelancers = extract_freelancers(skills)
 
-    #         if subtask_budget is None:
-    #             top_freelancers = compare(freelancers)
-    #         else:
-    #             top_freelancers = compare(freelancers, subtask_budget)
+    print("Subtask:", subtasks)
 
-    #         subtask['top_freelancers'] = top_freelancers
+    normalize_subtask_percentages(subtasks)
 
-    #         if subtask_time_period is not None:
-    #             pass
-    #         subtask['time_period'] = subtask_time_period
+    # for subtask in subtasks:
+
+        # somewhere here the subtasks are stored in the database
+        #
+        # subtask_budget = None if budget == 'undefined' else float(budget) * float(
+        #     subtask.get("Budget Percentage", "0%").strip("%")) / 100
+        #
+        # subtask_time_period = subtask.get("Approximate Time For Task") if time_period != 'undefined' else None
+        #
+        # skills = subtask.get("Assigned Category", "") # TODO: Fix this
+
+        # freelancers = extract_freelancers(skills)
+        #
+        # if subtask_budget is None:
+        #     top_freelancers = compare(freelancers)
+        # else:
+        #     top_freelancers = compare(freelancers, subtask_budget)
+        #
+        # subtask['top_freelancers'] = top_freelancers
+        #
+        # if subtask_time_period is not None:
+        #     pass
+        # subtask['time_period'] = subtask_time_period
 
     # store the freelancers in the database that needs to be conneceted to the particular task
 
@@ -103,3 +127,22 @@ def extract_request_data(request_data):
         raise ValueError("Description is required and cannot be empty.")
 
     return project, budget, time_period, description
+
+def normalize_subtask_percentages(subtasks):
+
+    total_percentage = 0
+    for subtask in subtasks:
+
+        percentage_str = subtask.get("Budget Percentage", "0%")
+        percentage = float(percentage_str.strip("%"))
+        total_percentage += percentage
+
+    if total_percentage != 100:
+        scale_factor = 100 / total_percentage
+        for subtask in subtasks:
+
+            percentage_str = subtask.get("Budget Percentage", "0%")
+            percentage = float(percentage_str.strip("%"))
+            scaled_percentage = percentage * scale_factor
+
+            subtask["Budget Percentage"] = f"{scaled_percentage:.2f}%"
