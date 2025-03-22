@@ -10,7 +10,7 @@ def create_app(config_class=Config):
     app.config.from_object(config_class)
 
     cors.init_app(app, resources={
-        r"/auth/*": {
+        r"/*": {
             "origins": app.config['CORS_ORIGINS'],
             "methods": app.config['CORS_METHODS'],
             "allow_headers": app.config['CORS_ALLOW_HEADERS'],

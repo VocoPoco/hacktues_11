@@ -18,7 +18,7 @@ main_service = MainService(
 
 @main_bp.route("/create-project", methods=["POST"])
 def create_project():
-    project, budget, time_period, description = extract_request_data(request.get_json())
+    project, budget, time_period, description,  = extract_request_data(request.get_json())
 
     dataset = [
         {
