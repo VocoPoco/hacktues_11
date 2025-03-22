@@ -19,54 +19,24 @@ export const AuthProvider = ({ children }) => {
   const [isAuthLoading, setIsAuthLoading] = useState(true);
 
   // Load user from localStorage when app starts
-  const loadUser = useCallback(async (token) => {
+  const loadUser = useCallback(() => {
     setIsAuthLoading(true);
-    const authToken = token || localStorage.getItem("authToken");
-
-    if (!authToken) {
+    const accessToken = getAccessToken();
+    const storedUsername = localStorage.getItem("username");
+    const storedEmail = localStorage.getItem("email");
+  
+    if (accessToken && storedUsername && storedEmail) {
+      setUser({ username: storedUsername, email: storedEmail });
+      setIsAuthenticated(true);
+    } else {
+      removeTokens();
+      console.log("User logged out for some reason");
+      localStorage.removeItem("username");
+      localStorage.removeItem("email");
       setIsAuthenticated(false);
       setUser(null);
-      setIsAuthLoading(false);
-      return;
     }
-
-    try {
-      const response = await axios.get(`${import.meta.env.VITE_API_URL}/auth/me`, {
-        headers: { Authorization: `Bearer ${authToken}` },
-      });
-      setUser(response.data);
-      setIsAuthenticated(true);
-      localStorage.setItem("user", JSON.stringify(response.data)); // Store user in localStorage
-    } catch (error) {
-      console.error("Failed to load user:", error);
-      // Attempt to refresh the token if accessToken is invalid
-      const refreshToken = getRefreshToken();
-      if (refreshToken) {
-        try {
-          const refreshResponse = await axios.post(`${import.meta.env.VITE_API_URL}/auth/refresh`, {
-            refresh_token: refreshToken,
-          });
-
-          const { access_token, refresh_token } = refreshResponse.data;
-          saveTokens(access_token, refresh_token);
-
-          // Retry fetching user data after refreshing the token
-          const userResponse = await axios.get(`${import.meta.env.VITE_API_URL}/auth/me`, {
-            headers: { Authorization: `Bearer ${access_token}` },
-          });
-
-          setUser(userResponse.data);
-          setIsAuthenticated(true);
-        } catch (refreshError) {
-          console.error("Token refresh failed:", refreshError);
-          logOut();
-        }
-      } else {
-        logOut();
-      }
-    } finally {
-      setIsAuthLoading(false);
-    }
+    setIsAuthLoading(false);
   }, []);
 
   useEffect(() => {

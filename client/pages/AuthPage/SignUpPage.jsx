@@ -44,7 +44,8 @@ const SignUpPage = () => {
         const { access_token, refresh_token } = response.data;
         saveTokens(access_token, refresh_token);
         const userData = { username: formData.username, email: formData.email };
-        localStorage.setItem("user", JSON.stringify(userData));
+        localStorage.setItem("username", formData.confirmPasswordusername);
+        localStorage.setItem("email", formData.email);
         setUser(userData);
         setIsAuthenticated(true);
         navigate("/");

@@ -35,7 +35,8 @@ const LoginPage = () => {
         const userData = { username, email: formData.email };
         setUser(userData);
         setIsAuthenticated(true);
-        localStorage.setItem("user", JSON.stringify(userData));
+        localStorage.setItem("username", username);
+        localStorage.setItem("email", formData.email);
         navigate("/");
         toast.success("🎉 Welcome back! You're now logged in");
       }
