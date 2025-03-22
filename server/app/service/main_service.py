@@ -1,7 +1,7 @@
 from app.model.dto.freelancer_dto import FreelancerDTO
 from app.model.dto.project_data_dto import ProjectDataDTO
 from app.model.dto.subtask_dto import SubtaskDTO
-from app.utils.consts import CATEGORIES, LLAMA_PROMPT
+from app.utils.consts import CATEGORIES
 import requests
 from flask import jsonify
 import ollama
@@ -13,43 +13,6 @@ class MainService:
         self.FreelancerRepository = freelancer_repository
         self.ProjectRepository = project_repository
         self.SubtaskRepository = subtask_repository
-
-    def send_prompt(self, dataset):
-        data = dataset[0]
-        project = data.get("project", "")
-        description = data.get("description", "")
-        budget = data.get("budget", "undefined")
-        time_period = data.get("time_period", "undefined")
-
-        prompt = f"""Freelancer Categories: {json.dumps(CATEGORIES)}.
-    Project: "{project} -> {description}".
-    Overall Timeline: {time_period}.
-    Use only the information provided below. Analyze the project and decompose it into clear, actionable subtasks. For each subtask, assign the most relevant category or categories from the provided hierarchical list. Each assignment must include at least one main category, and from that main category, choose an appropriate subcategory and top skill. The assigned categories should be provided as an array containing the hierarchical skills in the format [Main Category, Sub Category, Top Skill]. Output only a structured JSON array exactly following this format: [ {{ "title": "Title", "description": "Description", "categories": ["Main Category", "Sub Category", "Top Skill"], "budget_percentage": "Estimated percentage of the total budget", "approximate_time": "Estimated time for completion of the subtask", "ID": "Unique identifier for the subtask", "Dependencies": ["ID(s) of dependent subtasks"] }} ]. Constraints: - Use exclusively the provided data; do not infer or generate any additional information. - Do not include any text or commentary outside of the JSON array. - Ensure clarity and brevity in all fields. - All subtask times must sum up to the overall project timeline {time_period}."""
-
-        payload = {"messages": [{"role": "user", "content": prompt}]}
-
-        response = ollama.chat(
-            model="llama3.2:1b",
-            messages=payload["messages"],
-            stream=False,
-            options={"temperature": 0.2},
-        )
-
-        print("Prompt sent:", prompt)
-        print("Response received:", response)
-
-        if response.status_code == 200:
-            return jsonify(response.json())
-        else:
-            return (
-                jsonify(
-                    {
-                        "error": "Failed to fetch response from API",
-                        "details": response.text,
-                    }
-                ),
-                500,
-            )
 
     def get_subtasks_and_freelancers_by_project(self, project_id):
 
@@ -95,6 +58,33 @@ class MainService:
         except Exception as e:
             # Optionally, add logging or more specific error handling here
             raise Exception(f"Error fetching projects for user {user_id}: {str(e)}")
+
+    def send_prompt(self, dataset):
+        data = dataset[0]
+        project = data.get("project", "")
+        description = data.get("description", "")
+        budget = data.get("budget", "undefined")
+        time_period = data.get("time_period", "undefined")
+
+        prompt = f'''Freelancer Categories: {json.dumps(CATEGORIES)}.
+        Project: "{project}".
+        Overall Timeline: {time_period}.
+        Use only the information provided below. Analyze the project and decompose it into clear, actionable subtasks. For each subtask, assign the most relevant category or categories from the provided hierarchical list. Each assignment must include at least one main category, and from that main category, choose an appropriate subcategory and top skill. The assigned categories should be provided as an array containing the hierarchical skills in the format [Main Category, Sub Category, Top Skill]. Output only a structured JSON array exactly following this format: [ {{ "title": "Title", "description": "Description", "categories": ["Main Category", "Sub Category", "Top Skill"], "budget_percentage": "Estimated percentage of the total budget", "approximate_time": "Estimated time for completion of the subtask", "ID": "Unique identifier for the subtask", "Dependencies": ["ID(s) of dependent subtasks"] }} ]. Constraints: - Use exclusively the provided data; do not infer or generate any additional information. - Do not include any text or commentary outside of the JSON array. - Ensure clarity and brevity in all fields. - All subtask times must sum up to the overall project timeline {time_period}.'''
+
+        payload = {
+            "messages": [
+                {"role": "user", "content": prompt}
+            ]
+        }
+
+        response = ollama.chat(
+            model="llama2:7b",
+            messages=payload["messages"],
+            options={"temperature": 0.2},
+            stream=False
+        )
+
+        return response
 
     # @staticmethod
     # def __format_hierarchy(self, categories):
