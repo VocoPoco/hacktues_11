@@ -26,7 +26,7 @@ def create_project():
             "project": project,
             "description": description,
             "budget": budget,
-            "time_period": time_period,
+            "time_period": time_period
         }
     ]
 
@@ -98,7 +98,6 @@ def extract_request_data(request_data):
         raise ValueError("Description is required and cannot be empty.")
 
     return project, budget, time_period, description
-
 
 def normalize_subtask_percentages(subtasks):
 
