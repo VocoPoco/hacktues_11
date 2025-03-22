@@ -19,6 +19,7 @@ import CreateProject from "../pages/CreateProject/createProject.jsx";
 import ProjectDetail from "../pages/ProjectDetail/projectDetail.jsx";
 import AllProjects from "../pages/AllProjectsPage/allProjects.jsx";
 import MainPage from "../pages/MainPage/mainPage.jsx";
+import Subtasks from "../pages/SubtasksPage/subtasksPage.jsx";
 
 const App = () => {
   const location = useLocation();
@@ -57,6 +58,7 @@ const App = () => {
         <Route path="/freelancers" element={isAuthenticated ? <FreelancersPage /> : <LogInPage />} />
         <Route path="/all-projects" element={isAuthenticated ? < AllProjects/> : <LogInPage />} />
         <Route path="/create-project" element={isAuthenticated ? <CreateProject /> : <LogInPage />} />
+        <Route path="/subtasks" element={isAuthenticated ? <SubtasksPage /> : <LogIn/>}/>
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
       <Footer />
