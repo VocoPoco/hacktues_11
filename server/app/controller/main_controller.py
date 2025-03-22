@@ -1,6 +1,6 @@
 import requests
 
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, Response
 
 from app.repository.freelancers_repository import FreelancerRepository
 from app.repository.project_repository import ProjectRepository
@@ -8,6 +8,7 @@ from app.repository.subtask_repository import SubtaskRepository
 from app.service.main_service import MainService
 from app.automation.scraper import extract_freelancers
 from app.automation.comparator import compare
+import json
 
 main_bp = Blueprint("main", __name__, url_prefix="/api")
 
@@ -31,62 +32,26 @@ def create_project():
 
     # somewhere here the project is stored in the database
 
-    result = main_service.send_prompt(dataset)
+    response = main_service.send_prompt(dataset)
 
-    print("Result:", result)
+    try:
+        subtasks = json.loads(str(response))
+    except ValueError:
+        return jsonify({"error": "Invalid JSON from Ollama", "raw": str(response)}), 500
 
-    # content = result.get("message", {}).get("content", [])
+    for entry in subtasks:
 
-    # subtasks = []
+        # somewhere here the subtasks are stored in the database
 
-    # for subtask in content:
-    #     transformed_subtask = {
-    #         "Subtask Title": subtask.get("Subtask Description", ""),  # Rename field
-    #         "Assigned Category": subtask.get("Assigned Category", ""),
-    #         "Description": subtask.get("Explanation", ""),  # New field
-    #         "Budget Percentage": subtask.get("Budget Percentage", ""),
-    #         "Approximate Time For Task": subtask.get("Approximate Time For Task", ""),
-    #         "ID": subtask.get("ID", ""),
-    #         "Dependencies": subtask.get("Dependencies", []),
-    #     }
-    #     subtasks.append(transformed_subtask)
+        pct = entry.get("budgetPercentage", "0%").rstrip("%")
+        budget_amount = None if budget == "undefined" else float(budget) * float(
+            entry["budgetPercentage"].rstrip("%")) / 100
+        entry_time = entry.get("approximateTime") if time_period != "undefined" else None
 
-    # print("Subtask:", subtasks)
+        skills = entry.get("categories", [])
+        freelancers = extract_freelancers(skills) # TODO: Fix this
 
-    # normalize_subtask_percentages(subtasks)
-
-    # for subtask in subtasks:
-
-    #     # somewhere here the subtasks are stored in the database
-
-    #     subtask_budget = (
-    #         None
-    #         if budget == "undefined"
-    #         else float(budget)
-    #         * float(subtask.get("Budget Percentage", "0%").strip("%"))
-    #         / 100
-    #     )
-
-    #     subtask_time_period = (
-    #         subtask.get("Approximate Time For Task")
-    #         if time_period != "undefined"
-    #         else None
-    #     )
-
-    #     skills = subtask.get("Assigned Category", "")  # TODO: Fix this
-
-    #     freelancers = extract_freelancers(skills)
-
-    #     if subtask_budget is None:
-    #         top_freelancers = compare(freelancers)
-    #     else:
-    #         top_freelancers = compare(freelancers, subtask_budget)
-
-    #     subtask["top_freelancers"] = top_freelancers
-
-    #     if subtask_time_period is not None:
-    #         pass
-    #     subtask["time_period"] = subtask_time_period
+        matches = compare(freelancers) if budget_amount is None else compare(freelancers, budget_amount)
 
     # store the freelancers in the database that needs to be conneceted to the particular task
 
