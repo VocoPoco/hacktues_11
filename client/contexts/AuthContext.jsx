@@ -16,28 +16,29 @@ export const useAuth = () => {
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthLoading, setIsAuthLoading] = useState(true);
 
   // Load user from localStorage when app starts
-  const loadUser = useCallback(async () => {
-    const accessToken = getAccessToken();
-    const storedUser = localStorage.getItem("user");
+  const loadUser = useCallback(async (token) => {
+    setIsAuthLoading(true);
+    const authToken = token || localStorage.getItem("authToken");
 
-    if (!accessToken || !storedUser) {
+    if (!authToken) {
       setIsAuthenticated(false);
       setUser(null);
+      setIsAuthLoading(false);
       return;
     }
 
     try {
       const response = await axios.get(`${import.meta.env.VITE_API_URL}/auth/me`, {
-        headers: { Authorization: `Bearer ${accessToken}` },
+        headers: { Authorization: `Bearer ${authToken}` },
       });
-
       setUser(response.data);
       setIsAuthenticated(true);
+      localStorage.setItem("user", JSON.stringify(response.data)); // Store user in localStorage
     } catch (error) {
       console.error("Failed to load user:", error);
-
       // Attempt to refresh the token if accessToken is invalid
       const refreshToken = getRefreshToken();
       if (refreshToken) {
@@ -63,11 +64,13 @@ export const AuthProvider = ({ children }) => {
       } else {
         logOut();
       }
+    } finally {
+      setIsAuthLoading(false);
     }
   }, []);
 
   useEffect(() => {
-    loadUser();
+    loadUser(); // Call loadUser without any token to use localStorage
   }, [loadUser]);
 
   const logOut = useCallback(async () => {
@@ -98,7 +101,8 @@ export const AuthProvider = ({ children }) => {
         setIsAuthenticated,
         isAuthenticated,
         logOut,
-        loadUser,
+        loadUser, // Ensure loadUser is available if needed elsewhere
+        isAuthLoading,
       }}
     >
       {children}

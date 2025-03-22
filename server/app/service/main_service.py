@@ -49,23 +49,26 @@ class MainService:
                 "details": response.text
             }), 500
 
-    @staticmethod
     def __construct_prompt(self, dataset):
         #formatted_categories = self.__format_hierarchy(CATEGORIES)
 
         formatted_prompts = []
 
-        if 'project' not in dataset or 'description' not in dataset:
-            raise KeyError("Each dataset item must contain 'project', 'description' and 'time_period' keys.")
+        if not isinstance(dataset, list):
+            raise ValueError("Dataset must be a list of dictionaries.")
 
-        formatted_prompt = LLAMA_PROMPT.replace("[project]",
-                                                dataset["project"]).replace("[description]",
-                                                                                dataset["description"]).replace("[categories]",
-                                                                                                                CATEGORIES).replace("[time_period]",
-                                                                                                                                              dataset["time_period"])
+        for item in dataset:
+            if not all(key in item for key in ['project', 'description', 'time_period']):
+                raise KeyError("Each dataset item must contain 'project', 'description', and 'time_period' keys.")
+
+        formatted_prompt = LLAMA_PROMPT.replace("[project]", item["project"]) \
+            .replace("[description]", item["description"]) \
+            .replace("[categories]", CATEGORIES) \
+            .replace("[time_period]", item["time_period"])
         formatted_prompts.append(formatted_prompt)
 
         return formatted_prompts
+
 
     def get_subtasks_and_freelancers_by_project(self, project_id):
 
