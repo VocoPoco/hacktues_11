@@ -13,7 +13,7 @@ class ProjectRepository:
         return Project.query.filter_by(user_id=user_id).all()
 
     def build_project(
-        self, name: str, description: str, budget, time_period: str, user_id: int
+        self, name: str, description: str, budget, time_period: str, user_id: str
     ) -> Project:
         """
         Instantiate a new Project instance.
@@ -57,8 +57,3 @@ class ProjectRepository:
             db.session.rollback()
             raise e
 
-    def project_exists(self, user_id: int, name: str) -> bool:
-        """Check if a Project exists for the given user ID and name."""
-        return db.session.query(
-            exists().where(and_(Project.user_id == user_id, Project.name == name))
-        ).scalar()
