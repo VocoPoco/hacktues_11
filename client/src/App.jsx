@@ -58,7 +58,7 @@ const App = () => {
         <Route path="/freelancers" element={isAuthenticated ? <FreelancersPage /> : <LogInPage />} />
         <Route path="/all-projects" element={isAuthenticated ? < AllProjects/> : <LogInPage />} />
         <Route path="/create-project" element={isAuthenticated ? <CreateProject /> : <LogInPage />} />
-        <Route path="/subtasks" element={isAuthenticated ? <SubtasksPage /> : <LogIn/>}/>
+        <Route path="/subtasks" element={isAuthenticated ? <Subtasks /> : <LogInPage/>}/>
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
       <Footer />
