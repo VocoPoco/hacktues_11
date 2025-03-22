@@ -4,11 +4,11 @@ import { toast } from "react-toastify";
 import { useAuth } from "../../contexts/AuthContext";
 import axios from "axios";
 import GoBackButton from "../../components/GoBackButton/goBackButton";
-import { saveTokens } from "../../utils/TokenUtils.js";
+import { saveTokens } from "../../utils/TokenUtils";
 
 const SignUpPage = () => {
   const navigate = useNavigate();
-  const { setUser } = useAuth();
+  const { setUser, setIsAuthenticated } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     username: "",
@@ -26,14 +26,11 @@ const SignUpPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     if (formData.password !== formData.confirmPassword) {
       toast.error("Passwords do not match!");
       return;
     }
-
     setIsLoading(true);
-
     try {
       const response = await axios.post(
         `${import.meta.env.VITE_API_URL}/auth/register`,
@@ -43,24 +40,16 @@ const SignUpPage = () => {
           password: formData.password,
         }
       );
-
-      if(response.status == 201) {
-
-        const {access_token, refresh_token} = response.data;
-
+      if (response.status === 201) {
+        const { access_token, refresh_token } = response.data;
         saveTokens(access_token, refresh_token);
-
-        localStorage.setItem("username", formData.username);
-        localStorage.setItem("email", formData.email);
+        const userData = { username: formData.username, email: formData.email };
+        localStorage.setItem("user", JSON.stringify(userData));
+        setUser(userData);
+        setIsAuthenticated(true);
+        navigate("/");
+        toast.success("Registration successful!");
       }
-
-      setUser({
-        username: formData.username,
-        email: formData.email,
-      });
-
-      navigate("/");
-      toast.success("Registration successful!");
     } catch (error) {
       toast.error(error.response?.data?.message || "Registration failed");
     } finally {
@@ -72,38 +61,33 @@ const SignUpPage = () => {
     <div className="min-h-screen flex justify-center items-center bg-[#fffbf9] font-poppins p-5 relative">
       <GoBackButton />
       <div className="w-full max-w-[450px] bg-white rounded-2xl shadow-lg p-8 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
-        <h1 className="text-3xl font-cinzel text-[#232323] mb-4 uppercase tracking-wide">
-          Create Account
-        </h1>
-
+        <h1 className="text-3xl font-cinzel text-[#232323] mb-4 uppercase tracking-wide">Create Account</h1>
         <form className="space-y-6" onSubmit={handleSubmit}>
           <div className="space-y-4">
             <input
               type="text"
               name="username"
               placeholder="Username"
-              className="w-full px-4 py-3 border border-[#616062]/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#8c281f] focus:border-transparent placeholder-[#616062]/50"
+              className="w-full px-4 py-3 border rounded-lg"
               value={formData.username}
               onChange={handleInputChange}
               required
             />
-
             <input
               type="email"
               name="email"
               placeholder="Email Address"
-              className="w-full px-4 py-3 border border-[#616062]/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#8c281f] focus:border-transparent placeholder-[#616062]/50"
+              className="w-full px-4 py-3 border rounded-lg"
               value={formData.email}
               onChange={handleInputChange}
               required
             />
-
             <div className="relative">
               <input
                 type={showPassword ? "text" : "password"}
                 name="password"
                 placeholder="Password"
-                className="w-full px-4 py-3 border border-[#616062]/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#8c281f] focus:border-transparent placeholder-[#616062]/50 pr-12"
+                className="w-full px-4 py-3 border rounded-lg pr-12"
                 value={formData.password}
                 onChange={handleInputChange}
                 required
@@ -111,18 +95,17 @@ const SignUpPage = () => {
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-3 text-[#616062] hover:text-[#8c281f] font-medium text-sm transition-colors"
+                className="absolute right-3 top-3"
               >
                 {showPassword ? "Hide" : "Show"}
               </button>
             </div>
-
             <div className="relative">
               <input
                 type={showConfirmPassword ? "text" : "password"}
                 name="confirmPassword"
                 placeholder="Confirm Password"
-                className="w-full px-4 py-3 border border-[#616062]/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#8c281f] focus:border-transparent placeholder-[#616062]/50 pr-12"
+                className="w-full px-4 py-3 border rounded-lg pr-12"
                 value={formData.confirmPassword}
                 onChange={handleInputChange}
                 required
@@ -130,29 +113,20 @@ const SignUpPage = () => {
               <button
                 type="button"
                 onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                className="absolute right-3 top-3 text-[#616062] hover:text-[#8c281f] font-medium text-sm transition-colors"
+                className="absolute right-3 top-3"
               >
                 {showConfirmPassword ? "Hide" : "Show"}
               </button>
             </div>
           </div>
-
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full py-4 bg-[#8c281f] text-white font-semibold rounded-xl hover:bg-[#732018] transition-all duration-300"
+            className="w-full py-4 bg-[#8c281f] text-white rounded-xl hover:bg-[#732018] transition-all"
           >
-            {isLoading ? (
-              <div className="inline-flex items-center">
-                <div className="w-4 h-4 border-2 border-t-transparent border-white rounded-full animate-spin mr-2"></div>
-                Registering...
-              </div>
-            ) : (
-              "Sign Up"
-            )}
+            {isLoading ? "Registering..." : "Sign Up"}
           </button>
         </form>
-
         <div className="mt-6 text-sm text-[#616062]">
           <p>
             Already have an account?{" "}

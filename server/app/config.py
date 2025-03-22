@@ -18,10 +18,7 @@ class Config:
     JWT_VERIFY_SUB = False
     CORS_ORIGINS = [
         "http://localhost:5173",
-        "http://localhost:5174",
-        "https://api.nrgtrw.com",
-        "https://www.nrgtrw.com",
-        "https://nrgtrw.com"
+        "http://localhost:5174"
     ]
     CORS_METHODS = ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
     CORS_ALLOW_HEADERS = ["Content-Type", "Authorization", "x-access-token", "Cache-Control"]
