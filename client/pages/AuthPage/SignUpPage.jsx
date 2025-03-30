@@ -44,7 +44,7 @@ const SignUpPage = () => {
         const { access_token, refresh_token } = response.data;
         saveTokens(access_token, refresh_token);
         const userData = { username: formData.username, email: formData.email };
-        localStorage.setItem("username", formData.confirmPasswordusername);
+        localStorage.setItem("username", formData.username);
         localStorage.setItem("email", formData.email);
         setUser(userData);
         setIsAuthenticated(true);
@@ -59,17 +59,23 @@ const SignUpPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex justify-center items-center bg-[#fffbf9] font-poppins p-5 relative">
-      <GoBackButton />
-      <div className="w-full max-w-[450px] bg-white rounded-2xl shadow-lg p-8 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
-        <h1 className="text-3xl font-cinzel text-[#232323] mb-4 uppercase tracking-wide">Create Account</h1>
-        <form className="space-y-6" onSubmit={handleSubmit}>
-          <div className="space-y-4">
+    <div className="min-h-screen flex justify-center items-center bg-bg-primary font-poppins p-4">
+      <div className="flex-[0_1_33%] max-w-[360px] bg-bg-secondary rounded-xl shadow-lg p-6">
+        {/* <GoBackButton className="mb-4" /> */}
+        
+        <div className="text-center mb-6">
+          <h1 className="text-2xl font-cinzel text-text-primary mb-2 uppercase">
+            Create Account
+          </h1>
+        </div>
+
+        <form className="space-y-4" onSubmit={handleSubmit}>
+          <div className="space-y-3">
             <input
               type="text"
               name="username"
               placeholder="Username"
-              className="w-full px-4 py-3 border rounded-lg"
+              className="w-full px-3 py-2.5 text-sm border-divider border rounded-lg bg-bg-secondary placeholder:text-text-secondary text-text-primary"
               value={formData.username}
               onChange={handleInputChange}
               required
@@ -78,7 +84,7 @@ const SignUpPage = () => {
               type="email"
               name="email"
               placeholder="Email Address"
-              className="w-full px-4 py-3 border rounded-lg"
+              className="w-full px-3 py-2.5 text-sm border-divider border rounded-lg bg-bg-secondary placeholder:text-text-secondary text-text-primary"
               value={formData.email}
               onChange={handleInputChange}
               required
@@ -88,7 +94,7 @@ const SignUpPage = () => {
                 type={showPassword ? "text" : "password"}
                 name="password"
                 placeholder="Password"
-                className="w-full px-4 py-3 border rounded-lg pr-12"
+                className="w-full px-3 py-2.5 text-sm border-divider border rounded-lg pr-12 bg-bg-secondary placeholder:text-text-secondary text-text-primary"
                 value={formData.password}
                 onChange={handleInputChange}
                 required
@@ -96,7 +102,7 @@ const SignUpPage = () => {
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-3"
+                className="absolute right-3 top-2.5 text-text-secondary text-xs"
               >
                 {showPassword ? "Hide" : "Show"}
               </button>
@@ -106,7 +112,7 @@ const SignUpPage = () => {
                 type={showConfirmPassword ? "text" : "password"}
                 name="confirmPassword"
                 placeholder="Confirm Password"
-                className="w-full px-4 py-3 border rounded-lg pr-12"
+                className="w-full px-3 py-2.5 text-sm border-divider border rounded-lg pr-12 bg-bg-secondary placeholder:text-text-secondary text-text-primary"
                 value={formData.confirmPassword}
                 onChange={handleInputChange}
                 required
@@ -114,26 +120,28 @@ const SignUpPage = () => {
               <button
                 type="button"
                 onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                className="absolute right-3 top-3"
+                className="absolute right-3 top-2.5 text-text-secondary text-xs"
               >
                 {showConfirmPassword ? "Hide" : "Show"}
               </button>
             </div>
           </div>
+
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full py-4 bg-[#8c281f] text-white rounded-xl hover:bg-[#732018] transition-all"
+            className="w-full py-2.5 primary rounded-lg text-sm font-medium hover:shadow-accent-primary"
           >
             {isLoading ? "Registering..." : "Sign Up"}
           </button>
         </form>
-        <div className="mt-6 text-sm text-[#616062]">
-          <p>
+
+        <div className="mt-6 pt-4 border-t border-divider">
+          <p className="text-text-secondary text-xs text-center">
             Already have an account?{" "}
             <button
               onClick={() => navigate("/login")}
-              className="text-[#232323] font-semibold underline hover:text-[#8c281f] transition-colors"
+              className="text-accent-secondary font-semibold underline hover:text-accent-primary transition-colors"
             >
               Log In
             </button>

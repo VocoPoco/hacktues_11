@@ -1,90 +1,387 @@
-@import "tailwindcss";
-button:hover{
-  cursor:pointer;
-  transform: scale(1.1);
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Cormorant+Garamond:wght@400;700&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================
+   Theme Variables & Base Styles
+============================ */
+:root {
+  /* Core Variables - Dark Mode */
+  --bg-primary: #0a0a0a;
+  --bg-secondary: #1a1a1a;
+  --text-primary: #f5f5f5;
+  --text-secondary: #adb5bd;
+  --accent-primary: #d4af37;
+  --accent-secondary: #c5a347;
+  --divider: #333333;
+  --hover-overlay: rgba(212, 175, 55, 0.15);
+  --card-bg: #1a1a1a;
+  --border-radius: 12px;
+
+  /* Luxury Theme Extensions */
+  --primary: #d4af37;
+  --primary-hover: #c5a347;
+  --gold-accent: #ffdd00;
+  
+  /* Light Mode Overrides */
+  @media (prefers-color-scheme: light) {
+    --bg-primary: #ffffff;
+    --bg-secondary: #f9f9f9;
+    --text-primary: #2a2a2a;
+    --text-secondary: #495057;
+    --accent-primary: #c5a47f;
+    --accent-secondary: #b08f6a;
+    --divider: #e5e7eb;
+    --card-bg: #ffffff;
+  }
 }
-/* Hide the scrollbar but allow scrolling */
-html, body {
-  overflow-y: scroll; /* Forces the page to be scrollable even if the scrollbar is hidden */
-  -ms-overflow-style: none; /* Hide scrollbar in IE and Edge */
-  scrollbar-width: none; /* Hide scrollbar in Firefox */
+
+/* ============================
+   Base Resets & Global Styles
+============================ */
+html {
+  font-size: 100%;
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+  -webkit-tap-highlight-color: transparent;
+  overflow-x: hidden;
+  scrollbar-width: none;
+  
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 body {
-  overflow: auto; /* Allow scrolling but hide the scrollbar */
-  transition: transform 0.3s ease;
+  @apply min-h-screen;
+  margin: 0;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  line-height: 1.7;
+  letter-spacing: 0.02em;
 }
 
-/* Optional: This hides the scrollbar specifically for the body element */
-body::-webkit-scrollbar {
-  display: none; /* Hide scrollbar in Webkit-based browsers like Chrome, Safari */
+/* ============================
+   Enhanced Typography
+============================ */
+h1, h2, h3, h4, h5, h6 {
+  @apply font-bold tracking-tight;
+  color: var(--text-primary);
+  margin: 1.5rem 0 0.75rem;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+  &.font-playfair {
+    font-family: 'Playfair Display', serif;
+  }
+  &.font-cormorant {
+    font-family: 'Cormorant Garamond', serif;
+  }
 }
 
-/* :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
+h1 { @apply text-4xl md:text-5xl; }
+h2 { @apply text-3xl md:text-4xl; }
+h3 { @apply text-2xl md:text-3xl; }
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+p {
+  @apply max-w-3xl;
+  color: var(--text-secondary);
+  margin-bottom: 1.5rem;
+}
 
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+/* ============================
+   Interactive Elements
+============================ */
+button {
+  @apply transition-all duration-300 ease-out rounded-xl py-3 px-6 font-medium;
+  background: var(--bg-secondary);
+  border: 1px solid var(--divider);
+  color: var(--text-primary);
+
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 20px -6px var(--accent-primary);
+  }
+
+  &:active {
+    transform: translateY(1px);
+  }
+
+  &.primary {
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+    border: none;
+    color: white;
+  }
 }
 
 a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
+  @apply transition-colors duration-300 relative;
+  color: var(--accent-secondary);
+
+  &::after {
+    content: '';
+    @apply absolute bottom-0 left-0 w-0 h-px transition-all duration-300;
+    background: currentColor;
+  }
+
+  &:hover::after {
+    @apply w-full;
+  }
 }
 
-body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
-}
-
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
-}
-
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
+/* ============================
+   Luxury Animated Buttons
+============================ */
+.accent-button {
+  position: relative;
+  overflow: hidden;
+  border: none;
   cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+  isolation: isolate;
+  transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+  background: linear-gradient(
+    135deg,
+    var(--accent-primary) 0%,
+    var(--accent-secondary) 100%
+  );
+  border-radius: 0.75rem;
+  padding: 1.25rem 2.75rem;
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 700;
+  font-size: 1.3rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-primary);
+  box-shadow: 
+    0 4px 24px -4px rgba(var(--accent-primary), 0.2),
+    0 2px 6px -2px rgba(0, 0, 0, 0.1);
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      120deg,
+      transparent,
+      rgba(255, 255, 255, 0.15) 50%,
+      transparent
+    );
+    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: repeating-linear-gradient(
+      45deg,
+      transparent 0,
+      transparent 1px,
+      rgba(0, 0, 0, 0.05) 2px,
+      rgba(0, 0, 0, 0.05) 3px
+    );
+    mix-blend-mode: multiply;
+    opacity: 0.4;
+  }
+
+  &:hover {
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 
+      0 8px 32px -4px rgba(var(--accent-primary), 0.3),
+      0 4px 16px -4px rgba(var(--accent-secondary), 0.25),
+      0 0 12px 2px rgba(255, 215, 0, 0.15);
+
+    &::before {
+      left: 100%;
+    }
+
+    .button-sparkle {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  &:active {
+    transform: translateY(1px) scale(0.98);
+    box-shadow: 
+      0 2px 8px -2px rgba(var(--accent-primary), 0.3),
+      0 1px 4px -2px rgba(0, 0, 0, 0.2);
+  }
+
+  .button-sparkle {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background: rgba(255, 255, 255, 0.4);
+    border-radius: 50%;
+    pointer-events: none;
+    opacity: 0;
+    transform: scale(0);
+    animation: sparkle 1.5s infinite;
+    
+    &:nth-child(1) {
+      top: 20%;
+      left: 10%;
+      animation-delay: 0.2s;
+    }
+    
+    &:nth-child(2) {
+      top: 60%;
+      right: 15%;
+      animation-delay: 0.5s;
+    }
+  }
 }
 
+/* ============================
+   Form Elements
+============================ */
+input, textarea, select {
+  @apply transition-all duration-300 rounded-xl py-2 px-4;
+  background: var(--bg-secondary);
+  border: 1px solid var(--divider);
+  color: var(--text-primary);
+
+  &:focus {
+    border-color: var(--accent-primary);
+    box-shadow: 0 0 0 3px rgba(var(--accent-primary), 0.3);
+  }
+}
+
+/* ============================
+   Component Styles
+============================ */
+.navbar-container {
+  @apply py-4 px-8;
+  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--divider);
+
+  .nav-link {
+    @apply px-4 py-2 rounded-lg transition-colors;
+    
+    &:hover {
+      background: var(--hover-overlay);
+    }
+    
+    &.active {
+      background: rgba(var(--accent-primary), 0.2);
+      color: var(--accent-primary);
+    }
+  }
+}
+
+.glass-effect {
+  @apply backdrop-blur-xl bg-opacity-60;
+  background: rgba(var(--bg-secondary), 0.8);
+  border: 1px solid var(--divider);
+}
+
+/* ============================
+   Utility Classes
+============================ */
+.hover-scale {
+  @apply transform transition-transform duration-300 hover:scale-105;
+}
+
+/* ============================
+   Custom Scroll Container
+============================ */
+.scroll-container {
+  @apply overflow-y-auto;
+  
+  &::-webkit-scrollbar {
+    @apply w-2;
+    
+    &-thumb {
+      @apply rounded-full;
+      background-color: var(--accent-secondary);
+    }
+  }
+  
+  scrollbar-color: var(--accent-secondary) transparent;
+}
+
+/* ============================
+   Animations
+============================ */
+@keyframes slide-up {
+  from { transform: translateY(10px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes river-flow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes pulse-ring {
+  0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(218, 139, 49, 1); }
+  70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(204, 202, 79, 0); }
+  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(220, 231, 63, 0); }
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-150%); }
+  100% { transform: translateX(200%); }
+}
+
+@keyframes sparkle {
+  0% {
+    transform: scale(0) translateY(0);
+    opacity: 0.6;
+  }
+  50% {
+    transform: scale(1) translateY(-20px);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0) translateY(-40px);
+    opacity: 0;
+  }
+}
+
+.animate {
+  &-slide-up {
+    animation: slide-up 0.3s ease-out forwards;
+  }
+  
+  &-river {
+    animation: river-flow 20s linear infinite;
+    background-size: 200% 100%;
+  }
+  
+  &-pulse-ring {
+    animation: pulse-ring 2s infinite;
+  }
+}
+
+/* ============================
+   Responsive Overrides
+============================ */
+@media screen and (min-width: 768px) {
+  h1 {
+    font-size: 3.2rem;
+  }
+}
+
+/* ============================
+   Theme Color Scheme
+============================ */
 @media (prefers-color-scheme: light) {
   :root {
-    color: #213547;
-    background-color: #ffffff;
+    color-scheme: light;
   }
+  
   a:hover {
-    color: #747bff;
+    color: var(--accent-secondary);
   }
+
   button {
-    background-color: #f9f9f9;
+    background-color: var(--bg-secondary);
   }
-} */
+}

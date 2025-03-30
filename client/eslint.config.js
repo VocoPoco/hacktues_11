@@ -6,10 +6,14 @@ import reactRefresh from 'eslint-plugin-react-refresh'
 export default [
   { ignores: ['dist'] },
   {
+    // Main React configuration
     files: ['**/*.{js,jsx}'],
     languageOptions: {
       ecmaVersion: 2020,
-      globals: globals.browser,
+      globals: {
+        ...globals.browser,
+        ...globals.node // Add Node.js globals for config files
+      },
       parserOptions: {
         ecmaVersion: 'latest',
         ecmaFeatures: { jsx: true },
@@ -28,6 +32,17 @@ export default [
         'warn',
         { allowConstantExport: true },
       ],
-    },
+    }
   },
+  {
+    // Configuration for config files
+    files: ['*.config.js'],
+    languageOptions: {
+      globals: globals.node,
+      sourceType: 'commonjs'
+    },
+    rules: {
+      'no-undef': 'off'
+    }
+  }
 ]

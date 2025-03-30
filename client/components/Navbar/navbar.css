@@ -1,119 +1,71 @@
-/* Navbar overall container */
-.navbar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    background-color: transparent; /* so the rounded sections stand out */
-    z-index: 9999;
-    display: flex;
-    justify-content: center;
-  }
-  
-  /* Central container to hold the three sections */
-  .navbar-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    max-width: 1200px;
-  }
-  
-  /* Each section gets its own semi-transparent, rounded background */
-  .navbar-section {
-    background: rgba(0, 0, 0, 0.5);
-    border-radius: 15px;
-    padding: 10px 15px;
-    display: flex;
-    align-items: center;
-  }
-  
-  .left {
-    margin-right: auto;
-  }
-  .center {
-    margin: 0 auto;
-  }
-  .right {
-    margin-left: auto;
-  }
-  
-  /* Logo styling */
-  .logo {
-    font-family: "Cinzel", serif;
-    font-size: 40px;
-    color: #fff;
-    cursor: pointer;
-    transition: transform 0.3s ease;
-  }
-  .logo:hover {
-    transform: scale(1.1);
-  }
-  
-  /* Navigation links styling */
-  .nav-links {
-    display: flex;
-    gap: 20px;
-  }
-  .nav-link {
-    font-size: 18px;
-    font-weight: 600;
-    color: #fff; /* contrasting color */
-    cursor: pointer;
-    transition: color 0.3s ease;
-  }
-  .nav-link:hover {
-    color: #f5c518;
-  }
-  
-  /* Profile container with hover scaling */
-  .profile-container {
-    position: relative;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background-color: #333;
-    cursor: pointer;
-    transition: transform 0.3s ease;
-  }
-  .profile-container:hover {
-    transform: scale(1.1);
-  }
-  
-  /* Profile image as a circular background */
-  .profile-image {
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    background-image: url("https://via.placeholder.com/150");
-    background-size: cover;
-    background-position: center;
-  }
-  
-  /* Profile details panel that appears on hover */
-  .profile-details {
-    position: absolute;
-    top: 50px;
-    right: 0;
-    background-color: #fff;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    width: 200px;
-    font-size: 14px;
-    color: #333;
-  }
-  .profile-details button {
-    padding: 5px 10px;
-    background-color: #f5c518;
-    border: none;
-    color: #fff;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  .profile-details button:hover {
-    background-color: #e5b017;
-  }
-  
+/* navbar.css – Tailwind + custom adjustments for layout, spacing, and visual consistency */
+
+.sidebar-logo {
+  font-family: 'Cinzel', serif;
+  letter-spacing: 1px;
+  color: var(--accent-primary);
+}
+
+.nav-icon {
+  display: flex;
+  width: 24px;
+  height: 24px;
+  stroke: var(--text-primary);
+}
+
+.auth-signup-button {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  background: linear-gradient(to right, var(--accent-primary), var(--accent-secondary));
+  color: white;
+  box-shadow: 0 4px 20px -6px rgba(0, 0, 0, 0.3);
+  transition: transform 0.2s ease;
+}
+
+.auth-signup-button:hover {
+  transform: scale(1.02);
+}
+
+/* Spacing between nav items */
+.nav-items {
+  @apply flex flex-col gap-4;
+  justify-content: center;
+
+}
+
+/* Push auth section to bottom */
+.sidebar-content {
+  @apply flex flex-col h-full;
+}
+
+.auth-section {
+  margin-top: auto;
+  @apply flex flex-col gap-3;
+}
+
+/* Update mobile spacing as well */
+.mobile-header .mobile-nav-icons,
+.mobile-header .mobile-auth-icons {
+  @apply flex gap-4;
+}
+
+/* Ensure spacing inside sidebar is nice */
+.desktop-sidebar {
+  @apply px-6 pt-8 pb-6;
+  background: var(--bg-secondary);
+  border-right: 1px solid var(--divider);
+}
+
+/* Highlight active nav items better */
+.nav-item.active {
+  border-left: 4px solid var(--accent-secondary);
+  background-color: var(--hover-overlay);
+}
+
+/* Optional: softer hover background */
+.nav-item:hover {
+  background-color: rgba(255, 255, 255, 0.04);
+}

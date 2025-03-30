@@ -48,18 +48,25 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex justify-center items-center bg-[#fffbf9] font-poppins p-5 relative">
-      <GoBackButton />
-      <div className="w-full max-w-[450px] bg-white rounded-2xl shadow-lg p-8 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
-        <h1 className="text-3xl font-cinzel text-[#232323] mb-4 uppercase tracking-wide">LOG IN</h1>
-        <p className="text-[#616062] text-sm mb-8">Welcome back! Please log in.</p>
+    <div className="min-h-screen flex justify-center items-center bg-bg-primary font-poppins p-4">
+      <div className="flex-[0_1_40%] max-w-[400px] bg-bg-secondary rounded-xl shadow-xl p-8 transition-all duration-300 hover:shadow-2xl hover:-translate-y-1">
+        
+        <div className="text-center mb-8">
+          <h1 className="text-3xl font-cinzel text-text-primary mb-3 uppercase tracking-wide">
+            LOG IN
+          </h1>
+          <p className="text-text-secondary text-base">
+            Welcome back! Please log in.
+          </p>
+        </div>
+
         <form className="space-y-6" onSubmit={handleSubmit}>
           <div className="space-y-4">
             <input
               type="email"
               name="email"
               placeholder="Email Address"
-              className="w-full px-4 py-3 border rounded-lg"
+              className="w-full px-4 py-3 text-base border-divider border-2 rounded-xl bg-bg-secondary placeholder:text-text-secondary text-text-primary focus:ring-2 focus:ring-accent-primary"
               value={formData.email}
               onChange={handleInputChange}
               required
@@ -69,7 +76,7 @@ const LoginPage = () => {
                 type={showPassword ? "text" : "password"}
                 name="password"
                 placeholder="Password"
-                className="w-full px-4 py-3 border rounded-lg pr-12"
+                className="w-full px-4 py-3 text-base border-divider border-2 rounded-xl pr-12 bg-bg-secondary placeholder:text-text-secondary text-text-primary focus:ring-2 focus:ring-accent-primary"
                 value={formData.password}
                 onChange={handleInputChange}
                 required
@@ -77,30 +84,34 @@ const LoginPage = () => {
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-3"
+                className="absolute right top-3.5 text-text-secondary text-sm hover:text-accent-primary transition-colors"
               >
                 {showPassword ? "Hide" : "Show"}
               </button>
             </div>
           </div>
+
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full py-4 bg-[#8c281f] text-white rounded-xl hover:bg-[#732018] transition-all"
+            className="w-full py-3.5 primary rounded-xl text-base font-semibold hover:shadow-lg hover:shadow-accent-primary/30 transition-all"
           >
             {isLoading ? "Logging In..." : "Log In"}
           </button>
         </form>
-        <div className="mt-6 text-sm text-[#616062]">
-          <p className="mt-4">
-            Don't have an account?{" "}
-            <button
-              onClick={() => navigate("/signup")}
-              className="text-[#232323] font-semibold underline hover:text-[#8c281f] transition-colors"
-            >
-              Sign Up
-            </button>
-          </p>
+
+        <div className="mt-8 pt-6 border-t border-divider">
+          <div className="text-center space-y-3">
+            <p className="text-text-secondary text-sm">
+              Don't have an account?{" "}
+              <button
+                onClick={() => navigate("/signup")}
+                className="text-accent-secondary font-bold underline hover:text-accent-primary transition-colors"
+              >
+                Sign Up
+              </button>
+            </p>
+          </div>
         </div>
       </div>
     </div>
