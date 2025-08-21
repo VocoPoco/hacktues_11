@@ -59,12 +59,12 @@ const SignUpPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex justify-center items-center bg-bg-primary font-poppins p-4">
-      <div className="flex-[0_1_33%] max-w-[360px] bg-bg-secondary rounded-xl shadow-lg p-6">
+    <div className="min-h-screen flex justify-center items-center bg-slate-50 dark:bg-slate-900 p-4">
+      <div className="flex-[0_1_33%] max-w-[360px] bg-white dark:bg-slate-800 rounded-xl shadow-lg p-6 border border-slate-200 dark:border-slate-700">
         {/* <GoBackButton className="mb-4" /> */}
         
         <div className="text-center mb-6">
-          <h1 className="text-2xl font-cinzel text-text-primary mb-2 uppercase">
+          <h1 className="text-2xl font-playfair text-slate-800 dark:text-slate-200 mb-2 uppercase">
             Create Account
           </h1>
         </div>
@@ -75,7 +75,7 @@ const SignUpPage = () => {
               type="text"
               name="username"
               placeholder="Username"
-              className="w-full px-3 py-2.5 text-sm border-divider border rounded-lg bg-bg-secondary placeholder:text-text-secondary text-text-primary"
+              className="w-full px-3 py-2.5 text-sm border-slate-300 dark:border-slate-600 border rounded-lg bg-white dark:bg-slate-700 placeholder:text-slate-500 dark:placeholder:text-slate-400 text-slate-800 dark:text-slate-200 focus:ring-2 focus:ring-slate-500 focus:border-slate-500 dark:focus:ring-slate-400 dark:focus:border-slate-400"
               value={formData.username}
               onChange={handleInputChange}
               required
@@ -84,7 +84,7 @@ const SignUpPage = () => {
               type="email"
               name="email"
               placeholder="Email Address"
-              className="w-full px-3 py-2.5 text-sm border-divider border rounded-lg bg-bg-secondary placeholder:text-text-secondary text-text-primary"
+              className="w-full px-3 py-2.5 text-sm border-slate-300 dark:border-slate-600 border rounded-lg bg-white dark:bg-slate-700 placeholder:text-slate-500 dark:placeholder:text-slate-400 text-slate-800 dark:text-slate-200 focus:ring-2 focus:ring-slate-500 focus:border-slate-500 dark:focus:ring-slate-400 dark:focus:border-slate-400"
               value={formData.email}
               onChange={handleInputChange}
               required
@@ -94,7 +94,7 @@ const SignUpPage = () => {
                 type={showPassword ? "text" : "password"}
                 name="password"
                 placeholder="Password"
-                className="w-full px-3 py-2.5 text-sm border-divider border rounded-lg pr-12 bg-bg-secondary placeholder:text-text-secondary text-text-primary"
+                className="w-full px-3 py-2.5 text-sm border-slate-300 dark:border-slate-600 border rounded-lg pr-12 bg-white dark:bg-slate-700 placeholder:text-slate-500 dark:placeholder:text-slate-400 text-slate-800 dark:text-slate-200 focus:ring-2 focus:ring-slate-500 focus:border-slate-500 dark:focus:ring-slate-400 dark:focus:border-slate-400"
                 value={formData.password}
                 onChange={handleInputChange}
                 required
@@ -102,7 +102,7 @@ const SignUpPage = () => {
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-2.5 text-text-secondary text-xs"
+                className="absolute right-3 top-2.5 text-slate-500 dark:text-slate-400 text-xs hover:text-slate-700 dark:hover:text-slate-300 transition-colors"
               >
                 {showPassword ? "Hide" : "Show"}
               </button>
@@ -112,7 +112,7 @@ const SignUpPage = () => {
                 type={showConfirmPassword ? "text" : "password"}
                 name="confirmPassword"
                 placeholder="Confirm Password"
-                className="w-full px-3 py-2.5 text-sm border-divider border rounded-lg pr-12 bg-bg-secondary placeholder:text-text-secondary text-text-primary"
+                className="w-full px-3 py-2.5 text-sm border-slate-300 dark:border-slate-600 border rounded-lg pr-12 bg-white dark:bg-slate-700 placeholder:text-slate-500 dark:placeholder:text-slate-400 text-slate-800 dark:text-slate-200 focus:ring-2 focus:ring-slate-500 focus:border-slate-500 dark:focus:ring-slate-400 dark:focus:border-slate-400"
                 value={formData.confirmPassword}
                 onChange={handleInputChange}
                 required
@@ -120,7 +120,7 @@ const SignUpPage = () => {
               <button
                 type="button"
                 onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                className="absolute right-3 top-2.5 text-text-secondary text-xs"
+                className="absolute right-3 top-2.5 text-slate-500 dark:text-slate-400 text-xs hover:text-slate-700 dark:hover:text-slate-300 transition-colors"
               >
                 {showConfirmPassword ? "Hide" : "Show"}
               </button>
@@ -130,18 +130,18 @@ const SignUpPage = () => {
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full py-2.5 primary rounded-lg text-sm font-medium hover:shadow-accent-primary"
+            className="w-full py-2.5 bg-slate-700 hover:bg-slate-800 text-white rounded-lg text-sm font-medium hover:shadow-slate-500/30 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isLoading ? "Registering..." : "Sign Up"}
           </button>
         </form>
 
-        <div className="mt-6 pt-4 border-t border-divider">
-          <p className="text-text-secondary text-xs text-center">
+        <div className="mt-6 pt-4 border-t border-slate-200 dark:border-slate-700">
+          <p className="text-slate-600 dark:text-slate-400 text-xs text-center">
             Already have an account?{" "}
             <button
               onClick={() => navigate("/login")}
-              className="text-accent-secondary font-semibold underline hover:text-accent-primary transition-colors"
+              className="text-slate-700 dark:text-slate-300 font-semibold underline hover:text-slate-900 dark:hover:text-white transition-colors"
             >
               Log In
             </button>

@@ -3,21 +3,21 @@ import React from 'react';
 import { CTAButton } from '../components/styles';
 
 const defaultColors = {
-  // Light Mode
-  gradientFrom: '#fafafa',
-  gradientTo: 'rgba(250, 250, 250, 0.1)',
-  primary: '#c5a47f', // Warm champagne gold
-  textLight: '#2a2a2a',
+  // Light Mode - Business Professional
+  gradientFrom: '#f8fafc',
+  gradientTo: 'rgba(248, 250, 252, 0.1)',
+  primary: '#2c3e50', // Professional blue-gray
+  textLight: '#1e293b',
   backgroundLight: '#ffffff',
-  cardBackgroundLight: '#f8f8f8',
+  cardBackgroundLight: '#f1f5f9',
   
-  // Dark Mode
-  gradientFromDark: '#121212', // Matches header/footer dark bg
-  gradientToDark: 'rgba(18, 18, 18, 0.1)',
-  primaryDark: '#d4af37', // Antique gold
-  textDark: '#e5e5e5', // Soft white
-  backgroundDark: '#121212', // Deep charcoal
-  cardBackgroundDark: '#1a1a1a' // Slightly lighter than background
+  // Dark Mode - Corporate Dark
+  gradientFromDark: '#0f172a',
+  gradientToDark: 'rgba(15, 23, 42, 0.1)',
+  primaryDark: '#64748b', // Professional slate
+  textDark: '#f1f5f9',
+  backgroundDark: '#0f172a',
+  cardBackgroundDark: '#1e293b'
 };
 
 export const Home1 = ({ colors }) => {
@@ -33,7 +33,7 @@ export const Home1 = ({ colors }) => {
               <span className="block mt-2 text-[var(--primary)] dark:text-[var(--primary-dark)]">Perfected</span>
             </h1>
           </div>
-          <div className="relative aspect-video rounded-xl overflow-hidden border border-[var(--primary)]/20 dark:border-[var(--primary-dark)]/20">
+          <div className="relative aspect-[16/10] rounded-xl overflow-hidden border border-[var(--primary)]/20 dark:border-[var(--primary-dark)]/20 shadow-2xl">
             <video className="w-full h-full object-cover" autoPlay loop muted playsInline>
               <source src="/video-bg3.mp4" type="video/mp4" />
             </video>
@@ -77,7 +77,7 @@ export const Home2 = ({ colors }) => {
             <span className="block mt-4 text-[var(--primary)] dark:text-[var(--primary-dark)]">Integrity</span>
           </h1>
           
-          <div className="relative aspect-video rounded-xl overflow-hidden mb-12 mx-8 border border-[var(--primary)]/20 dark:border-[var(--primary-dark)]/20">
+          <div className="relative aspect-[16/10] rounded-xl overflow-hidden mb-16 mx-4 border border-[var(--primary)]/20 dark:border-[var(--primary-dark)]/20 shadow-2xl">
             <video className="w-full h-full object-cover" autoPlay loop muted playsInline>
               <source src="/video-bg2.mp4" type="video/mp4" />
             </video>
@@ -153,7 +153,7 @@ export const Home4 = ({ colors }) => {
               </h1>
             </div>
             
-            <div className="relative aspect-video rounded-xl overflow-hidden border border-[var(--primary)]/20 dark:border-[var(--primary-dark)]/20">
+            <div className="relative aspect-[16/10] rounded-xl overflow-hidden border border-[var(--primary)]/20 dark:border-[var(--primary-dark)]/20 shadow-2xl">
               <video className="w-full h-full object-cover" autoPlay loop muted playsInline>
                 <source src="/video-bg5.mp4" type="video/mp4" />
               </video>
@@ -191,13 +191,11 @@ export const Home5 = ({ colors }) => {
             <span className="block mt-4 text-[var(--primary)] dark:text-[var(--primary-dark)]">Innovation</span>
           </h1>
           
-          <div className="relative aspect-video rounded-xl overflow-hidden mb-12 mx-8 border border-[var(--primary)]/20 dark:border-[var(--primary-dark)]/20">
+          <div className="relative aspect-[16/10] rounded-xl overflow-hidden mb-16 mx-4 border border-[var(--primary)]/20 dark:border-[var(--primary-dark)]/20 shadow-2xl">
             <video className="w-full h-full object-cover" autoPlay loop muted playsInline>
               <source src="/video-bg3.mp4" type="video/mp4" />
             </video>
-            <div className="absolute inset-0 bg-gradient-to-t from-[var(--background-light)]/80 dark:from-[var(--background-dark)]/80 flex items-end p-6">
-              <p className="text-sm text-[var(--text-light)] dark:text-[var(--text-dark)]">Next-generation development process</p>
-            </div>
+
           </div>
 
           <div className="flex justify-center gap-4">
@@ -233,7 +231,7 @@ export const Home6 = ({ colors }) => {
               Architecting digital solutions that evolve with your enterprise needs
             </p>
             
-            <div className="relative aspect-video rounded-xl overflow-hidden border border-[var(--primary)]/20 dark:border-[var(--primary-dark)]/20">
+            <div className="relative aspect-[16/10] rounded-xl overflow-hidden border border-[var(--primary)]/20 dark:border-[var(--primary-dark)]/20 shadow-2xl">
               <video className="w-full h-full object-cover" autoPlay loop muted playsInline>
                 <source src="/video-bg4.mp4" type="video/mp4" />
               </video>
@@ -279,18 +277,11 @@ export const Home7 = ({ colors }) => {
             </h1>
           </div>
 
-          <div className="relative aspect-video rounded-xl overflow-hidden border border-[var(--primary)]/20 dark:border-[var(--primary-dark)]/20">
+          <div className="relative aspect-[16/10] rounded-xl overflow-hidden border border-[var(--primary)]/20 dark:border-[var(--primary-dark)]/20 shadow-2xl">
             <video className="w-full h-full object-cover" autoPlay loop muted playsInline>
               <source src="/video-bg1.mp4" type="video/mp4" />
             </video>
-            <div className="absolute inset-0 bg-gradient-to-t from-[var(--background-light)]/80 dark:from-[var(--background-dark)]/80 flex items-end p-6">
-              <div className="w-full flex justify-between items-center">
-                <p className="text-sm text-[var(--text-light)] dark:text-[var(--text-dark)]">Next-generation framework visualization</p>
-                <CTAButton className="!bg-[var(--primary)] dark:!bg-[var(--primary-dark)] !text-white">
-                  Explore Future
-                </CTAButton>
-              </div>
-            </div>
+
           </div>
         </div>
       </div>

@@ -2,17 +2,19 @@ import React from "react";
 import { Container } from "../styles";
 
 const defaultColors = {
-  // Light Mode
-  primary: "#c5a47f",
+  // Light Mode - High Contrast Professional
+  primary: "#1e293b",
+  primaryHover: "#334155",
   backgroundLight: "#ffffff",
-  textLight: "#2a2a2a",
-  borderLight: "#e5e7eb",
+  textLight: "#0f172a",
+  borderLight: "#cbd5e1",
   
-  // Dark Mode
-  primaryDark: "#d4af37",
-  backgroundDark: "#121212",
-  textDark: "#e5e5e5",
-  borderDark: "#2a2a2a",
+  // Dark Mode - High Contrast Corporate
+  primaryDark: "#f1f5f9",
+  primaryHoverDark: "#e2e8f0",
+  backgroundDark: "#0f172a",
+  textDark: "#ffffff",
+  borderDark: "#475569",
 };
 
 export const Header1 = ({ isVisible, colors }) => {
@@ -33,8 +35,8 @@ export const Header1 = ({ isVisible, colors }) => {
       }}
     >
       <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
-        <span className="text-xl font-playfair text-[var(--primary)] dark:text-[var(--primaryDark)] tracking-widest">
-          LUXE
+        <span className="text-xl font-playfair text-[var(--primary)] dark:text-[var(--primaryDark)] tracking-widest font-bold">
+          FREELENS
         </span>
         <nav className="flex gap-6">
           {[
@@ -46,7 +48,7 @@ export const Header1 = ({ isVisible, colors }) => {
             <a
               key={item.label}
               href={item.path}
-              className="text-sm uppercase tracking-wider hover:text-[var(--primary)] dark:hover:text-[var(--primaryDark)] text-[var(--textLight)] dark:text-[var(--textDark)] transition-colors"
+              className="text-sm uppercase tracking-wider font-medium hover:text-[var(--primary)] dark:hover:text-[var(--primaryDark)] text-[var(--textLight)] dark:text-[var(--textDark)] transition-colors"
             >
               {item.label}
             </a>
@@ -78,8 +80,8 @@ export const Header2 = ({ isVisible, colors }) => {
       }}
     >
       <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
-        <span className="text-2xl font-cormorant italic text-[var(--primary)] dark:text-[var(--primaryDark)]">
-          Élan
+        <span className="text-2xl font-cormorant italic text-[var(--primary)] dark:text-[var(--primaryDark)] font-bold">
+          FREELENS
         </span>
         <nav className="flex gap-6">
           {[
@@ -91,14 +93,14 @@ export const Header2 = ({ isVisible, colors }) => {
             <a
               key={item.label}
               href={item.path}
-              className="text-sm uppercase tracking-widest hover:text-[var(--primary)] dark:hover:text-[var(--primaryDark)] text-[var(--textLight)] dark:text-[var(--textDark)] transition-colors"
+              className="text-sm uppercase tracking-widest font-medium hover:text-[var(--primary)] dark:hover:text-[var(--primaryDark)] text-[var(--textLight)] dark:text-[var(--textDark)] transition-colors"
             >
               {item.label}
             </a>
           ))}
         </nav>
         <div className="w-px h-6 bg-[var(--borderLight)] dark:bg-[var(--primaryDark)]/30 mx-4" />
-        <button className="text-sm uppercase hover:text-[var(--primary)] dark:hover:text-[var(--primaryDark)] text-[var(--textLight)] dark:text-[var(--textDark)]">
+        <button className="text-sm uppercase font-medium hover:text-[var(--primary)] dark:hover:text-[var(--primaryDark)] text-[var(--textLight)] dark:text-[var(--textDark)]">
           Menu
         </button>
       </div>
@@ -137,7 +139,7 @@ export const Header3 = ({ isVisible, colors }) => {
             <a
               key={item.label}
               href={item.path}
-              className="text-sm uppercase tracking-wider hover:text-[var(--primary)] dark:hover:text-[var(--primaryDark)] text-[var(--textLight)] dark:text-[var(--textDark)] transition-colors"
+              className="text-sm uppercase tracking-wider font-medium hover:text-[var(--primary)] dark:hover:text-[var(--primaryDark)] text-[var(--textLight)] dark:text-[var(--textDark)] transition-colors"
             >
               {item.label}
             </a>
@@ -172,7 +174,7 @@ export const Header4 = ({ isVisible, colors }) => {
       <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div className="w-6 h-6 border-2 border-[var(--primary)] dark:border-[var(--primaryDark)] rounded-full" />
-          <span className="text-lg font-medium text-[var(--textLight)] dark:text-[var(--textDark)]">
+          <span className="text-lg font-medium text-[var(--textLight)] dark:text-[var(--textDark)] font-bold">
             NOBILIS
           </span>
         </div>
@@ -186,7 +188,7 @@ export const Header4 = ({ isVisible, colors }) => {
             <a
               key={item.label}
               href={item.path}
-              className="text-sm uppercase tracking-wider hover:text-[var(--primary)] dark:hover:text-[var(--primaryDark)] text-[var(--textLight)] dark:text-[var(--textDark)] transition-colors"
+              className="text-sm uppercase tracking-wider font-medium hover:text-[var(--primary)] dark:hover:text-[var(--primaryDark)] text-[var(--textLight)] dark:text-[var(--textDark)] transition-colors"
             >
               {item.label}
             </a>
@@ -226,7 +228,7 @@ export const Header5 = ({ isVisible, colors }) => {
               <a
                 key={item.label}
                 href={item.path}
-                className="text-sm uppercase hover:text-[var(--primary)] dark:hover:text-[var(--primaryDark)] text-[var(--textLight)] dark:text-[var(--textDark)] transition-colors mr-6"
+                className="text-sm uppercase font-medium hover:text-[var(--primary)] dark:hover:text-[var(--primaryDark)] text-[var(--textLight)] dark:text-[var(--textDark)] transition-colors mr-6"
               >
                 {item.label}
               </a>
@@ -241,7 +243,7 @@ export const Header5 = ({ isVisible, colors }) => {
               <a
                 key={item.label}
                 href={item.path}
-                className="text-sm uppercase hover:text-[var(--primary)] dark:hover:text-[var(--primaryDark)] text-[var(--textLight)] dark:text-[var(--textDark)] transition-colors ml-6"
+                className="text-sm uppercase font-medium hover:text-[var(--primary)] dark:hover:text-[var(--primaryDark)] text-[var(--textLight)] dark:text-[var(--textDark)] transition-colors ml-6"
               >
                 {item.label}
               </a>
@@ -272,7 +274,7 @@ export const Header6 = ({ isVisible, colors }) => {
       }}
     >
       <Container className="flex justify-between items-center">
-        <div className="text-xl font-medium text-[var(--primary)] dark:text-[var(--primaryDark)]">
+        <div className="text-xl font-medium text-[var(--primary)] dark:text-[var(--primaryDark)] font-bold">
           ÆTHERFIT
         </div>
         <nav className="flex gap-6">
@@ -283,7 +285,7 @@ export const Header6 = ({ isVisible, colors }) => {
             <a
               key={item.label}
               href={item.path}
-              className="text-sm uppercase hover:text-[var(--primary)] dark:hover:text-[var(--primaryDark)] text-[var(--textLight)] dark:text-[var(--textDark)] transition-colors"
+              className="text-sm uppercase font-medium hover:text-[var(--primary)] dark:hover:text-[var(--primaryDark)] text-[var(--textLight)] dark:text-[var(--textDark)] transition-colors"
             >
               {item.label}
             </a>
@@ -312,11 +314,11 @@ export const Header7 = ({ isVisible, colors }) => {
       }}
     >
       <nav className="max-w-7xl mx-auto px-6 flex items-center justify-between">
-        <h1 className="text-lg font-medium text-[var(--primary)] dark:text-[var(--primaryDark)]">
+        <h1 className="text-lg font-medium text-[var(--primary)] dark:text-[var(--primaryDark)] font-bold">
           FinanceMaster
         </h1>
         <nav className="flex gap-6">
-          {[
+                      {[
             { label: "Dashboard", path: "/dashboard" },
             { label: "Reports", path: "/reports" },
             { label: "Tools", path: "/tools" },
@@ -324,7 +326,7 @@ export const Header7 = ({ isVisible, colors }) => {
             <a
               key={item.label}
               href={item.path}
-              className="text-sm uppercase hover:text-[var(--primary)] dark:hover:text-[var(--primaryDark)] text-[var(--textLight)] dark:text-[var(--textDark)] transition-colors"
+              className="text-sm uppercase font-medium hover:text-[var(--primary)] dark:hover:text-[var(--primaryDark)] text-[var(--textLight)] dark:text-[var(--textDark)] transition-colors"
             >
               {item.label}
             </a>

@@ -34,7 +34,7 @@ import {
   Header5,
   Header6,
   Header7,
-} from "../components/Headers/header";
+} from "../components/Headers/header.jsx";
 
 // Footers
 import {
@@ -55,3 +55,15 @@ export const CustomLayouts = [CreateProjects1, CreateProjects2, CreateProjects3,
 export const DashboardLayouts = [Dashboard1, Dashboard2, Dashboard3, Dashboard4, Dashboard5];
 export const HeaderLayouts = [Header1, Header2, Header3, Header4, Header5, Header6, Header7];
 export const FooterLayouts = [Footer1, Footer2, Footer3, Footer4, Footer5, Footer6, Footer7];
+
+// Export Landing Page Layout
+export { default as LandingPageLayout } from './LandingPageLayout';
+
+// Export Component Viewer
+export { default as ComponentViewer } from './ComponentViewer';
+
+// Export Presentation Mode
+export { default as PresentationMode } from './PresentationMode';
+
+export { default as ComponentCustomizer } from './ComponentCustomizer';
+export { default as ExportManager } from './ExportManager';

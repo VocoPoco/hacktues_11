@@ -1,10 +1,12 @@
+import { IconPencil } from '../../components/Navbar/NavIcons';
+
 export const Dashboard1 = () => (
   <div className="min-h-screen bg-gray-50 flex flex-col lg:flex-row">
-    <aside className="w-full lg:w-64 bg-white p-6 border-b lg:border-b-0 lg:border-r border-gold-500/20">
-      <div className="text-2xl font-playfair text-gold-500 mb-8">Workspace</div>
+    <aside className="w-full lg:w-64 bg-white p-6 border-b lg:border-b-0 lg:border-r border-slate-500/20">
+      <div className="text-2xl font-playfair text-slate-700 mb-8">Workspace</div>
       <nav className="space-y-4">
         {['Projects', 'Analytics', 'Billing', 'Settings'].map(item => (
-          <a key={item} href="#" className="block text-gray-600 hover:text-gold-500 focus:outline-none focus:ring-2 focus:ring-gold-500">
+          <a key={item} href="#" className="block text-gray-600 hover:text-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-500">
             {item}
           </a>
         ))}
@@ -14,7 +16,7 @@ export const Dashboard1 = () => (
       <div className="container mx-auto">
         <div className="flex flex-col sm:flex-row justify-between items-center mb-8">
           <h1 className="font-playfair text-2xl sm:text-3xl">Active Projects</h1>
-          <button type="button" className="bg-gold-500 px-6 py-2 sm:px-8 sm:py-3 text-white rounded-lg hover:bg-gold-600 transition-colors focus:outline-none focus:ring-2 focus:ring-gold-500">
+          <button type="button" className="bg-slate-700 px-6 py-2 sm:px-8 sm:py-3 text-white rounded-lg hover:bg-slate-800 transition-colors focus:outline-none focus:ring-2 focus:ring-slate-500">
             + New Project
           </button>
         </div>
@@ -24,8 +26,8 @@ export const Dashboard1 = () => (
               <div className="aspect-video bg-gray-100 rounded-lg mb-4" aria-hidden="true" />
               <div className="flex justify-between items-center">
                 <h3 className="font-cormorant text-lg">Project {i}</h3>
-                <button type="button" className="p-2 hover:bg-gold-500/10 rounded-full focus:outline-none focus:ring-2 focus:ring-gold-500">
-                  <EditIcon className="w-5 h-5 text-gold-500" />
+                <button type="button" className="p-2 hover:bg-slate-500/10 rounded-full focus:outline-none focus:ring-2 focus:ring-slate-500">
+                  <IconPencil />
                 </button>
               </div>
             </div>
@@ -145,7 +147,7 @@ export const Dashboard4 = () => (
                 </div>
               </div>
               <button type="button" className="p-3 hover:bg-gold-500/10 rounded-full focus:outline-none focus:ring-2 focus:ring-gold-500">
-                <EditIcon className="w-5 h-5 text-gold-500" />
+                <IconPencil />
               </button>
             </div>
           </div>

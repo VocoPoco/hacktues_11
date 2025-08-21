@@ -48,14 +48,14 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex justify-center items-center bg-bg-primary font-poppins p-4">
-      <div className="flex-[0_1_40%] max-w-[400px] bg-bg-secondary rounded-xl shadow-xl p-8 transition-all duration-300 hover:shadow-2xl hover:-translate-y-1">
+    <div className="min-h-screen flex justify-center items-center bg-slate-50 dark:bg-slate-900 p-4">
+      <div className="flex-[0_1_40%] max-w-[400px] bg-white dark:bg-slate-800 rounded-xl shadow-xl p-8 transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 border border-slate-200 dark:border-slate-700">
         
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-cinzel text-text-primary mb-3 uppercase tracking-wide">
+          <h1 className="text-3xl font-playfair text-slate-800 dark:text-slate-200 mb-3 uppercase tracking-wide">
             LOG IN
           </h1>
-          <p className="text-text-secondary text-base">
+          <p className="text-slate-600 dark:text-slate-400 text-base">
             Welcome back! Please log in.
           </p>
         </div>
@@ -66,7 +66,7 @@ const LoginPage = () => {
               type="email"
               name="email"
               placeholder="Email Address"
-              className="w-full px-4 py-3 text-base border-divider border-2 rounded-xl bg-bg-secondary placeholder:text-text-secondary text-text-primary focus:ring-2 focus:ring-accent-primary"
+              className="w-full px-4 py-3 text-base border-slate-300 dark:border-slate-600 border-2 rounded-xl bg-white dark:bg-slate-700 placeholder:text-slate-500 dark:placeholder:text-slate-400 text-slate-800 dark:text-slate-200 focus:ring-2 focus:ring-slate-500 focus:border-slate-500 dark:focus:ring-slate-400 dark:focus:border-slate-400"
               value={formData.email}
               onChange={handleInputChange}
               required
@@ -76,7 +76,7 @@ const LoginPage = () => {
                 type={showPassword ? "text" : "password"}
                 name="password"
                 placeholder="Password"
-                className="w-full px-4 py-3 text-base border-divider border-2 rounded-xl pr-12 bg-bg-secondary placeholder:text-text-secondary text-text-primary focus:ring-2 focus:ring-accent-primary"
+                className="w-full px-4 py-3 text-base border-slate-300 dark:border-slate-600 border-2 rounded-xl pr-12 bg-white dark:bg-slate-700 placeholder:text-slate-500 dark:placeholder:text-slate-400 text-slate-800 dark:text-slate-200 focus:ring-2 focus:ring-slate-500 focus:border-slate-500 dark:focus:ring-slate-400 dark:focus:border-slate-400"
                 value={formData.password}
                 onChange={handleInputChange}
                 required
@@ -84,7 +84,7 @@ const LoginPage = () => {
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right top-3.5 text-text-secondary text-sm hover:text-accent-primary transition-colors"
+                className="absolute right-3 top-3.5 text-slate-500 dark:text-slate-400 text-sm hover:text-slate-700 dark:hover:text-slate-300 transition-colors"
               >
                 {showPassword ? "Hide" : "Show"}
               </button>
@@ -94,19 +94,19 @@ const LoginPage = () => {
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full py-3.5 primary rounded-xl text-base font-semibold hover:shadow-lg hover:shadow-accent-primary/30 transition-all"
+            className="w-full py-3.5 bg-slate-700 hover:bg-slate-800 text-white rounded-xl text-base font-semibold hover:shadow-lg hover:shadow-slate-500/30 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isLoading ? "Logging In..." : "Log In"}
           </button>
         </form>
 
-        <div className="mt-8 pt-6 border-t border-divider">
+        <div className="mt-8 pt-6 border-t border-slate-200 dark:border-slate-700">
           <div className="text-center space-y-3">
-            <p className="text-text-secondary text-sm">
+            <p className="text-slate-600 dark:text-slate-400 text-sm">
               Don't have an account?{" "}
               <button
                 onClick={() => navigate("/signup")}
-                className="text-accent-secondary font-bold underline hover:text-accent-primary transition-colors"
+                className="text-slate-700 dark:text-slate-300 font-bold underline hover:text-slate-900 dark:hover:text-white transition-colors"
               >
                 Sign Up
               </button>

@@ -1,21 +1,21 @@
-import { SparklesIcon, PhotoIcon } from '@heroicons/react/24/outline';
+import { SparklesIcon, PhotoIcon, EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
 
 const defaultColors = {
-  // Light Mode
-  primary: '#c5a47f',
-  primaryHover: '#b08f6a',
-  backgroundLight: '#f9f9f9',
-  textLight: '#2a2a2a',
-  borderLight: '#e5e7eb',
+  // Light Mode - Business Elegant
+  primary: '#2c3e50',
+  primaryHover: '#34495e',
+  backgroundLight: '#f8fafc',
+  textLight: '#1e293b',
+  borderLight: '#e2e8f0',
   cardLight: '#ffffff',
   
-  // Dark Mode
-  primaryDark: '#d4af37',
-  primaryHoverDark: '#c5a347',
-  backgroundDark: '#0a0a0a',
-  textDark: '#f5f5f5',
-  borderDark: '#333333',
-  cardDark: '#1a1a1a',
+  // Dark Mode - Professional Dark
+  primaryDark: '#64748b',
+  primaryHoverDark: '#475569',
+  backgroundDark: '#0f172a',
+  textDark: '#f1f5f9',
+  borderDark: '#334155',
+  cardDark: '#1e293b',
 };
 
 const ThemeWrapper = ({ children }) => (
@@ -34,12 +34,12 @@ export const Generate1 = () => (
               1
             </div>
             <h2 className="font-playfair text-xl sm:text-2xl text-[var(--textLight)] dark:text-[var(--textDark)]">
-              Describe Your Vision
+              Project Requirements
             </h2>
           </div>
           <textarea 
             className="w-full bg-[var(--cardLight)] dark:bg-[var(--cardDark)] rounded-xl p-4 sm:p-6 h-48 border border-[var(--primary)]/30 dark:border-[var(--primaryDark)]/30 focus:border-[var(--primary)] dark:focus:border-[var(--primaryDark)] placeholder:text-[var(--textLight)]/50 dark:placeholder:text-[var(--textDark)]/50 transition-colors"
-            placeholder="Modern luxury hotel website with dark theme..." 
+            placeholder="Describe your project vision and requirements..." 
           />
           <button className="mt-6 w-full py-3 bg-[var(--primary)] dark:bg-[var(--primaryDark)] hover:bg-[var(--primaryHover)] dark:hover:bg-[var(--primaryHoverDark)] text-white rounded-xl transition-colors">
             Generate Concepts
@@ -91,26 +91,25 @@ export const Generate2 = () => (
   </ThemeWrapper>
 );
 
-//GOAT
 export const Generate3 = () => (
   <ThemeWrapper>
     <div className="min-h-screen bg-[var(--backgroundLight)] dark:bg-[var(--backgroundDark)]">
       <div className="max-w-3xl mx-auto p-6 sm:p-12">
         <div className="mb-8 text-center">
           <div className="w-16 h-16 bg-[var(--primary)]/10 dark:bg-[var(--primaryDark)]/10 rounded-full mx-auto mb-4 flex items-center justify-center">
-            <div className="w-8 h-8 bg-[var(--primary)] dark:bg-[var(--primaryDark)] rounded-full pulse-ring" />
+            <div className="w-8 h-8 bg-[var(--primary)] rounded-full pulse-ring" />
           </div>
           <h1 className="font-playfair text-2xl sm:text-3xl text-[var(--textLight)] dark:text-[var(--textDark)] mb-2">
-            Architectural Blueprint
+            Project Blueprint
           </h1>
           <p className="text-[var(--textLight)]/80 dark:text-[var(--textDark)]/80 text-sm sm:text-base">
-            Detail every aspect of your digital vision
+            Define your project specifications
           </p>
         </div>
         <div className="bg-[var(--cardLight)] dark:bg-[var(--cardDark)] rounded-2xl p-6 sm:p-8 shadow-lg">
           <textarea 
             className="w-full bg-[var(--backgroundLight)] dark:bg-[var(--backgroundDark)] rounded-xl p-4 sm:p-6 h-40 border border-[var(--primary)]/20 dark:border-[var(--primaryDark)]/30 focus:border-[var(--primary)] dark:focus:border-[var(--primaryDark)] placeholder:text-[var(--textLight)]/50 dark:placeholder:text-[var(--textDark)]/50 transition-colors"
-            placeholder="Describe materials, layouts, and user flow..." 
+            placeholder="Describe your project requirements, target audience, and design preferences..." 
           />
           <div className="mt-6 flex gap-4 justify-between">
             <button className="px-4 py-2 border border-[var(--primary)]/50 dark:border-[var(--primaryDark)]/50 text-[var(--primary)] dark:text-[var(--primaryDark)] rounded-lg hover:border-[var(--primary)] dark:hover:border-[var(--primaryDark)] transition-colors">
@@ -121,7 +120,7 @@ export const Generate3 = () => (
                 Save Draft
               </button>
               <button className="px-4 py-2 bg-[var(--primary)] dark:bg-[var(--primaryDark)] text-white rounded-lg hover:bg-[var(--primaryHover)] dark:hover:bg-[var(--primaryHoverDark)] transition-colors">
-                Render Design
+                Generate Design
               </button>
             </div>
           </div>
@@ -155,7 +154,7 @@ export const Generate4 = () => (
       <main className="md:col-span-2 p-6 sm:p-12 bg-[var(--backgroundLight)] dark:bg-[var(--backgroundDark)]">
         <div className="max-w-2xl mx-auto">
           <h2 className="font-playfair text-xl sm:text-2xl text-[var(--textLight)] dark:text-[var(--textDark)] mb-6">
-            Brand Essence
+            Brand Foundation
           </h2>
           <div className="space-y-6">
             <input 
@@ -190,15 +189,15 @@ export const Generate5 = () => (
             <div className="space-y-3 text-sm text-[var(--textLight)]/80 dark:text-[var(--textDark)]/80">
               <p className="flex items-center gap-2">
                 <span className="w-2 h-2 bg-[var(--primary)] dark:bg-[var(--primaryDark)] rounded-full" />
-                Define core objectives
+                Define objectives
               </p>
               <p className="flex items-center gap-2">
                 <span className="w-2 h-2 bg-[var(--primary)]/80 dark:bg-[var(--primaryDark)]/80 rounded-full" />
-                Select style parameters
+                Select parameters
               </p>
               <p className="flex items-center gap-2">
                 <span className="w-2 h-2 bg-[var(--primary)]/60 dark:bg-[var(--primaryDark)]/60 rounded-full" />
-                Refine iterations
+                Refine design
               </p>
             </div>
           </aside>
@@ -229,6 +228,7 @@ export const Generate5 = () => (
     </div>
   </ThemeWrapper>
 );
+
 export const Generate6 = () => (
   <ThemeWrapper>
     <div className="min-h-screen bg-[var(--backgroundLight)] dark:bg-[var(--backgroundDark)] p-6 sm:p-12">
@@ -280,8 +280,10 @@ export const Generate7 = () => (
             />
             <select className="w-full bg-[var(--cardLight)] dark:bg-[var(--cardDark)] rounded-lg p-3 border border-[var(--primary)]/30 dark:border-[var(--primaryDark)]/30 focus:ring-2 focus:ring-[var(--primary)] dark:focus:ring-[var(--primaryDark)]">
               <option>Select Industry</option>
-              <option>Luxury Retail</option>
-              <option>Hospitality</option>
+              <option>Technology</option>
+              <option>Healthcare</option>
+              <option>Finance</option>
+              <option>Education</option>
             </select>
           </div>
         </div>

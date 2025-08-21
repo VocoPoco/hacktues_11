@@ -7,10 +7,10 @@ export const CreateProjects1 = () => (
       <div className="max-w-4xl mx-auto">
         <div className="mb-8 border-l-4 border-[var(--primary)] dark:border-[var(--primaryDark)] pl-6">
           <h1 className="font-playfair text-2xl sm:text-3xl mb-2 text-[var(--textLight)] dark:text-[var(--textDark)]">
-            New Project Brief
+            Project Specification
           </h1>
           <p className="text-sm sm:text-base text-[var(--textLight)]/80 dark:text-[var(--textDark)]/80">
-            Complete your custom project requirements
+            Define your project requirements and objectives
           </p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-12">

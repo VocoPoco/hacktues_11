@@ -9,7 +9,7 @@ export const Pricing1 = () => (
     <div className="container mx-auto max-w-6xl px-6 py-24 sm:py-36">
       <div className="mb-16 sm:mb-32 text-center">
         <h2 className="mb-6 font-playfair text-3xl sm:text-5xl text-[var(--text-primary)]">
-          Transparent Excellence
+          Professional Solutions
         </h2>
         <div className="mx-auto h-0.5 w-24 bg-[var(--accent-primary)]/80" />
       </div>
@@ -19,7 +19,7 @@ export const Pricing1 = () => (
             AI-Powered
           </div>
           <h3 className="mb-6 font-cormorant text-2xl sm:text-3xl text-[var(--accent-primary)]">
-            Intelligent Solution
+            Standard Package
           </h3>
           <div className="mb-8 font-playfair text-4xl sm:text-5xl">
             $50<span className="text-lg text-[var(--text-secondary)] ml-2">/project</span>
@@ -32,7 +32,7 @@ export const Pricing1 = () => (
         </div>
         <div className="relative rounded-[2.5rem] bg-gradient-to-br from-[var(--accent-secondary)]/10 to-[var(--accent-secondary)]/5 border border-[var(--accent-secondary)]/20 p-8 sm:p-14 backdrop-blur-sm">
           <h3 className="mb-6 font-cormorant text-2xl sm:text-3xl text-[var(--accent-secondary)]">
-            Bespoke Mastery
+            Premium Service
           </h3>
           <div className="mb-8 font-playfair text-4xl sm:text-5xl">
             $500+<span className="text-lg text-[var(--text-secondary)] ml-2">/engagement</span>

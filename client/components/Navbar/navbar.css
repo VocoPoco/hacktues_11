@@ -1,9 +1,9 @@
-/* navbar.css – Tailwind + custom adjustments for layout, spacing, and visual consistency */
-
+/* navbar.css - Full Styles */
 .sidebar-logo {
   font-family: 'Cinzel', serif;
   letter-spacing: 1px;
-  color: var(--accent-primary);
+  color: #475569;
+  text-shadow: 0 2px 4px #0000001a;
 }
 
 .nav-icon {
@@ -11,61 +11,229 @@
   width: 24px;
   height: 24px;
   stroke: var(--text-primary);
+  transition: stroke 0.2s ease;
+  justify-content: center;
 }
 
-.auth-signup-button {
+/* Tooltip System */
+.generator-tooltip {
+  position: absolute;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: translateY(5px);
+  pointer-events: none;
+  z-index: 100;
+}
+
+.generator-disabled:hover .generator-tooltip {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.generator-tooltip-content {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  border-radius: 6px;
+  padding: 8px 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  border: 1px solid var(--divider);
+  font-size: 0.875rem;
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  padding: 0.75rem;
-  border-radius: 0.5rem;
-  background: linear-gradient(to right, var(--accent-primary), var(--accent-secondary));
-  color: white;
-  box-shadow: 0 4px 20px -6px rgba(0, 0, 0, 0.3);
-  transition: transform 0.2s ease;
+  gap: 8px;
 }
 
-.auth-signup-button:hover {
-  transform: scale(1.02);
+.generator-tooltip-arrow {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: var(--bg-secondary);
+  transform: rotate(45deg);
+  border-right: 1px solid var(--divider);
+  border-bottom: 1px solid var(--divider);
+  bottom: -4px;
+  left: 50%;
 }
 
-/* Spacing between nav items */
-.nav-items {
-  @apply flex flex-col gap-4;
+/* Mode Toggle Animations - REMOVED PULSE ANIMATION */
+@keyframes status-ping {
+  75%, 100% { transform: scale(2); opacity: 0; }
+}
+
+.animate-status-ping {
+  animation: status-ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+/* Sparkle Animation */
+@keyframes sparkle-fly {
+  0% { transform: translate(0, 0); opacity: 0; }
+  50% { opacity: 1; }
+  100% { transform: translate(40px, -40px); opacity: 0; }
+}
+
+.button-sparkle {
+  animation: sparkle-fly 1.4s infinite;
+  width: 12px;
+  height: 12px;
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 50%;
+  position: absolute;
+}
+
+/* Active Mode Styling - REMOVED PULSE RING */
+.mode-active {
+  background: linear-gradient(
+    135deg,
+    #475569 0%,
+    #64748b 100%
+  );
+  color: white !important;
+  box-shadow: 0 4px 20px -6px rgba(71, 85, 105, 0.4);
+}
+
+.mode-active .nav-icon {
+  stroke: white;
+}
+
+/* Sidebar Hover Behavior */
+.sidebar-hover-area {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 8px;
+  height: 100vh;
+  z-index: 39;
+  background: transparent;
+}
+
+.sidebar-hover-area:hover + aside,
+aside:hover {
+  transform: translateX(0) !important;
+}
+
+/* Business Mode Navbar Styling */
+.business-mode-navbar {
+  background: rgba(255, 255, 255, 0.95) !important;
+  backdrop-filter: blur(10px);
+  border-right: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.dark .business-mode-navbar {
+  background: rgba(17, 24, 39, 0.95) !important;
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Enhanced text colors for Business mode */
+.business-mode-navbar .sidebar-logo {
+  color: #1f2937 !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.dark .business-mode-navbar .sidebar-logo {
+  color: #f9fafb !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.business-mode-navbar .nav-icon {
+  stroke: #374151 !important;
+}
+
+.dark .business-mode-navbar .nav-icon {
+  stroke: #d1d5db !important;
+}
+
+.business-mode-navbar .mode-active {
+  background: linear-gradient(135deg, #1f2937 0%, #374151 100%) !important;
+  color: white !important;
+  box-shadow: 0 4px 15px rgba(31, 41, 55, 0.3);
+}
+
+.dark .business-mode-navbar .mode-active {
+  background: linear-gradient(135deg, #f9fafb 0%, #e5e7eb 100%) !important;
+  color: #1f2937 !important;
+  box-shadow: 0 4px 15px rgba(249, 250, 251, 0.2);
+}
+
+/* Lock Button Styling */
+.lock-button {
+  transition: all 0.2s ease;
+}
+
+.lock-button:hover {
+  transform: scale(1.05);
+}
+
+.lock-button:active {
+  transform: scale(0.95);
+}
+
+/* Mobile Optimization */
+@media (max-width: 767px) {
+  .mobile-nav-item {
+    padding: 12px;
+    font-size: 0.9rem;
+  }
+  
+  .mobile-header {
+    min-height: 64px;
+    padding: 8px 16px;
+  }
+}
+
+/* Dark Mode Compatibility */
+.dark .generator-disabled .mode-toggle-button {
+  background: rgba(55, 65, 81, 0.4);
+  color: rgba(156, 163, 175, 0.6);
+}
+
+.dark .mode-active {
+  box-shadow: 0 4px 20px -6px rgba(0, 0, 0, 0.6);
+}
+
+/* Add these new styles */
+.mobile-header {
+  display: flex;
   justify-content: center;
-
 }
 
-/* Push auth section to bottom */
-.sidebar-content {
-  @apply flex flex-col h-full;
+.nav-items {
+  text-align: center;
 }
 
 .auth-section {
-  margin-top: auto;
-  @apply flex flex-col gap-3;
+  text-align: center;
 }
 
-/* Update mobile spacing as well */
-.mobile-header .mobile-nav-icons,
-.mobile-header .mobile-auth-icons {
-  @apply flex gap-4;
+/* Center mobile items */
+@media (max-width: 767px) {
+  .mobile-nav-item {
+    justify-content: center;
+    text-align: center;
+  }
+  
+  .mode-toggle-button {
+    justify-content: center;
+  }
+  
+  .auth-signup-button {
+    justify-content: center;
+  }
 }
 
-/* Ensure spacing inside sidebar is nice */
+/* Desktop centering */
 .desktop-sidebar {
-  @apply px-6 pt-8 pb-6;
-  background: var(--bg-secondary);
-  border-right: 1px solid var(--divider);
+  text-align: center;
 }
 
-/* Highlight active nav items better */
-.nav-item.active {
-  border-left: 4px solid var(--accent-secondary);
-  background-color: var(--hover-overlay);
+.desktop-sidebar .nav-icon {
+  margin: 0 auto;
 }
 
-/* Optional: softer hover background */
-.nav-item:hover {
-  background-color: rgba(255, 255, 255, 0.04);
+.desktop-sidebar .nav-items > * {
+  width: 100%;
+  justify-content: center;
 }
